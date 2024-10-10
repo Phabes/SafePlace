@@ -14,14 +14,16 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bandleIdentifier": "com.galaxies.firebase"
+      "bandleIdentifier": "com.mobilesystems.firebase",
+      "googleServicesFile": "./firebaseConfig/GoogleService-Info.plist"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./app/assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.galaxies.firebase"
+      "package": "com.mobilesystems.firebase",
+      "googleServicesFile": "./firebaseConfig/google-services.json"
     },
     "web": {
       "bundler": "metro",
