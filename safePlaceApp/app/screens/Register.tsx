@@ -4,8 +4,8 @@ import { useInputValue } from "../components/Input/useInputValue";
 import { Button, Input, Typography } from "../components";
 import { useAppNavigation } from "../hooks/useAppNavigation";
 
-export const Login = () => {
-  const loginClick = () => {};
+export const Register = () => {
+  const registerClick = () => {};
   const [mail, setMail] = useInputValue();
   const [password, setPassword] = useInputValue();
 
@@ -39,12 +39,12 @@ export const Login = () => {
               onChange={setPassword}
             />
             <View style={{ gap: theme.spacing(8) }}>
-              <Button text="Login" onPress={loginClick} />
+              <Button text="Sign Up" onPress={registerClick} />
               <Button
-                text="Create new account"
+                text="Already have account?"
                 variant="secondary"
                 onPress={() => {
-                  navigation.navigate("Register");
+                  navigation.navigate("Login");
                 }}
               />
             </View>

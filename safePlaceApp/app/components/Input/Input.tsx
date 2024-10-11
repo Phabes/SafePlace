@@ -10,35 +10,32 @@ import {
 
 type InputProps = {
   text: string;
-  keyboardType?: "default" | "numeric";
+  keyboardType?: "default" | "numeric" | "email-address";
   placeholder?: string;
-  disabled?: boolean;
   autoCapitalize?: "none" | "sentences" | "words" | "characters";
   variant?: "default" | "error";
   centerText?: boolean;
+  disabled?: boolean;
+  password?: boolean;
   onChange: (value: string) => void;
   onBlur?: (value: string) => void;
 };
 
 export const Input: FC<InputProps> = ({
   text,
-  disabled = false,
   keyboardType = "default",
   placeholder = "",
   autoCapitalize = "sentences",
   variant = "default",
   centerText = false,
+  disabled = false,
+  password = false,
   onChange,
   onBlur,
 }) => {
   const [type, setType] = useState<InputProps["variant"] | "active">(variant);
 
-  const onChangeInput = useCallback(
-    (value: string) => {
-      onChange(value);
-    },
-    [onChange]
-  );
+  const onChangeInput = useCallback(onChange, [onChange]);
 
   const onFocusInput = useCallback(() => {
     setType("active");
@@ -63,6 +60,7 @@ export const Input: FC<InputProps> = ({
       onFocus={onFocusInput}
       onEndEditing={onBlurInput}
       editable={!disabled}
+      secureTextEntry={password}
       autoCapitalize={autoCapitalize}
       style={[styles.input, theme.typography["body-medium"]]}
     />
@@ -78,14 +76,14 @@ const useStyles = (
   const borderColor =
     type == "default"
       ? "background-subtle"
-      : type == "active"
+      : type === "active"
       ? "action-selected"
-      : type == "error"
+      : type === "error"
       ? "text-error"
       : "background-subtle";
   const textColor = disabled
     ? "text-disabled"
-    : text != ""
+    : text !== ""
     ? "text-primary"
     : "text-secondary";
   const elevation = !disabled ? 2 : 1;
