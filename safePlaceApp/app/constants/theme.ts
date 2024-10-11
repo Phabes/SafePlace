@@ -6,11 +6,11 @@ export const theme: Theme = {
     "text-primary": "#212121",
     "text-secondary": "#5f6678",
     "text-disabled": "#848a99",
-    "text-error": "#c92c2c",
-    "text-success": "#67eb6f",
+    "text-error": "#d62222",
+    "text-success": "#ffaa78",
     "background-primary": "#fafafa",
     "background-subtle": "#dee3e7",
-    "action-selected": "#66c732",
+    "action-selected": "#ffaa78",
   },
   typography: {
     "header-large": {

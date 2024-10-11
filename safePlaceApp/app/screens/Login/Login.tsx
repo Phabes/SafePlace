@@ -1,15 +1,18 @@
 import { Keyboard, TouchableWithoutFeedback, View } from "react-native";
-import { theme } from "../constants/theme";
-import { useInputValue } from "../components/Input/useInputValue";
-import { Button, Input, Typography } from "../components";
-import { useAppNavigation } from "../hooks/useAppNavigation";
+import { theme } from "../../constants/theme";
+import { useInputValue } from "../../components/Input/useInputValue";
+import { Button, Input, Typography } from "../../components";
+import { useAppNavigation } from "../../hooks/useAppNavigation";
 
 export const Login = () => {
-  const loginClick = () => {};
+  const navigation = useAppNavigation();
+
   const [mail, setMail] = useInputValue();
   const [password, setPassword] = useInputValue();
 
-  const navigation = useAppNavigation();
+  const loginClick = () => {
+    Keyboard.dismiss();
+  };
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>

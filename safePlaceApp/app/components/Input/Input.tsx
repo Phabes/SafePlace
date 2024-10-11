@@ -1,5 +1,5 @@
 import { theme } from "@/app/constants/theme";
-import { FC, useCallback, useState } from "react";
+import { FC, useCallback, useEffect, useState } from "react";
 import {
   NativeSyntheticEvent,
   StyleSheet,
@@ -48,6 +48,10 @@ export const Input: FC<InputProps> = ({
     },
     [variant, onBlur]
   );
+
+  useEffect(() => {
+    setType(variant);
+  }, [variant]);
 
   const styles = useStyles(type, disabled, text, centerText);
 
