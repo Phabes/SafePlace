@@ -1,32 +1,63 @@
-import { Pressable, Text, StyleSheet } from "react-native";
+import React, { FC } from "react";
+import { StyleSheet, TouchableOpacity } from "react-native";
+import { theme } from "@/app/constants/theme";
+import { Typography } from "../Typography";
 
-const Button = ({ text = "", disabled = false }) => {
+export type ButtonProps = {
+  text: string;
+  onPress: (...args: any) => any;
+  size?: "small" | "medium" | "large";
+  variant?: "default" | "error";
+  disabled?: boolean;
+  hasFullWidth?: boolean;
+};
+
+export const Button: FC<ButtonProps> = ({
+  text,
+  onPress,
+  size = "medium",
+  variant = "default",
+  disabled = false,
+  hasFullWidth = false,
+}) => {
+  const styles = useStyles(variant, size, disabled);
+  const textColor = disabled ? "text-secondary" : "text-primary";
+
   return (
-    <Pressable
+    <TouchableOpacity
+      style={[styles.container, hasFullWidth && styles.fullWidth]}
       disabled={disabled}
-      style={[styles.container, disabled && styles.disabled]}
-      onPress={() => {}}
+      onPress={onPress}
+      activeOpacity={0.5}
     >
-      <Text style={styles.text}>{text}</Text>
-    </Pressable>
+      <Typography text={text} color={textColor} />
+    </TouchableOpacity>
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 0.8,
-    padding: 10,
-    borderRadius: 30,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#9EF01A",
-  },
-  text: {
-    fontSize: 20,
-  },
-  disabled: {
-    marginBottom: 10,
-  },
-});
+const useStyles = (
+  variant: ButtonProps["variant"],
+  size: ButtonProps["size"],
+  disabled: ButtonProps["disabled"]
+) => {
+  const buttonColor = disabled
+    ? "background-subtle"
+    : variant == "default"
+    ? "text-success"
+    : "text-error";
+  const buttonSize = size === "large" ? 4 : size === "medium" ? 3 : 2;
 
-export default Button;
+  return StyleSheet.create({
+    container: {
+      justifyContent: "center",
+      alignItems: "center",
+      backgroundColor: theme.colors[buttonColor],
+      paddingHorizontal: theme.spacing(buttonSize * 2),
+      paddingVertical: theme.spacing(buttonSize),
+      borderRadius: theme.spacing(buttonSize),
+    },
+    fullWidth: {
+      width: "100%",
+    },
+  });
+};
