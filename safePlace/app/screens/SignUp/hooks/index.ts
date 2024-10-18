@@ -1,0 +1,1 @@
+export { useSignUpData } from "./useSignUpData";
