@@ -1,4 +1,4 @@
-import { Keyboard, TouchableWithoutFeedback, View } from "react-native";
+import { View } from "react-native";
 import { LayoutProvider, Typography } from "../../components";
 import { NavbarWithLogout } from "../../components/NavbarWithLogout";
 
