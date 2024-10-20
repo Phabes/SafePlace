@@ -4,13 +4,13 @@ import {
   FieldErrors,
   UseFormClearErrors,
 } from "react-hook-form";
-import { UserSignInData } from "../../../../types";
 import { FormLabel, Input } from "../../../../components";
+import { UserSignUpData } from "../../../../types";
 
 type UserFormProps = {
-  control: Control<UserSignInData>;
-  errors: FieldErrors<UserSignInData>;
-  clearErrors: UseFormClearErrors<UserSignInData>;
+  control: Control<UserSignUpData>;
+  errors: FieldErrors<UserSignUpData>;
+  clearErrors: UseFormClearErrors<UserSignUpData>;
 };
 
 export const UserForm = ({ control, errors, clearErrors }: UserFormProps) => {
@@ -20,13 +20,13 @@ export const UserForm = ({ control, errors, clearErrors }: UserFormProps) => {
       <Controller
         control={control}
         name="name"
-        render={({ field: { onChange, value } }) => (
+        render={({ field: { onChange, value, name } }) => (
           <Input
             text={value}
             placeholder="Name"
             variant={errors.name ? "error" : "default"}
             onChange={(e) => {
-              clearErrors("name");
+              clearErrors(name);
               onChange(e);
             }}
           />
@@ -36,13 +36,13 @@ export const UserForm = ({ control, errors, clearErrors }: UserFormProps) => {
       <Controller
         control={control}
         name="surname"
-        render={({ field: { onChange, value } }) => (
+        render={({ field: { onChange, value, name } }) => (
           <Input
             text={value}
             placeholder="Surname"
             variant={errors.surname ? "error" : "default"}
             onChange={(e) => {
-              clearErrors("surname");
+              clearErrors(name);
               onChange(e);
             }}
           />

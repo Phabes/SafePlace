@@ -4,13 +4,13 @@ import {
   FieldErrors,
   UseFormClearErrors,
 } from "react-hook-form";
-import { ShelterSignInData } from "../../../../types";
+import { ShelterSignUpData } from "../../../../types";
 import { FormLabel, Input } from "../../../../components";
 
 type ShelterFormProps = {
-  control: Control<ShelterSignInData>;
-  errors: FieldErrors<ShelterSignInData>;
-  clearErrors: UseFormClearErrors<ShelterSignInData>;
+  control: Control<ShelterSignUpData>;
+  errors: FieldErrors<ShelterSignUpData>;
+  clearErrors: UseFormClearErrors<ShelterSignUpData>;
 };
 
 export const ShelterForm = ({
@@ -24,13 +24,13 @@ export const ShelterForm = ({
       <Controller
         control={control}
         name="shelterName"
-        render={({ field: { onChange, value } }) => (
+        render={({ field: { onChange, value, name } }) => (
           <Input
             text={value}
             placeholder="Shelter Name"
             variant={errors.shelterName ? "error" : "default"}
             onChange={(e) => {
-              clearErrors("shelterName");
+              clearErrors(name);
               onChange(e);
             }}
           />

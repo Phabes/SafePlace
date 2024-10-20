@@ -1,14 +1,10 @@
 import { Keyboard, TouchableWithoutFeedback, View } from "react-native";
-import { Button, Typography } from "../../components";
-import { FIREBASE_AUTH } from "../../../firebaseConfig/firebaseConfig";
+import { LayoutProvider, Typography } from "../../components";
+import { NavbarWithLogout } from "../../components/NavbarWithLogout";
 
 export const Settings = () => {
-  const logoutClick = async () => {
-    FIREBASE_AUTH.signOut();
-  };
-
   return (
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+    <LayoutProvider navbar={<NavbarWithLogout text="Settings" />}>
       <View
         style={{
           flex: 1,
@@ -16,11 +12,8 @@ export const Settings = () => {
           alignItems: "center",
         }}
       >
-        <View style={{ flexDirection: "row" }}>
-          <Typography text={"LOGGED IN:"} />
-          <Button text="Logout" onPress={logoutClick} />
-        </View>
+        <Typography text={"LOGGED IN"} />
       </View>
-    </TouchableWithoutFeedback>
+    </LayoutProvider>
   );
 };

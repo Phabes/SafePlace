@@ -32,6 +32,7 @@ export const useSignUpData = () => {
     handleSubmit: handleCommonSubmit,
     formState: { errors: commonErrors },
     clearErrors: clearCommonErrors,
+    reset: commonReset,
   } = useForm<CommonSignUpData>({
     defaultValues: {
       email: "",
@@ -47,6 +48,7 @@ export const useSignUpData = () => {
     handleSubmit: handleShelterSubmit,
     formState: { errors: shelterErrors },
     clearErrors: clearShelterErrors,
+    reset: shelterReset,
   } = useForm<ShelterSignUpData>({
     defaultValues: {
       shelterName: "",
@@ -60,11 +62,18 @@ export const useSignUpData = () => {
     handleSubmit: handleUserSubmit,
     formState: { errors: userErrors },
     clearErrors: clearUserErrors,
+    reset: userReset,
   } = useForm<UserSignUpData>({
     defaultValues: { name: "", surname: "" },
     reValidateMode: "onSubmit",
     resolver: yupResolver(userSchema),
   });
+
+  const resetSignUp = () => {
+    commonReset();
+    shelterReset();
+    userReset();
+  };
 
   return {
     commonControl,
@@ -79,5 +88,6 @@ export const useSignUpData = () => {
     handleUserSubmit,
     userErrors,
     clearUserErrors,
+    resetSignUp,
   };
 };

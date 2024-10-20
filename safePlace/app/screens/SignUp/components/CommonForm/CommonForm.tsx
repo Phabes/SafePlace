@@ -1,38 +1,47 @@
 import {
   Control,
   Controller,
+  FieldError,
   FieldErrors,
   UseFormClearErrors,
 } from "react-hook-form";
-import { CommonSignInData } from "../../../../types";
 import { FormLabel, Input } from "../../../../components";
+import { CommonSignUpData } from "../../../../types";
 
 type CommonFormProps = {
-  control: Control<CommonSignInData>;
-  errors: FieldErrors<CommonSignInData>;
-  clearErrors: UseFormClearErrors<CommonSignInData>;
+  control: Control<CommonSignUpData>;
+  errors: FieldErrors<CommonSignUpData>;
+  clearErrors: UseFormClearErrors<CommonSignUpData>;
+  signUpError: FieldError | null;
+  signUpEmailInputChange: () => void;
 };
 
 export const CommonForm = ({
   control,
   errors,
   clearErrors,
+  signUpError,
+  signUpEmailInputChange,
 }: CommonFormProps) => {
   return (
     <>
-      <FormLabel text={"Email"} errors={errors.email} />
+      <FormLabel
+        text={"Email"}
+        errors={signUpError ? signUpError : errors.email}
+      />
       <Controller
         control={control}
         name="email"
-        render={({ field: { onChange, value } }) => (
+        render={({ field: { onChange, value, name } }) => (
           <Input
             text={value}
             keyboardType="email-address"
             placeholder="Email"
             autoCapitalize="none"
-            variant={errors.email ? "error" : "default"}
+            variant={signUpError ? "error" : errors.email ? "error" : "default"}
             onChange={(e) => {
-              clearErrors("email");
+              signUpEmailInputChange();
+              clearErrors(name);
               onChange(e);
             }}
           />
@@ -42,7 +51,7 @@ export const CommonForm = ({
       <Controller
         control={control}
         name="password"
-        render={({ field: { onChange, value } }) => (
+        render={({ field: { onChange, value, name } }) => (
           <Input
             text={value}
             placeholder="Password"
@@ -50,7 +59,7 @@ export const CommonForm = ({
             variant={errors.password ? "error" : "default"}
             password={true}
             onChange={(e) => {
-              clearErrors("password");
+              clearErrors(name);
               onChange(e);
             }}
           />
@@ -60,7 +69,7 @@ export const CommonForm = ({
       <Controller
         control={control}
         name="repeatPassword"
-        render={({ field: { onChange, value } }) => (
+        render={({ field: { onChange, value, name } }) => (
           <Input
             text={value}
             placeholder="Password"
@@ -68,7 +77,7 @@ export const CommonForm = ({
             variant={errors.repeatPassword ? "error" : "default"}
             password={true}
             onChange={(e) => {
-              clearErrors("repeatPassword");
+              clearErrors(name);
               onChange(e);
             }}
           />

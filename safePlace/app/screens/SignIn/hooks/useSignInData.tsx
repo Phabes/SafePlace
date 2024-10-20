@@ -16,6 +16,7 @@ export const useSignInData = () => {
     handleSubmit: handleLoginSubmit,
     formState: { errors: loginErrors },
     clearErrors: clearLoginErrors,
+    reset: loginReset,
   } = useForm<SignInData>({
     defaultValues: {
       email: "",
@@ -30,5 +31,6 @@ export const useSignInData = () => {
     handleLoginSubmit,
     loginErrors,
     clearLoginErrors,
+    loginReset,
   };
 };
