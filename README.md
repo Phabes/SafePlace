@@ -8,7 +8,10 @@ Mobile Systems (Study Subject)
    ```javascript
    git clone https://github.com/Phabes/SafePlace.git
    ```
-1. Open "safePlaceApp" folder in command line.
+1. Open "safePlace" folder in command line.
+   ```javascript
+   cd safePlace
+   ```
 1. Run:
    ```javascript
    npm install
