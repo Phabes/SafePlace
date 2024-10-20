@@ -1,4 +1,4 @@
 import { useNavigation } from "@react-navigation/native";
-import { AppNavigationProps } from "../navigation";
+import { NavigationProps } from "../navigation";
 
-export const useAppNavigation = () => useNavigation<AppNavigationProps>();
+export const useAppNavigation = () => useNavigation<NavigationProps>();

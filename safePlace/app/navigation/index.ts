@@ -1,8 +1,3 @@
-export type {
-  AppNavigationProps,
-  AppStackParamList,
-  AuthNavigationProps,
-  AuthStackParamList,
-} from "./navigation";
+export type { StackParamList, NavigationProps } from "./navigationParams";
 
-export { AppStackScreen, AuthStackScreen } from "./stacks";
+export { Navigation } from "./Navigation";
