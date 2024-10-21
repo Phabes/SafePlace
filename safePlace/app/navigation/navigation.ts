@@ -1,6 +1,7 @@
 import { StackNavigationProp } from "@react-navigation/stack";
 
 export type AppStackParamList = {
+  UserProfileForm: undefined;
   Settings: undefined;
 };
 

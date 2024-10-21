@@ -9,7 +9,8 @@ export const theme: Theme = {
     "text-error": "#d62222",
     "text-success": "#ffaa78",
     "background-primary": "#fafafa",
-    "background-subtle": "#dee3e7",
+    "background-subtle": "#d3d7db", 
+    "background-clickable":"#dee3e7",
     "action-selected": "#ffaa78",
   },
   typography: {
@@ -56,6 +57,7 @@ export type ColorKeys =
   | "text-success"
   | "background-primary"
   | "background-subtle"
+  | "background-clickable"
   | "action-selected";
 
 export type Theme = {
