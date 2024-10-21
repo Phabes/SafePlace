@@ -1,5 +1,12 @@
 import { doc, setDoc } from "firebase/firestore";
-import { FIREBASE_DB } from "../../../firebaseConfig/firebaseConfig";
+import {
+  FIREBASE_AUTH,
+  FIREBASE_DB,
+} from "../../../firebaseConfig/firebaseConfig";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
 
 export type DatabaseUser = {
   email: string;
@@ -10,6 +17,18 @@ export type DatabaseUser = {
 export type DatabaseShelter = {
   email: string;
   shelterName: string;
+};
+
+export const createAccount = async (email: string, password: string) => {
+  return await createUserWithEmailAndPassword(FIREBASE_AUTH, email, password);
+};
+
+export const login = async (email: string, password: string) => {
+  return await signInWithEmailAndPassword(FIREBASE_AUTH, email, password);
+};
+
+export const logout = async () => {
+  await FIREBASE_AUTH.signOut();
 };
 
 export const saveUser = async (signUpData: any, userID: string) => {

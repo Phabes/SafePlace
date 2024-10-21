@@ -22,6 +22,7 @@ import { useAppNavigation } from "../../hooks";
 import { FirebaseError } from "firebase/app";
 import { useState } from "react";
 import { getFirebaseErrorMessage } from "../../utils";
+import { login } from "../../services";
 
 export const SignIn = () => {
   const navigation = useAppNavigation();
@@ -43,11 +44,7 @@ export const SignIn = () => {
     setSignInError(null);
 
     try {
-      await signInWithEmailAndPassword(
-        FIREBASE_AUTH,
-        data.email,
-        data.password
-      );
+      await login(data.email, data.password);
 
       navigation.replace("Settings");
     } catch (error) {

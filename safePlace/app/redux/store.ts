@@ -3,10 +3,10 @@ import {
   configureStore,
   UnknownAction,
 } from "@reduxjs/toolkit";
-import profileSlice from "./profileSlice";
+import accountSlice from "./accountSlice";
 
 const appReducer = combineReducers({
-  admin: profileSlice,
+  account: accountSlice,
 });
 
 const reducerProxy = (state: any, action: UnknownAction) => {

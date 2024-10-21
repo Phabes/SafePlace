@@ -11,17 +11,11 @@ import { RadioButton } from "react-native-radio-buttons-group";
 import { useSignUpData } from "./hooks";
 import { FieldError } from "react-hook-form";
 import { CommonForm, ShelterForm, UserForm } from "./components";
-import {
-  FIREBASE_AUTH,
-  FIREBASE_DB,
-} from "../../../firebaseConfig/firebaseConfig";
-import { createUserWithEmailAndPassword } from "firebase/auth";
 import { useAccountTypes, useAppNavigation } from "../../hooks";
 import { FirebaseError } from "firebase/app";
 import { getFirebaseErrorMessage } from "../../utils";
 import { executePipeline } from "./utils";
-import { doc, setDoc } from "firebase/firestore";
-import { saveShelter, saveUser } from "../../services/account/account";
+import { createAccount, saveShelter, saveUser } from "../../services";
 
 export const SignUp = () => {
   const navigation = useAppNavigation();
@@ -60,8 +54,7 @@ export const SignUp = () => {
       const signUpData = await executePipeline(handlers);
       if (signUpData.success) {
         try {
-          const userCredential = await createUserWithEmailAndPassword(
-            FIREBASE_AUTH,
+          const userCredential = await createAccount(
             signUpData.email,
             signUpData.password
           );
@@ -69,9 +62,9 @@ export const SignUp = () => {
           const userID = userCredential.user.uid;
 
           if (accountType === "User") {
-            saveUser(signUpData, userID);
+            await saveUser(signUpData, userID);
           } else {
-            saveShelter(signUpData, userID);
+            await saveShelter(signUpData, userID);
           }
 
           navigation.replace("Settings");

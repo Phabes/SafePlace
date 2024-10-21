@@ -19,8 +19,8 @@ export const useSignInData = () => {
     reset: loginReset,
   } = useForm<SignInData>({
     defaultValues: {
-      email: "",
-      password: "",
+      email: "q@q.com",
+      password: "qqqqqq",
     },
     reValidateMode: "onSubmit",
     resolver: yupResolver(loginSchema),

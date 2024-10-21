@@ -1,8 +1,9 @@
 import { FC } from "react";
 import { Navbar } from "../Navbar";
 import { ButtonProps } from "../Button";
-import { FIREBASE_AUTH } from "../../../firebaseConfig/firebaseConfig";
 import { useAppNavigation } from "../../hooks";
+import { logout } from "../../services";
+import { useAppDispatch } from "../../redux/hooks";
 
 type NavbarWithLogoutProps = {
   text: string;
@@ -13,10 +14,12 @@ export const NavbarWithLogout: FC<NavbarWithLogoutProps> = ({
   text,
   backButton = true,
 }) => {
+  const dispatch = useAppDispatch();
   const navigation = useAppNavigation();
 
   const logoutClick = async () => {
-    await FIREBASE_AUTH.signOut();
+    await logout();
+    dispatch({ type: "logout" });
     navigation.replace("SignIn");
   };
 
