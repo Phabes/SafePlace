@@ -2,12 +2,37 @@ import { TouchableOpacity, View, PermissionsAndroid, Platform } from "react-nati
 import { LayoutProvider, Typography } from "../../components";
 import { NavbarWithLogout } from "../../components/NavbarWithLogout";
 import { theme } from "../../constants/theme";
-import { Camera } from "iconoir-react-native";
+import { MediaImagePlus as MediaImagePlusIcon,Camera as CameraIcon, MediaImageList as MediaImageListIcon} from "iconoir-react-native";
+import Modal from "react-native-modal";
+import { useState } from "react";
+import * as ImagePicker from 'expo-image-picker';
+
 
 export const UserProfileForm = () => {
+  const [isModalVisible, setModalVisible] = useState(true);
 
   const addBackgroundPhoto = () => {
     alert("Background")
+  }
+  const turnOnCamera = async () =>{
+    let res = await ImagePicker.launchCameraAsync({
+      allowsEditing:true,
+      quality:1
+    })
+    if(!res.canceled){
+      console.log(res)
+    }
+  }
+
+  const openGallery = async () =>{
+    let res = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      quality: 1
+    });
+    if (!res.canceled) {
+      console.log(res);
+    }
   }
 
   const addProfilePhoto = async () => {
@@ -15,6 +40,7 @@ export const UserProfileForm = () => {
       const cameraPermission = await PermissionsAndroid.check('android.permission.CAMERA');
       if (cameraPermission){
         console.log("GOOD")
+        setModalVisible(true)
       }else{
         requestCameraPermissionAndroid()
       }
@@ -45,8 +71,27 @@ export const UserProfileForm = () => {
       console.warn(err);
     }
   };
+
+  
   return (
     <LayoutProvider navbar={<NavbarWithLogout text="Edit Profile" />}>
+      <Modal
+        isVisible={isModalVisible}
+        onBackdropPress={() => setModalVisible(false)}
+      >
+        <View style={{ flex: 1, justifyContent:"center",alignItems:"center" }}>
+          <View style={{flex:1,flexDirection:"row",direction:"ltr",width:"80%",maxHeight:"25%", backgroundColor:theme.colors["background-primary"]}}
+          >
+            <TouchableOpacity style={{ flex: 1, justifyContent: "center", alignItems: "center",borderRightColor:theme.colors["background-clickable"],borderRightWidth:2 }
+          } onPress={turnOnCamera}>
+              <CameraIcon color={theme.colors["action-selected"]} height={36} width={36} />
+            </TouchableOpacity>
+            <TouchableOpacity style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+              <MediaImageListIcon color={theme.colors["action-selected"]} height={36} width={36} />
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
       <View
         style={{
           flex: 1,
@@ -63,7 +108,7 @@ export const UserProfileForm = () => {
         }}
           onPress={addBackgroundPhoto}
           >
-          <Camera color={theme.colors["action-selected"]} height={36} width={36} />
+          <MediaImagePlusIcon color={theme.colors["action-selected"]} height={36} width={36} />
         </TouchableOpacity>
 
         <TouchableOpacity style={{
@@ -81,7 +126,7 @@ export const UserProfileForm = () => {
         }}
           onPress={addProfilePhoto}
         >
-          <Camera color={theme.colors["action-selected"]} height={36} width={36} />
+          <MediaImagePlusIcon color={theme.colors["action-selected"]} height={36} width={36} />
         </TouchableOpacity >
         
       </View>
