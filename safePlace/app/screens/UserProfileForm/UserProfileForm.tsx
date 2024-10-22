@@ -1,4 +1,4 @@
-import { TouchableOpacity, View } from "react-native";
+import { TouchableOpacity, View, PermissionsAndroid, Platform } from "react-native";
 import { LayoutProvider, Typography } from "../../components";
 import { NavbarWithLogout } from "../../components/NavbarWithLogout";
 import { theme } from "../../constants/theme";
@@ -10,9 +10,41 @@ export const UserProfileForm = () => {
     alert("Background")
   }
 
-  const addProfilePhoto = () => {
-    alert("Profile");
+  const addProfilePhoto = async () => {
+    if(Platform.OS=="android"){
+      const cameraPermission = await PermissionsAndroid.check('android.permission.CAMERA');
+      if (cameraPermission){
+        console.log("GOOD")
+      }else{
+        requestCameraPermissionAndroid()
+      }
+    }
+    
   }
+
+  const requestCameraPermissionAndroid = async () => {
+    try {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.CAMERA,
+        {
+          title: 'SafePlace Camera Permission',
+          message:
+            'SafePlace needs access to your camera ' +
+            'so you can take awesome pictures.',
+          buttonNeutral: 'Ask Me Later',
+          buttonNegative: 'Cancel',
+          buttonPositive: 'OK',
+        },
+      );
+      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+        console.log('You can use the camera');
+      } else {
+        console.log('Camera permission denied');
+      }
+    } catch (err) {
+      console.warn(err);
+    }
+  };
   return (
     <LayoutProvider navbar={<NavbarWithLogout text="Edit Profile" />}>
       <View

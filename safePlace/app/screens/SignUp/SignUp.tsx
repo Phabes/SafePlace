@@ -11,16 +11,14 @@ import { RadioButton } from "react-native-radio-buttons-group";
 import { useSignUpData } from "./hooks";
 import { FieldError } from "react-hook-form";
 import { CommonForm, ShelterForm, UserForm } from "./components";
-import { FIREBASE_AUTH } from "../../../firebaseConfig/firebaseConfig";
-import { createUserWithEmailAndPassword } from "firebase/auth";
-import { useAccountTypes } from "../../hooks";
-import { useAuthNavigation } from "../../hooks/useAuthNavigation";
+import { useAccountTypes, useAppNavigation } from "../../hooks";
 import { FirebaseError } from "firebase/app";
 import { getFirebaseErrorMessage } from "../../utils";
 import { executePipeline } from "./utils";
+import { createAccount, saveShelter, saveUser } from "../../services";
 
 export const SignUp = () => {
-  const navigation = useAuthNavigation();
+  const navigation = useAppNavigation();
 
   const {
     commonControl,
@@ -40,7 +38,7 @@ export const SignUp = () => {
   const radioButtons = useAccountTypes();
 
   const [signUpError, setSignUpError] = useState<FieldError | null>(null);
-  const [selectedId, setSelectedId] = useState<string>("User");
+  const [accountType, setAccountType] = useState<string>("User");
   const [loading, setLoading] = useState(false);
 
   const registerClick = async () => {
@@ -48,7 +46,7 @@ export const SignUp = () => {
     Keyboard.dismiss();
 
     const handlers =
-      selectedId === "User"
+      accountType === "User"
         ? [handleCommonSubmit, handleUserSubmit]
         : [handleCommonSubmit, handleShelterSubmit];
 
@@ -56,11 +54,20 @@ export const SignUp = () => {
       const signUpData = await executePipeline(handlers);
       if (signUpData.success) {
         try {
-          await createUserWithEmailAndPassword(
-            FIREBASE_AUTH,
+          const userCredential = await createAccount(
             signUpData.email,
             signUpData.password
           );
+
+          const userID = userCredential.user.uid;
+
+          if (accountType === "User") {
+            await saveUser(signUpData, userID);
+          } else {
+            await saveShelter(signUpData, userID);
+          }
+
+          navigation.replace("Settings");
         } catch (error) {
           if (error instanceof FirebaseError) {
             setSignUpError(getFirebaseErrorMessage(error.code));
@@ -99,8 +106,8 @@ export const SignUp = () => {
                   color={theme.colors["text-success"]}
                   label={radio.label}
                   value={radio.value}
-                  selected={radio.id === selectedId}
-                  onPress={setSelectedId}
+                  selected={radio.id === accountType}
+                  onPress={setAccountType}
                 />
               );
             })}
@@ -112,7 +119,7 @@ export const SignUp = () => {
             signUpError={signUpError}
             signUpEmailInputChange={signUpEmailInputChange}
           />
-          {selectedId === "User" ? (
+          {accountType === "User" ? (
             <UserForm
               control={userControl}
               errors={userErrors}
@@ -133,7 +140,7 @@ export const SignUp = () => {
               onPress={() => {
                 setSignUpError(null);
                 resetSignUp();
-                navigation.navigate("SignIn");
+                navigation.replace("SignIn");
               }}
             />
           </View>

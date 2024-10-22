@@ -14,6 +14,7 @@
     "@react-navigation/native": "^6.1.18",
     "@react-navigation/native-stack": "^6.11.0",
     "@react-navigation/stack": "^6.4.1",
+    "@reduxjs/toolkit": "^2.3.0",
     "expo": "~51.0.28",
     "expo-status-bar": "~1.12.1",
     "firebase": "^10.14.1",
@@ -21,8 +22,11 @@
     "react": "18.2.0",
     "react-hook-form": "^7.53.0",
     "react-native": "0.74.5",
+    "react-native-image-picker": "^7.1.2",
+    "react-native-modal": "^13.0.1",
     "react-native-radio-buttons-group": "^3.1.0",
     "react-native-svg": "^15.8.0",
+    "react-redux": "^9.1.2",
     "yup": "^1.4.0"
   },
   "devDependencies": {

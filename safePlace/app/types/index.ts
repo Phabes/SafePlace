@@ -5,3 +5,5 @@ export type {
 } from "./SignUpData";
 
 export type { SignInData } from "./SignInData";
+
+export type { AccountTypes } from "./AccountTypes";
