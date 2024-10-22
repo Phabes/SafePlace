@@ -1,4 +1,4 @@
-export const ACCOUNT_TYPES: AccountType[] = [
+export const RADIO_ACCOUNT_TYPES: RadioAccountType[] = [
   {
     id: "User",
     label: "User",
@@ -11,7 +11,7 @@ export const ACCOUNT_TYPES: AccountType[] = [
   },
 ];
 
-export type AccountType = {
+export type RadioAccountType = {
   id: string;
   label: string;
   value: string;

@@ -1,8 +1,8 @@
 import { useMemo } from "react";
-import { ACCOUNT_TYPES } from "../constants/accountTypes";
+import { RADIO_ACCOUNT_TYPES } from "../constants/radioAccountTypes";
 
 export const useAccountTypes = () => {
-  const accountTypes = useMemo(() => ACCOUNT_TYPES, []);
+  const accountTypes = useMemo(() => RADIO_ACCOUNT_TYPES, []);
 
   return accountTypes;
 };

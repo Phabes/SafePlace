@@ -18,13 +18,14 @@ import { FIREBASE_AUTH } from "../../../firebaseConfig/firebaseConfig";
 import { Controller, FieldError } from "react-hook-form";
 import { SignInData } from "../../types";
 import { useSignInData } from "./hooks";
-import { useAuthNavigation } from "../../hooks";
+import { useAppNavigation } from "../../hooks";
 import { FirebaseError } from "firebase/app";
 import { useState } from "react";
 import { getFirebaseErrorMessage } from "../../utils";
+import { login } from "../../services";
 
 export const SignIn = () => {
-  const navigation = useAuthNavigation();
+  const navigation = useAppNavigation();
 
   const {
     loginControl,
@@ -43,11 +44,9 @@ export const SignIn = () => {
     setSignInError(null);
 
     try {
-      await signInWithEmailAndPassword(
-        FIREBASE_AUTH,
-        data.email,
-        data.password
-      );
+      await login(data.email, data.password);
+
+      navigation.replace("Settings");
     } catch (error) {
       if (error instanceof FirebaseError) {
         setSignInError(getFirebaseErrorMessage(error.code));
@@ -130,7 +129,7 @@ export const SignIn = () => {
               onPress={() => {
                 setSignInError(null);
                 loginReset();
-                navigation.navigate("SignUp");
+                navigation.replace("SignUp");
               }}
             />
           </View>

@@ -1,6 +1,5 @@
 import { View } from "react-native";
-import { LayoutProvider, Typography } from "../../components";
-import { NavbarWithLogout } from "../../components/NavbarWithLogout";
+import { LayoutProvider, NavbarWithLogout, Typography } from "../../components";
 
 export const Settings = () => {
   return (
