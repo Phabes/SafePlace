@@ -35,9 +35,9 @@ export const useSignUpData = () => {
     reset: commonReset,
   } = useForm<CommonSignUpData>({
     defaultValues: {
-      email: "q@q.com",
-      password: "qqqqqq",
-      repeatPassword: "qqqqqq",
+      email: "",
+      password: "",
+      repeatPassword: "",
     },
     reValidateMode: "onSubmit",
     resolver: yupResolver(commonSchema),
@@ -64,7 +64,7 @@ export const useSignUpData = () => {
     clearErrors: clearUserErrors,
     reset: userReset,
   } = useForm<UserSignUpData>({
-    defaultValues: { name: "QWE", surname: "DSA" },
+    defaultValues: { name: "", surname: "" },
     reValidateMode: "onSubmit",
     resolver: yupResolver(userSchema),
   });
