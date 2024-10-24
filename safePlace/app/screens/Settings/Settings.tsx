@@ -11,6 +11,7 @@ export const Settings = () => {
   const type = useAccountType();
 
   if (type === "NoData") {
+    // TO DO - CREATE SPECIFIC VIEW FOR IT
     return (
       <View
         style={{

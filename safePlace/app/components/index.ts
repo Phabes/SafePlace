@@ -7,4 +7,5 @@ export * from "./LoadingWrapper";
 export * from "./Navbar";
 export * from "./NavbarWithLogout";
 export * from "./BottomNavigation";
+export * from "./Tab";
 export * from "./Typography";
