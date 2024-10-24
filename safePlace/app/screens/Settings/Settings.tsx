@@ -1,9 +1,17 @@
 import { View } from "react-native";
-import { LayoutProvider, NavbarWithLogout, Typography } from "../../components";
+import {
+  LayoutProvider,
+  LoadingWrapper,
+  NavbarWithLogout,
+  Typography,
+} from "../../components";
+import { useAccountType } from "../../hooks";
 
 export const Settings = () => {
-  return (
-    <LayoutProvider navbar={<NavbarWithLogout text="Settings" />}>
+  const type = useAccountType();
+
+  if (type === "NoData") {
+    return (
       <View
         style={{
           flex: 1,
@@ -11,8 +19,27 @@ export const Settings = () => {
           alignItems: "center",
         }}
       >
-        <Typography text={"LOGGED IN"} />
+        <Typography text={"NO DATA. PLEASE RELOGIN"} />
       </View>
-    </LayoutProvider>
+    );
+  }
+
+  return (
+    <LoadingWrapper isLoading={!type} text="Loading Account Data...">
+      <LayoutProvider
+        navbar={<NavbarWithLogout text="Settings" />}
+        userType={type}
+      >
+        <View
+          style={{
+            flex: 1,
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Typography text={"LOGGED IN"} />
+        </View>
+      </LayoutProvider>
+    </LoadingWrapper>
   );
 };

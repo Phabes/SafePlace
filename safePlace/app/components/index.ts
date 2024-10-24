@@ -3,6 +3,8 @@ export * from "./FormLabel";
 export * from "./Input";
 export * from "./LayoutProvider";
 export * from "./Loading";
+export * from "./LoadingWrapper";
 export * from "./Navbar";
 export * from "./NavbarWithLogout";
+export * from "./BottomNavigation";
 export * from "./Typography";

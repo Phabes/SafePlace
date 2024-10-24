@@ -11,11 +11,12 @@ import { RadioButton } from "react-native-radio-buttons-group";
 import { useSignUpData } from "./hooks";
 import { FieldError } from "react-hook-form";
 import { CommonForm, ShelterForm, UserForm } from "./components";
-import { useAccountTypes, useAppNavigation } from "../../hooks";
+import { useAppNavigation } from "../../hooks";
 import { FirebaseError } from "firebase/app";
 import { getFirebaseErrorMessage } from "../../utils";
 import { executePipeline } from "./utils";
 import { createAccount, saveShelter, saveUser } from "../../services";
+import { RADIO_ACCOUNT_TYPES } from "../../constants/radioAccountTypes";
 
 export const SignUp = () => {
   const navigation = useAppNavigation();
@@ -35,7 +36,6 @@ export const SignUp = () => {
     clearUserErrors,
     resetSignUp,
   } = useSignUpData();
-  const radioButtons = useAccountTypes();
 
   const [signUpError, setSignUpError] = useState<FieldError | null>(null);
   const [accountType, setAccountType] = useState<string>("User");
@@ -96,7 +96,7 @@ export const SignUp = () => {
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
         <View style={styles.form}>
           <View>
-            {radioButtons.map((radio) => {
+            {RADIO_ACCOUNT_TYPES.map((radio) => {
               return (
                 <RadioButton
                   key={radio.id}

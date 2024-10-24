@@ -1,14 +1,12 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { AccountTypes } from "../types";
+import { RootState } from "./store";
 
 interface AccountState {
   userID: string | null;
-  accountType: AccountTypes | "NoData";
 }
 
 const initialState: AccountState = {
   userID: null,
-  accountType: "NoData",
 };
 
 export const accountSlice = createSlice({
@@ -18,16 +16,14 @@ export const accountSlice = createSlice({
     setUserID: (state, action: PayloadAction<AccountState["userID"]>) => {
       state.userID = action.payload;
     },
-    setAccountType: (
-      state,
-      action: PayloadAction<AccountState["accountType"]>
-    ) => {
-      state.accountType = action.payload;
-    },
     resetAccount: () => initialState,
   },
 });
 
-export const { setUserID, setAccountType, resetAccount } = accountSlice.actions;
+export const { setUserID, resetAccount } = accountSlice.actions;
+
+export const selectUserID = (state: RootState) => {
+  return state.account.userID;
+};
 
 export default accountSlice.reducer;
