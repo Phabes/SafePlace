@@ -5,7 +5,12 @@ import {
   View,
 } from "react-native";
 import { theme } from "../../constants/theme";
-import { Button, LayoutProvider, Loading, Navbar } from "../../components";
+import {
+  Button,
+  LayoutProvider,
+  LoadingWrapper,
+  Navbar,
+} from "../../components";
 import { useState } from "react";
 import { RadioButton } from "react-native-radio-buttons-group";
 import { useSignUpData } from "./hooks";
@@ -67,7 +72,7 @@ export const SignUp = () => {
             await saveShelter(signUpData, userID);
           }
 
-          navigation.replace("Settings");
+          navigation.replace("Main");
         } catch (error) {
           if (error instanceof FirebaseError) {
             setSignUpError(getFirebaseErrorMessage(error.code));
@@ -87,66 +92,64 @@ export const SignUp = () => {
     setSignUpError(null);
   };
 
-  if (loading) {
-    return <Loading text="Signing Up..." />;
-  }
-
   return (
-    <LayoutProvider navbar={<Navbar text="Sign Up" />}>
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-        <View style={styles.form}>
-          <View>
-            {RADIO_ACCOUNT_TYPES.map((radio) => {
-              return (
-                <RadioButton
-                  key={radio.id}
-                  id={radio.id}
-                  containerStyle={{ marginHorizontal: 0 }}
-                  borderColor={theme.colors["text-success"]}
-                  color={theme.colors["text-success"]}
-                  label={radio.label}
-                  value={radio.value}
-                  selected={radio.id === accountType}
-                  onPress={setAccountType}
-                />
-              );
-            })}
+    <LoadingWrapper isLoading={loading} text={"Signing Up..."}>
+      <LayoutProvider navbar={<Navbar text="Sign Up" />}>
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+          <View style={styles.form}>
+            <View>
+              {RADIO_ACCOUNT_TYPES.map((radio) => {
+                return (
+                  <RadioButton
+                    key={radio.id}
+                    id={radio.id}
+                    containerStyle={{ marginHorizontal: 0 }}
+                    borderColor={theme.colors["text-success"]}
+                    color={theme.colors["text-success"]}
+                    label={radio.label}
+                    value={radio.value}
+                    selected={radio.id === accountType}
+                    onPress={setAccountType}
+                  />
+                );
+              })}
+            </View>
+            <CommonForm
+              control={commonControl}
+              errors={commonErrors}
+              clearErrors={clearCommonErrors}
+              signUpError={signUpError}
+              signUpEmailInputChange={signUpEmailInputChange}
+            />
+            {accountType === "User" ? (
+              <UserForm
+                control={userControl}
+                errors={userErrors}
+                clearErrors={clearUserErrors}
+              />
+            ) : (
+              <ShelterForm
+                control={shelterControl}
+                errors={shelterErrors}
+                clearErrors={clearShelterErrors}
+              />
+            )}
+            <View style={styles.buttons}>
+              <Button text="Sign Up" onPress={registerClick} />
+              <Button
+                text="Already have account?"
+                variant="secondary"
+                onPress={() => {
+                  setSignUpError(null);
+                  resetSignUp();
+                  navigation.replace("SignIn");
+                }}
+              />
+            </View>
           </View>
-          <CommonForm
-            control={commonControl}
-            errors={commonErrors}
-            clearErrors={clearCommonErrors}
-            signUpError={signUpError}
-            signUpEmailInputChange={signUpEmailInputChange}
-          />
-          {accountType === "User" ? (
-            <UserForm
-              control={userControl}
-              errors={userErrors}
-              clearErrors={clearUserErrors}
-            />
-          ) : (
-            <ShelterForm
-              control={shelterControl}
-              errors={shelterErrors}
-              clearErrors={clearShelterErrors}
-            />
-          )}
-          <View style={styles.buttons}>
-            <Button text="Sign Up" onPress={registerClick} />
-            <Button
-              text="Already have account?"
-              variant="secondary"
-              onPress={() => {
-                setSignUpError(null);
-                resetSignUp();
-                navigation.replace("SignIn");
-              }}
-            />
-          </View>
-        </View>
-      </TouchableWithoutFeedback>
-    </LayoutProvider>
+        </TouchableWithoutFeedback>
+      </LayoutProvider>
+    </LoadingWrapper>
   );
 };
 

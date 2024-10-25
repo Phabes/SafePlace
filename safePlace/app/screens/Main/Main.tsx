@@ -6,11 +6,15 @@ import {
   Typography,
 } from "../../components";
 import { useAccountType } from "../../hooks";
+import { useAppSelector } from "../../redux/hooks";
+import { selectActiveTab } from "../../redux/appNavigationSlice";
+import { getCurrentScreen } from "../../utils";
 
-export const Settings = () => {
-  const type = useAccountType();
+export const Main = () => {
+  const { type, loading, error } = useAccountType();
+  const activeTab = useAppSelector(selectActiveTab);
 
-  if (type === "NoData") {
+  if (error) {
     // TO DO - CREATE SPECIFIC VIEW FOR IT
     return (
       <View
@@ -20,17 +24,20 @@ export const Settings = () => {
           alignItems: "center",
         }}
       >
-        <Typography text={"NO DATA. PLEASE RELOGIN"} />
+        <Typography text={"NO DATA. PLEASE RELOGIN."} />
       </View>
     );
   }
 
+  const screen = getCurrentScreen(type, activeTab);
+
   return (
-    <LoadingWrapper isLoading={!type} text="Loading Account Data...">
+    <LoadingWrapper isLoading={loading} text="Loading Account Data...">
       <LayoutProvider
         navbar={<NavbarWithLogout text="Settings" />}
         userType={type}
       >
+        {/* TO DO - LOAD DIFFERENT VIEWS */}
         <View
           style={{
             flex: 1,
@@ -39,6 +46,7 @@ export const Settings = () => {
           }}
         >
           <Typography text={"LOGGED IN"} />
+          <Typography text={screen} />
         </View>
       </LayoutProvider>
     </LoadingWrapper>

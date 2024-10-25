@@ -6,4 +6,6 @@ export {
   logout,
   saveUser,
   saveShelter,
+  getUserData,
+  getShelterData,
 } from "./account";

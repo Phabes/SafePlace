@@ -9,7 +9,7 @@ const initialState: AccountState = {
   userID: null,
 };
 
-export const accountSlice = createSlice({
+const accountSlice = createSlice({
   name: "account",
   initialState,
   reducers: {
