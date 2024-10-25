@@ -1,7 +1,7 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { AppStackParamList } from "./navigationProps";
-import { Settings, SignIn, SignUp } from "../screens";
+import { Main, SignIn, SignUp } from "../screens";
 import { useUserSession } from "../hooks";
 import { Loading } from "../components";
 
@@ -14,7 +14,7 @@ export const Navigation = () => {
     return <Loading text="Checking..." />;
   }
 
-  const initialRouteName = isAuthenticated ? "Settings" : "SignIn";
+  const initialRouteName = isAuthenticated ? "Main" : "SignIn";
 
   return (
     <NavigationContainer>
@@ -22,7 +22,7 @@ export const Navigation = () => {
         screenOptions={{ headerShown: false }}
         initialRouteName={initialRouteName}
       >
-        <AppStack.Screen name="Settings" component={Settings} />
+        <AppStack.Screen name="Main" component={Main} />
         <AppStack.Screen name="SignIn" component={SignIn} />
         <AppStack.Screen name="SignUp" component={SignUp} />
       </AppStack.Navigator>

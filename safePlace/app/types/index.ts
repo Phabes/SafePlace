@@ -1,3 +1,5 @@
+export type { AccountTabs } from "./AccountTabs";
+
 export type {
   CommonSignUpData,
   ShelterSignUpData,

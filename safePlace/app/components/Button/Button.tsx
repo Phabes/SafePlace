@@ -10,6 +10,7 @@ export type ButtonProps = {
   variant?: "default" | "secondary" | "error";
   disabled?: boolean;
   hasFullWidth?: boolean;
+  hasFullHeight?: boolean;
 };
 
 export const Button: FC<ButtonProps> = ({
@@ -19,13 +20,18 @@ export const Button: FC<ButtonProps> = ({
   variant = "default",
   disabled = false,
   hasFullWidth = false,
+  hasFullHeight = false,
 }) => {
   const styles = useStyles(variant, size, disabled);
   const textColor = disabled ? "text-secondary" : "text-primary";
 
   return (
     <TouchableOpacity
-      style={[styles.container, hasFullWidth && styles.fullWidth]}
+      style={[
+        styles.container,
+        hasFullWidth && styles.fullWidth,
+        hasFullHeight && styles.fullHeight,
+      ]}
       disabled={disabled}
       onPress={onPress}
       activeOpacity={0.5}
@@ -48,7 +54,7 @@ const useStyles = (
     ? "background-primary"
     : "text-error";
   const buttonSize = size === "large" ? 4 : size === "medium" ? 3 : 2;
-  const borderWidth = variant === "secondary" ? theme.spacing(0.5) : 0;
+  const borderWidth = variant === "secondary" ? 2 : 0;
   const borderStyles =
     variant === "secondary"
       ? {
@@ -69,6 +75,9 @@ const useStyles = (
     },
     fullWidth: {
       width: "100%",
+    },
+    fullHeight: {
+      height: "100%",
     },
   });
 };

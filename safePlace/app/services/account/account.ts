@@ -1,4 +1,4 @@
-import { doc, setDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc } from "firebase/firestore";
 import {
   FIREBASE_AUTH,
   FIREBASE_DB,
@@ -54,4 +54,12 @@ export const saveShelter = async (signUpData: any, userID: string) => {
     ...shelter,
     createdAt: new Date(),
   });
+};
+
+export const getUserData = async (userID: string) => {
+  return await getDoc(doc(FIREBASE_DB, "Users", userID));
+};
+
+export const getShelterData = async (userID: string) => {
+  return await getDoc(doc(FIREBASE_DB, "Shelters", userID));
 };
