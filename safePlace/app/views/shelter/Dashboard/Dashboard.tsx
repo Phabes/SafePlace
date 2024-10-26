@@ -1,5 +1,10 @@
-import { Text } from "react-native";
+import { View } from "react-native";
+import { Typography } from "../../../components";
 
 export const Dashboard = () => {
-  return <Text>Dashboard</Text>;
+  return (
+    <View>
+      <Typography text="Dashboard" />
+    </View>
+  );
 };

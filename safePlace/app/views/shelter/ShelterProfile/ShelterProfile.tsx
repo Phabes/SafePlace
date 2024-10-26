@@ -1,5 +1,10 @@
-import { Text } from "react-native";
+import { View } from "react-native";
+import { Typography } from "../../../components";
 
 export const ShelterProfile = () => {
-  return <Text>Shelter Profile</Text>;
+  return (
+    <View>
+      <Typography text="Shelter Profile" />
+    </View>
+  );
 };

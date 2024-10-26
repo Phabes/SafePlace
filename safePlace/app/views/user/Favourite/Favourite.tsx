@@ -1,5 +1,10 @@
-import { Text } from "react-native";
+import { View } from "react-native";
+import { Typography } from "../../../components";
 
 export const Favourite = () => {
-  return <Text>Favourite</Text>;
+  return (
+    <View>
+      <Typography text="Favourite" />
+    </View>
+  );
 };

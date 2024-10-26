@@ -1,5 +1,10 @@
-import { Text } from "react-native";
+import { View } from "react-native";
+import { Typography } from "../../../components";
 
 export const UserProfile = () => {
-  return <Text>User Profile</Text>;
+  return (
+    <View>
+      <Typography text="User Profile" />
+    </View>
+  );
 };
