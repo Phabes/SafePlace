@@ -1,4 +1,5 @@
+export { getAccountTabProps } from "./getAccountTabProps";
 export { getAccountTabs } from "./getAccountTabs";
-export { getCurrentScreen } from "./getCurrentScreen";
+export { getCurrentView } from "./getCurrentView";
 export { getFirebaseErrorMessage } from "./getFirebaseErrorMessage";
 export { getInitialTab } from "./getInitialTab";

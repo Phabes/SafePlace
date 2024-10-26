@@ -1,3 +1,7 @@
-export type { AppNavigationProps, AppStackParamList } from "./navigationProps";
+export type {
+  AppNavigationProps,
+  AppStackParamList,
+  ViewList,
+} from "./navigationProps";
 
 export { Navigation } from "./Navigation";
