@@ -19,11 +19,11 @@ export const BottomNavigation: FC<BottomNavigationProps> = ({ type }) => {
     dispatch(setActiveTab(index));
   };
 
-  const tabs = getAccountTabs(type);
+  const accountTabs = getAccountTabs(type);
 
   return (
     <View style={styles.container}>
-      {tabs.map((tab, i) => {
+      {accountTabs.map((tab, i) => {
         const current = activeTab === i ? "active" : "default";
 
         return (
