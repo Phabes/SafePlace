@@ -22,7 +22,7 @@ export const theme: Theme = {
       fontWeight: "700",
     },
     "header-small": {
-      fontSize: 20,
+      fontSize: 18,
       fontWeight: "700",
     },
     "body-large": {

@@ -1,29 +1,26 @@
 import { FC } from "react";
-import { theme, TypographyKeys } from "../../constants/theme";
-import { Button, ButtonProps } from "../Button";
 import { StyleSheet, View } from "react-native";
 import { Typography } from "../Typography";
+import { theme, TypographyKeys } from "../../constants/theme";
 import { STATUS_BAR_HEIGHT } from "../../constants/statusBarHeight";
 
 export type NavbarProps = {
   text: string;
-  button?: ButtonProps;
-  backButton?: boolean;
   variant?: TypographyKeys;
+  button?: JSX.Element;
 };
 
 export const Navbar: FC<NavbarProps> = ({
   text,
-  button = null,
-  backButton = true,
   variant = "header-medium",
+  button,
 }) => {
   return (
     <View style={styles.container}>
       <View style={styles.leftSide}>
         <Typography variant={variant} text={text} numberOfLines={1} />
       </View>
-      {button && <Button {...button} />}
+      {button}
     </View>
   );
 };
