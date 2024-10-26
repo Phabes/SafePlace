@@ -7,3 +7,12 @@ export type AppStackParamList = {
 };
 
 export type AppNavigationProps = StackNavigationProp<AppStackParamList>;
+
+export type ViewList = {
+  Search: undefined;
+  Favourite: undefined;
+  UserProfile: undefined;
+  Animals: undefined;
+  Dashboard: undefined;
+  ShelterProfile: undefined;
+};

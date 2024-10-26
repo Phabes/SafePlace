@@ -1,4 +1,4 @@
-import { useAppNavigation } from "../../../hooks";
+import { useAppNavigation } from "../../../hooks/useAppNavigation";
 import { useAppDispatch } from "../../../redux/hooks";
 import { logout } from "../../../services";
 

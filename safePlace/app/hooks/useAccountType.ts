@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react";
-import { useAppSelector } from "../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { AccountTypes } from "../types";
 import { selectUserID } from "../redux/accountSlice";
 import { getShelterData, getUserData } from "../services";
+import { setActiveTab } from "../redux/appNavigationSlice";
+import { getInitialTab } from "../utils";
 
 export const useAccountType = () => {
+  const dispatch = useAppDispatch();
   const userID = useAppSelector(selectUserID);
   const [type, setType] = useState<AccountTypes>("User");
   const [loading, setLoading] = useState(true);
@@ -25,6 +28,8 @@ export const useAccountType = () => {
         setError(true);
       } else {
         const accountType = userDoc.exists() ? "User" : "Shelter";
+        const initialTab = getInitialTab(accountType);
+        dispatch(setActiveTab(initialTab));
         setType(accountType);
       }
       setLoading(false);

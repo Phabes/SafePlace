@@ -1,11 +1,11 @@
 import { FC } from "react";
-import { AccountTypes } from "../../types";
 import { StyleSheet, View } from "react-native";
+import { AccountTypes } from "../../types";
 import { theme } from "../../constants/theme";
-import { getAccountTabs } from "../../utils";
 import { Tab } from "../Tab";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { selectActiveTab, setActiveTab } from "../../redux/appNavigationSlice";
+import { getAccountTabs } from "../../utils/getAccountTabs";
 
 type BottomNavigationProps = {
   type: AccountTypes;
@@ -19,11 +19,11 @@ export const BottomNavigation: FC<BottomNavigationProps> = ({ type }) => {
     dispatch(setActiveTab(index));
   };
 
-  const tabs = getAccountTabs(type);
+  const accountTabs = getAccountTabs(type);
 
   return (
     <View style={styles.container}>
-      {tabs.map((tab, i) => {
+      {accountTabs.map((tab, i) => {
         const current = activeTab === i ? "active" : "default";
 
         return (
