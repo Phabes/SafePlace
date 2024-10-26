@@ -1,5 +1,7 @@
 import { View } from "react-native";
 import {
+  ButtonLogout,
+  ErrorPage,
   LayoutProvider,
   LoadingWrapper,
   NavbarWithLogout,
@@ -15,17 +17,12 @@ export const Main = () => {
   const activeTab = useAppSelector(selectActiveTab);
 
   if (error) {
-    // TO DO - CREATE SPECIFIC VIEW FOR IT
     return (
-      <View
-        style={{
-          flex: 1,
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <Typography text={"NO DATA. PLEASE RELOGIN."} />
-      </View>
+      <ErrorPage
+        text="No data was found associated with this account."
+        action="Please login again."
+        button={<ButtonLogout size="medium" />}
+      />
     );
   }
 
@@ -34,7 +31,7 @@ export const Main = () => {
   return (
     <LoadingWrapper isLoading={loading} text="Loading Account Data...">
       <LayoutProvider
-        navbar={<NavbarWithLogout text="Settings" />}
+        navbar={<NavbarWithLogout text={screen} />}
         userType={type}
       >
         {/* TO DO - LOAD DIFFERENT VIEWS */}

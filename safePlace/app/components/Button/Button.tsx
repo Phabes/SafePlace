@@ -24,6 +24,7 @@ export const Button: FC<ButtonProps> = ({
 }) => {
   const styles = useStyles(variant, size, disabled);
   const textColor = disabled ? "text-secondary" : "text-primary";
+  const textVariant = size !== "large" ? "body-medium" : "header-small";
 
   return (
     <TouchableOpacity
@@ -36,7 +37,7 @@ export const Button: FC<ButtonProps> = ({
       onPress={onPress}
       activeOpacity={0.5}
     >
-      <Typography text={text} color={textColor} />
+      <Typography text={text} color={textColor} variant={textVariant} />
     </TouchableOpacity>
   );
 };
