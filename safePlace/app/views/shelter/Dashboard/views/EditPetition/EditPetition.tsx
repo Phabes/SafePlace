@@ -1,22 +1,19 @@
 import { useEffect, useState } from "react";
-import { Button, CheckBox, Input, Typography } from "../../../../../components";
-import { TouchableOpacity, View } from "react-native";
-import { RadioButton } from "react-native-radio-buttons-group";
+import { Button, Typography } from "../../../../../components";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { theme } from "../../../../../constants/theme";
 import { getPetition, savePetition } from "../../../../../services/petitions";
 import { useAppSelector } from "../../../../../redux/hooks";
 import { selectUserID } from "../../../../../redux/accountSlice";
-import { faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faTrash, faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import { FieldAdd, FieldEdit } from "./components";
 
 export const EditPetition = () => {
   const userID = useAppSelector(selectUserID);
-  const [addNew, setAddNew] = useState<boolean>(false);
+  const [turnNew, setTurnNew] = useState<boolean>(false);
+  const [turnEdit, setTurnEdit] = useState<number>(-1);
   const [fields, setFields] = useState<Array<any>>([]);
-  const [questionType, setQuestionType] = useState<string>("Text");
-  const [questionText, setQuestionText] = useState("");
-  const [radioOptions, setRadioOptions] = useState<string[]>([""]);
-  const [selectedOptions, setSelectedOptions] = useState<boolean[]>([false]);
 
   useEffect(() => {
     if (!userID) {
@@ -29,186 +26,108 @@ export const EditPetition = () => {
     })();
   }, []);
 
-  useEffect(() => {
-    resetForm();
-  }, [questionType]);
-
-  const resetForm = () => {
-    setFields([]);
-    setQuestionText("");
-    setRadioOptions([""]);
-    setSelectedOptions([false]);
+  const handleEditDelete = (index: number) => {
+    setTurnEdit(index);
   };
 
-  const handleAddOption = () => {
-    setRadioOptions([...radioOptions, ""]);
-    setSelectedOptions([...selectedOptions, false]);
-  };
-
-  const handleOptionChange = (index: number, value: string) => {
-    const updatedOptions = [...radioOptions];
-    updatedOptions[index] = value;
-    setRadioOptions(updatedOptions);
-  };
-
-  const handleCheckboxChange = (index: number) => {
-    const updatedSelection = [...selectedOptions];
-    updatedSelection[index] = !updatedSelection[index];
-    setSelectedOptions(updatedSelection);
-  };
-
-  const handleOptionDelete = (index: number) => {
-    setRadioOptions((prevOptions) => prevOptions.filter((_, i) => i !== index));
-    setSelectedOptions((prevSelected) =>
-      prevSelected.filter((_, i) => i !== index)
-    );
-  };
-
-  const createFieldObject = () => {
-    if (questionType == "Text") {
-      const field = {
-        type: questionType,
-        text: questionText,
-      };
-      setFields([...fields, field]);
-    }
-
-    if (questionType === "Radio") {
-      if (!selectedOptions.includes(true)) {
-        return;
-      }
-      const field = {
-        type: questionType,
-        text: questionText,
-        options: radioOptions.map((option, index) => ({
-          text: option,
-          conforming: selectedOptions[index],
-        })),
-      };
-
-      setFields([...fields, field]);
-    }
-
-    setAddNew(false);
+  const handleFieldDelete = (index: number) => {
+    setFields((prevFields) => prevFields.filter((_, i) => i !== index));
   };
 
   const save = () => {
     if (!userID) {
       return;
     }
+
     savePetition(fields, userID);
   };
 
   return (
     <>
-      {!addNew && (
+      {!turnNew && turnEdit === -1 && (
         <View style={{ gap: theme.spacing(3) }}>
-          <View>
+          <View style={{ gap: theme.spacing(1) }}>
             {fields.map((field, index) => {
-              return <Typography key={`TYPO-${index}`} text={field.text} />;
+              return (
+                <View style={styles.container} key={`VIEW-${index}`}>
+                  <Typography key={`TYPO-${index}`} text={field.text} />
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      gap: theme.spacing(2),
+                    }}
+                  >
+                    <TouchableOpacity onPress={() => handleEditDelete(index)}>
+                      <FontAwesomeIcon
+                        key={`ICO-${index}`}
+                        icon={faPenToSquare}
+                        color={theme.colors["text-success"]}
+                        size={theme.spacing(8)}
+                      />
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => handleFieldDelete(index)}>
+                      <FontAwesomeIcon
+                        key={`DEL-${index}`}
+                        icon={faTrash}
+                        color={theme.colors["text-success"]}
+                        size={theme.spacing(8)}
+                      />
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              );
             })}
           </View>
-          <Button text="New Field" onPress={() => setAddNew(true)} />
+          <Button text="New Field" onPress={() => setTurnNew(true)} />
           <Button text="Save Petition" onPress={save} />
         </View>
       )}
-      {addNew && (
-        <View style={{ gap: theme.spacing(3) }}>
-          <View>
-            <Typography text="Select Question Type:" />
-
-            <RadioButton
-              id="Text"
-              containerStyle={{ marginHorizontal: 0 }}
-              borderColor={theme.colors["text-success"]}
-              color={theme.colors["text-success"]}
-              label="Text"
-              value="Text"
-              selected={"Text" === questionType}
-              onPress={setQuestionType}
-            />
-
-            <RadioButton
-              id="Radio"
-              containerStyle={{ marginHorizontal: 0 }}
-              borderColor={theme.colors["text-success"]}
-              color={theme.colors["text-success"]}
-              label="Radio"
-              value="Radio"
-              selected={"Radio" === questionType}
-              onPress={setQuestionType}
-            />
-          </View>
-
-          {questionType === "Text" && (
-            <View>
-              <Typography text="Question:" />
-              <Input text={questionText} onChange={setQuestionText} />
-            </View>
-          )}
-
-          {questionType === "Radio" && (
-            <View style={{ gap: theme.spacing(4) }}>
-              <View>
-                <Typography text="Question:" />
-                <Input text={questionText} onChange={setQuestionText} />
-              </View>
-              <View>
-                <View
-                  style={{
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                    alignItems: "flex-end",
-                  }}
-                >
-                  <Typography text="Options:" />
-                  <Button
-                    text="Add Option"
-                    onPress={handleAddOption}
-                    size="small"
-                  />
-                </View>
-                <View style={{ gap: theme.spacing(1) }}>
-                  {radioOptions.map((option, index) => (
-                    <View
-                      key={index}
-                      style={{ flexDirection: "row", alignItems: "center" }}
-                    >
-                      <View style={{ flex: 1 }}>
-                        <Input
-                          text={option}
-                          onChange={(value) => handleOptionChange(index, value)}
-                        />
-                      </View>
-                      <CheckBox
-                        checked={selectedOptions[index]}
-                        onPress={() => handleCheckboxChange(index)}
-                      />
-                      <TouchableOpacity
-                        onPress={() => handleOptionDelete(index)}
-                      >
-                        <FontAwesomeIcon
-                          icon={faTrash}
-                          color={theme.colors["text-primary"]}
-                          size={theme.spacing(8)}
-                        />
-                      </TouchableOpacity>
-                    </View>
-                  ))}
-                </View>
-              </View>
-            </View>
-          )}
-          <Button text="Add Field" onPress={createFieldObject} />
-          <Button
-            text="Cancel"
-            onPress={() => {
-              setAddNew(false);
-            }}
-            variant="secondary"
-          />
-        </View>
+      {turnNew && (
+        <FieldAdd
+          close={() => setTurnNew(false)}
+          addField={(field) => setFields([...fields, field])}
+        />
+      )}
+      {turnEdit !== -1 && fields[turnEdit].type === "Text" && (
+        <FieldEdit
+          close={() => setTurnEdit(-1)}
+          editField={(field) => {
+            setFields((prevFields) => {
+              prevFields[turnEdit] = field;
+              return prevFields;
+            });
+          }}
+          type={fields[turnEdit].type}
+          text={fields[turnEdit].text}
+        />
+      )}
+      {turnEdit !== -1 && fields[turnEdit].type === "Radio" && (
+        <FieldEdit
+          close={() => setTurnEdit(-1)}
+          editField={(field) => {
+            setFields((prevFields) => {
+              prevFields[turnEdit] = field;
+              return prevFields;
+            });
+          }}
+          type={fields[turnEdit].type}
+          text={fields[turnEdit].text}
+          radios={fields[turnEdit].options.map((item: any) => item.text)}
+          options={fields[turnEdit].options.map((item: any) => item.conforming)}
+        />
       )}
     </>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: theme.colors["background-subtle"],
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    padding: theme.spacing(4),
+    borderRadius: theme.spacing(2),
+    elevation: 2,
+  },
+});
