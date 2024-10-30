@@ -26,14 +26,17 @@ export const Tab: FC<TabProps> = ({ text, onPress, variant = "default" }) => {
 };
 
 const useStyles = (variant: TabProps["variant"]) => {
-  const borderWidth = variant === "active" ? 4 : 0;
+  const borderWidth = variant === "active" ? 4 : 4;
   const borderStyles =
     variant === "active"
       ? {
           borderWidth,
           borderColor: theme.colors["text-success"],
         }
-      : {};
+      : {
+          borderWidth,
+          borderColor: theme.colors["text-secondary"],
+        };
 
   return StyleSheet.create({
     container: {
@@ -42,6 +45,7 @@ const useStyles = (variant: TabProps["variant"]) => {
       alignItems: "center",
       backgroundColor: theme.colors["background-primary"],
       margin: theme.spacing(2),
+      paddingVertical: theme.spacing(2),
       borderRadius: theme.spacing(2),
       ...borderStyles,
     },

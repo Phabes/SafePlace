@@ -1,6 +1,7 @@
 export * from "./BottomNavigation";
 export * from "./Button";
 export * from "./ButtonLogout";
+export * from "./CheckBox";
 export * from "./ErrorPage";
 export * from "./FormLabel";
 export * from "./Input";
