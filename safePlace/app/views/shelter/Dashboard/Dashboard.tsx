@@ -8,7 +8,7 @@ export const Dashboard = () => {
   const [activeTab, setActiveTab] = useState<"List" | "Edit">("Edit");
 
   return (
-    <View>
+    <View style={{ flex: 1 }}>
       <Typography text="Choose:" />
       <View
         style={{

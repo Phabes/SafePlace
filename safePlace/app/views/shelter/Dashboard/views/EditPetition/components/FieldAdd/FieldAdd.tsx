@@ -17,7 +17,7 @@ type FieldAddProps = {
 };
 
 export const FieldAdd: FC<FieldAddProps> = ({ close, addField }) => {
-  const [questionType, setQuestionType] = useState<string>("Text");
+  const [questionType, setQuestionType] = useState<string>("text");
   const [questionText, setQuestionText] = useState("");
   const [radioOptions, setRadioOptions] = useState<string[]>([""]);
   const [selectedOptions, setSelectedOptions] = useState<boolean[]>([false]);
@@ -61,7 +61,7 @@ export const FieldAdd: FC<FieldAddProps> = ({ close, addField }) => {
   };
 
   const createFieldObject = () => {
-    if (questionType == "Text") {
+    if (questionType == "text") {
       const field = {
         type: questionType,
         text: questionText,
@@ -70,7 +70,7 @@ export const FieldAdd: FC<FieldAddProps> = ({ close, addField }) => {
       addField(field);
     }
 
-    if (questionType === "Radio") {
+    if (questionType === "radio") {
       if (!selectedOptions.includes(true)) {
         return;
       }
@@ -95,36 +95,36 @@ export const FieldAdd: FC<FieldAddProps> = ({ close, addField }) => {
         <Typography text="Select Question Type:" />
 
         <RadioButton
-          id="Text"
+          id="text"
           containerStyle={{ marginHorizontal: 0 }}
           borderColor={theme.colors["text-success"]}
           color={theme.colors["text-success"]}
-          label="Text"
-          value="Text"
-          selected={"Text" === questionType}
+          label="text"
+          value="text"
+          selected={"text" === questionType}
           onPress={setQuestionType}
         />
 
         <RadioButton
-          id="Radio"
+          id="radio"
           containerStyle={{ marginHorizontal: 0 }}
           borderColor={theme.colors["text-success"]}
           color={theme.colors["text-success"]}
-          label="Radio"
-          value="Radio"
-          selected={"Radio" === questionType}
+          label="radio"
+          value="radio"
+          selected={"radio" === questionType}
           onPress={setQuestionType}
         />
       </View>
 
-      {questionType === "Text" && (
+      {questionType === "text" && (
         <View>
           <Typography text="Question:" />
           <Input text={questionText} onChange={setQuestionText} />
         </View>
       )}
 
-      {questionType === "Radio" && (
+      {questionType === "radio" && (
         <View style={{ gap: theme.spacing(4) }}>
           <View>
             <Typography text="Question:" />

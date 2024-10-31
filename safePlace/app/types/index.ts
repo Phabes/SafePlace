@@ -1,5 +1,15 @@
 export type { AccountTabs } from "./AccountTabs";
 
+export type { AccountTypes } from "./AccountTypes";
+
+export type {
+  FieldType,
+  BaseField,
+  TextField,
+  RadioField,
+  Field,
+} from "./FieldTypes";
+
 export type {
   CommonSignUpData,
   ShelterSignUpData,
@@ -7,5 +17,3 @@ export type {
 } from "./SignUpData";
 
 export type { SignInData } from "./SignInData";
-
-export type { AccountTypes } from "./AccountTypes";

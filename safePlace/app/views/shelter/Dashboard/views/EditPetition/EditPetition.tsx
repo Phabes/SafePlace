@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Button, Typography } from "../../../../../components";
+import { Button, LoadingWrapper, Typography } from "../../../../../components";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { theme } from "../../../../../constants/theme";
 import { getPetition, savePetition } from "../../../../../services/petitions";
@@ -8,12 +8,14 @@ import { selectUserID } from "../../../../../redux/accountSlice";
 import { faTrash, faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { FieldAdd, FieldEdit } from "./components";
+import { Field } from "../../../../../types";
 
 export const EditPetition = () => {
   const userID = useAppSelector(selectUserID);
   const [turnNew, setTurnNew] = useState<boolean>(false);
   const [turnEdit, setTurnEdit] = useState<number>(-1);
-  const [fields, setFields] = useState<Array<any>>([]);
+  const [fields, setFields] = useState<Array<Field>>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (!userID) {
@@ -21,8 +23,9 @@ export const EditPetition = () => {
     }
 
     (async () => {
-      const x: Array<any> = await getPetition(userID);
-      setFields(x);
+      const dbFields: Field[] = await getPetition(userID);
+      setFields(dbFields);
+      setLoading(false);
     })();
   }, []);
 
@@ -43,14 +46,18 @@ export const EditPetition = () => {
   };
 
   return (
-    <>
+    <LoadingWrapper isLoading={loading} text="Loading fields...">
       {!turnNew && turnEdit === -1 && (
         <View style={{ gap: theme.spacing(3) }}>
           <View style={{ gap: theme.spacing(1) }}>
             {fields.map((field, index) => {
               return (
                 <View style={styles.container} key={`VIEW-${index}`}>
-                  <Typography key={`TYPO-${index}`} text={field.text} />
+                  <Typography
+                    key={`TYPO-${index}`}
+                    text={field.text}
+                    numberOfLines={1}
+                  />
                   <View
                     style={{
                       flexDirection: "row",
@@ -88,7 +95,7 @@ export const EditPetition = () => {
           addField={(field) => setFields([...fields, field])}
         />
       )}
-      {turnEdit !== -1 && fields[turnEdit].type === "Text" && (
+      {turnEdit !== -1 && fields[turnEdit].type === "text" && (
         <FieldEdit
           close={() => setTurnEdit(-1)}
           editField={(field) => {
@@ -101,7 +108,7 @@ export const EditPetition = () => {
           text={fields[turnEdit].text}
         />
       )}
-      {turnEdit !== -1 && fields[turnEdit].type === "Radio" && (
+      {turnEdit !== -1 && fields[turnEdit].type === "radio" && (
         <FieldEdit
           close={() => setTurnEdit(-1)}
           editField={(field) => {
@@ -116,7 +123,7 @@ export const EditPetition = () => {
           options={fields[turnEdit].options.map((item: any) => item.conforming)}
         />
       )}
-    </>
+    </LoadingWrapper>
   );
 };
 

@@ -68,16 +68,16 @@ export const FieldEdit: FC<FieldEditProps> = ({
   };
 
   const createFieldObject = () => {
-    if (questionType == "Text") {
+    if (questionType == "text") {
       const field = {
         type: questionType,
         text: questionText,
       };
-      console.log("2222");
+
       editField(field);
     }
 
-    if (questionType === "Radio") {
+    if (questionType === "radio") {
       if (!selectedOptions.includes(true)) {
         return;
       }
@@ -102,13 +102,13 @@ export const FieldEdit: FC<FieldEditProps> = ({
         <Typography text="Select Question Type:" />
 
         <RadioButton
-          id="Text"
+          id="text"
           containerStyle={{ marginHorizontal: 0 }}
           borderColor={theme.colors["text-success"]}
           color={theme.colors["text-success"]}
-          label="Text"
-          value="Text"
-          selected={"Text" === questionType}
+          label="text"
+          value="text"
+          selected={"text" === questionType}
           onPress={(type) => {
             resetForm();
             setQuestionType(type);
@@ -116,13 +116,13 @@ export const FieldEdit: FC<FieldEditProps> = ({
         />
 
         <RadioButton
-          id="Radio"
+          id="radio"
           containerStyle={{ marginHorizontal: 0 }}
           borderColor={theme.colors["text-success"]}
           color={theme.colors["text-success"]}
-          label="Radio"
-          value="Radio"
-          selected={"Radio" === questionType}
+          label="radio"
+          value="radio"
+          selected={"radio" === questionType}
           onPress={(type) => {
             resetForm();
             setQuestionType(type);
@@ -130,14 +130,14 @@ export const FieldEdit: FC<FieldEditProps> = ({
         />
       </View>
 
-      {questionType === "Text" && (
+      {questionType === "text" && (
         <View>
           <Typography text="Question:" />
           <Input text={questionText} onChange={setQuestionText} />
         </View>
       )}
 
-      {questionType === "Radio" && (
+      {questionType === "radio" && (
         <View style={{ gap: theme.spacing(4) }}>
           <View>
             <Typography text="Question:" />

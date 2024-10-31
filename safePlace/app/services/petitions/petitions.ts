@@ -1,5 +1,6 @@
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { FIREBASE_DB } from "../../../firebaseConfig/firebaseConfig";
+import { Field } from "../../types";
 
 export const savePetition = async (data: any, userID: string) => {
   await setDoc(doc(FIREBASE_DB, "Petitions", userID), {
@@ -14,13 +15,12 @@ export const getPetition = async (userID: string) => {
     const petitionSnapshot = await getDoc(petitionRef);
 
     if (petitionSnapshot.exists()) {
-      return petitionSnapshot.get("fields") as Array<any>;
+      return petitionSnapshot.get("fields") as Field[];
     } else {
-      console.log("No petition found for this user.");
       return [];
     }
   } catch (error) {
     console.error("Error fetching petition:", error);
-    throw error;
+    return [];
   }
 };
