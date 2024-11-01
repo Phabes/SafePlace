@@ -119,8 +119,7 @@ export const EditPetition = () => {
           }}
           type={fields[turnEdit].type}
           text={fields[turnEdit].text}
-          radios={fields[turnEdit].options.map((item: any) => item.text)}
-          options={fields[turnEdit].options.map((item: any) => item.conforming)}
+          radios={fields[turnEdit].options}
         />
       )}
     </LoadingWrapper>

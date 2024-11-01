@@ -7,17 +7,7 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
 } from "firebase/auth";
-
-export type DatabaseUser = {
-  email: string;
-  name: string;
-  surname: string;
-};
-
-export type DatabaseShelter = {
-  email: string;
-  shelterName: string;
-};
+import { DatabaseShelter, DatabaseUser } from "../../types";
 
 export const createAccount = async (email: string, password: string) => {
   return await createUserWithEmailAndPassword(FIREBASE_AUTH, email, password);

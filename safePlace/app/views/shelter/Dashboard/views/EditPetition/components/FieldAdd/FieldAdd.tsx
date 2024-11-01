@@ -6,6 +6,7 @@ import {
   Input,
   Typography,
 } from "../../../../../../../components";
+import { Field, PetitionRadioOption } from "../../../../../../../types";
 import { theme } from "../../../../../../../constants/theme";
 import { RadioButton } from "react-native-radio-buttons-group";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
@@ -13,14 +14,15 @@ import { faTrash } from "@fortawesome/free-solid-svg-icons";
 
 type FieldAddProps = {
   close: () => void;
-  addField: (field: any) => void;
+  addField: (field: Field) => void;
 };
 
 export const FieldAdd: FC<FieldAddProps> = ({ close, addField }) => {
   const [questionType, setQuestionType] = useState<string>("text");
   const [questionText, setQuestionText] = useState("");
-  const [radioOptions, setRadioOptions] = useState<string[]>([""]);
-  const [selectedOptions, setSelectedOptions] = useState<boolean[]>([false]);
+  const [radioOptions, setRadioOptions] = useState<Array<PetitionRadioOption>>([
+    { text: "", conforming: false },
+  ]);
 
   useEffect(() => {
     resetForm();
@@ -28,25 +30,23 @@ export const FieldAdd: FC<FieldAddProps> = ({ close, addField }) => {
 
   const resetForm = () => {
     setQuestionText("");
-    setRadioOptions([""]);
-    setSelectedOptions([false]);
+    setRadioOptions([{ text: "", conforming: false }]);
   };
 
   const handleAddOption = () => {
-    setRadioOptions([...radioOptions, ""]);
-    setSelectedOptions([...selectedOptions, false]);
+    setRadioOptions([...radioOptions, { text: "", conforming: false }]);
   };
 
   const handleOptionChange = (index: number, value: string) => {
     const updatedOptions = [...radioOptions];
-    updatedOptions[index] = value;
+    updatedOptions[index].text = value;
     setRadioOptions(updatedOptions);
   };
 
   const handleCheckboxChange = (index: number) => {
-    const updatedSelection = [...selectedOptions];
-    updatedSelection[index] = !updatedSelection[index];
-    setSelectedOptions(updatedSelection);
+    const updatedSelection = [...radioOptions];
+    updatedSelection[index].conforming = !updatedSelection[index].conforming;
+    setRadioOptions(updatedSelection);
   };
 
   const handleOptionDelete = (index: number) => {
@@ -55,14 +55,11 @@ export const FieldAdd: FC<FieldAddProps> = ({ close, addField }) => {
     }
 
     setRadioOptions((prevOptions) => prevOptions.filter((_, i) => i !== index));
-    setSelectedOptions((prevSelected) =>
-      prevSelected.filter((_, i) => i !== index)
-    );
   };
 
   const createFieldObject = () => {
     if (questionType == "text") {
-      const field = {
+      const field: Field = {
         type: questionType,
         text: questionText,
       };
@@ -71,17 +68,14 @@ export const FieldAdd: FC<FieldAddProps> = ({ close, addField }) => {
     }
 
     if (questionType === "radio") {
-      if (!selectedOptions.includes(true)) {
+      if (!radioOptions.map((option) => option.conforming).includes(true)) {
         return;
       }
 
-      const field = {
+      const field: Field = {
         type: questionType,
         text: questionText,
-        options: radioOptions.map((option, index) => ({
-          text: option,
-          conforming: selectedOptions[index],
-        })),
+        options: radioOptions,
       };
 
       addField(field);
@@ -153,12 +147,12 @@ export const FieldAdd: FC<FieldAddProps> = ({ close, addField }) => {
                 >
                   <View style={{ flex: 1 }}>
                     <Input
-                      text={option}
+                      text={option.text}
                       onChange={(value) => handleOptionChange(index, value)}
                     />
                   </View>
                   <CheckBox
-                    checked={selectedOptions[index]}
+                    checked={option.conforming}
                     onPress={() => handleCheckboxChange(index)}
                   />
                   <TouchableOpacity onPress={() => handleOptionDelete(index)}>

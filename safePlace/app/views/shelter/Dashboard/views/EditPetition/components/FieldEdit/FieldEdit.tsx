@@ -1,11 +1,12 @@
 import { TouchableOpacity, View } from "react-native";
-import { FC, useEffect, useState } from "react";
+import { FC, useState } from "react";
 import {
   Button,
   CheckBox,
   Input,
   Typography,
 } from "../../../../../../../components";
+import { Field, PetitionRadioOption } from "../../../../../../../types";
 import { theme } from "../../../../../../../constants/theme";
 import { RadioButton } from "react-native-radio-buttons-group";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
@@ -13,11 +14,10 @@ import { faTrash } from "@fortawesome/free-solid-svg-icons";
 
 type FieldEditProps = {
   close: () => void;
-  editField: (field: any) => void;
+  editField: (field: Field) => void;
   type: string;
   text: string;
-  radios?: string[];
-  options?: boolean[];
+  radios?: Array<PetitionRadioOption>;
 };
 
 export const FieldEdit: FC<FieldEditProps> = ({
@@ -26,34 +26,31 @@ export const FieldEdit: FC<FieldEditProps> = ({
   type,
   text,
   radios = [],
-  options = [],
 }) => {
   const [questionType, setQuestionType] = useState<string>(type);
   const [questionText, setQuestionText] = useState(text);
-  const [radioOptions, setRadioOptions] = useState<string[]>(radios);
-  const [selectedOptions, setSelectedOptions] = useState<boolean[]>(options);
+  const [radioOptions, setRadioOptions] =
+    useState<Array<PetitionRadioOption>>(radios);
 
   const resetForm = () => {
     setQuestionText("");
-    setRadioOptions([""]);
-    setSelectedOptions([false]);
+    setRadioOptions([{ text: "", conforming: false }]);
   };
 
   const handleAddOption = () => {
-    setRadioOptions([...radioOptions, ""]);
-    setSelectedOptions([...selectedOptions, false]);
+    setRadioOptions([...radioOptions, { text: "", conforming: false }]);
   };
 
   const handleOptionChange = (index: number, value: string) => {
     const updatedOptions = [...radioOptions];
-    updatedOptions[index] = value;
+    updatedOptions[index].text = value;
     setRadioOptions(updatedOptions);
   };
 
   const handleCheckboxChange = (index: number) => {
-    const updatedSelection = [...selectedOptions];
-    updatedSelection[index] = !updatedSelection[index];
-    setSelectedOptions(updatedSelection);
+    const updatedSelection = [...radioOptions];
+    updatedSelection[index].conforming = !updatedSelection[index].conforming;
+    setRadioOptions(updatedSelection);
   };
 
   const handleOptionDelete = (index: number) => {
@@ -62,14 +59,11 @@ export const FieldEdit: FC<FieldEditProps> = ({
     }
 
     setRadioOptions((prevOptions) => prevOptions.filter((_, i) => i !== index));
-    setSelectedOptions((prevSelected) =>
-      prevSelected.filter((_, i) => i !== index)
-    );
   };
 
   const createFieldObject = () => {
     if (questionType == "text") {
-      const field = {
+      const field: Field = {
         type: questionType,
         text: questionText,
       };
@@ -78,17 +72,14 @@ export const FieldEdit: FC<FieldEditProps> = ({
     }
 
     if (questionType === "radio") {
-      if (!selectedOptions.includes(true)) {
+      if (!radioOptions.map((option) => option.conforming).includes(true)) {
         return;
       }
 
-      const field = {
+      const field: Field = {
         type: questionType,
         text: questionText,
-        options: radioOptions.map((option, index) => ({
-          text: option,
-          conforming: selectedOptions[index],
-        })),
+        options: radioOptions,
       };
 
       editField(field);
@@ -166,12 +157,12 @@ export const FieldEdit: FC<FieldEditProps> = ({
                 >
                   <View style={{ flex: 1 }}>
                     <Input
-                      text={option}
+                      text={option.text}
                       onChange={(value) => handleOptionChange(index, value)}
                     />
                   </View>
                   <CheckBox
-                    checked={selectedOptions[index]}
+                    checked={option.conforming}
                     onPress={() => handleCheckboxChange(index)}
                   />
                   <TouchableOpacity onPress={() => handleOptionDelete(index)}>

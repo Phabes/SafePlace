@@ -1,4 +1,4 @@
-export const RADIO_ACCOUNT_TYPES: RadioAccountType[] = [
+export const RADIO_ACCOUNT_TYPES: Array<RadioAccountType> = [
   {
     id: "User",
     label: "User",
