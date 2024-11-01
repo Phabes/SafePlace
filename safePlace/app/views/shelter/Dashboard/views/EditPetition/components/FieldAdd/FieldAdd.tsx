@@ -74,7 +74,7 @@ export const FieldAdd: FC<FieldAddProps> = ({ close, addField }) => {
               selected={radio.value === fieldType}
               onPress={() => {
                 resetForm();
-                setFieldType(radio.id);
+                setFieldType(radio.value);
               }}
             />
           );
