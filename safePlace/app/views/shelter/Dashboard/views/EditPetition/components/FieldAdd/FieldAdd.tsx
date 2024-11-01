@@ -1,12 +1,11 @@
 import { StyleSheet, View } from "react-native";
 import { FC } from "react";
-import { Button, Typography } from "../../../../../../../components";
+import { Button, RadioBox, Typography } from "../../../../../../../components";
 import { Field } from "../../../../../../../types";
 import { theme } from "../../../../../../../constants/theme";
-import { RadioButton } from "react-native-radio-buttons-group";
-import { RADIO_FIELD_TYPES } from "../../../../../../../constants/radioFieldTypes";
 import { Question, RadioOptions } from "../components";
 import { usePetitionRadioOptions, usePetitionFieldType } from "../hooks";
+import { RADIO_FIELD_TYPES } from "../../../../../../../constants/radioFieldTypes";
 import { useInputValue } from "../../../../../../../components/Input/hooks";
 
 type FieldAddProps = {
@@ -63,12 +62,9 @@ export const FieldAdd: FC<FieldAddProps> = ({ close, addField }) => {
         <Typography text="Select Question Type:" />
         {RADIO_FIELD_TYPES.map((radio) => {
           return (
-            <RadioButton
-              key={`FIELD_TYPE-${radio.id}`}
+            <RadioBox
+              key={`RADIO-${radio.id}`}
               id={radio.id}
-              containerStyle={{ marginHorizontal: 0 }}
-              borderColor={theme.colors["text-success"]}
-              color={theme.colors["text-success"]}
               label={radio.label}
               value={radio.value}
               selected={radio.value === fieldType}

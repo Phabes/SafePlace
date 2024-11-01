@@ -10,5 +10,6 @@ export * from "./Loading";
 export * from "./LoadingWrapper";
 export * from "./Navbar";
 export * from "./NavbarWithLogout";
+export * from "./RadioBox";
 export * from "./Tab";
 export * from "./Typography";

@@ -1,9 +1,8 @@
 import { StyleSheet, View } from "react-native";
 import { FC } from "react";
-import { Button, Typography } from "../../../../../../../components";
+import { Button, RadioBox, Typography } from "../../../../../../../components";
 import { Field } from "../../../../../../../types";
 import { theme } from "../../../../../../../constants/theme";
-import { RadioButton } from "react-native-radio-buttons-group";
 import { RADIO_FIELD_TYPES } from "../../../../../../../constants/radioFieldTypes";
 import { Question, RadioOptions } from "../components";
 import { usePetitionRadioOptions, usePetitionFieldType } from "../hooks";
@@ -65,12 +64,9 @@ export const FieldEdit: FC<FieldEditProps> = ({ close, editField, field }) => {
         <Typography text="Select Question Type:" />
         {RADIO_FIELD_TYPES.map((radio) => {
           return (
-            <RadioButton
+            <RadioBox
               key={`FIELD_TYPE-${radio.id}`}
               id={radio.id}
-              containerStyle={{ marginHorizontal: 0 }}
-              borderColor={theme.colors["text-success"]}
-              color={theme.colors["text-success"]}
               label={radio.label}
               value={radio.value}
               selected={radio.value === fieldType}
