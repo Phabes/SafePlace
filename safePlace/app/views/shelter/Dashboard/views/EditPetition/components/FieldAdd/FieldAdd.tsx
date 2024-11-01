@@ -1,16 +1,13 @@
-import { TouchableOpacity, View } from "react-native";
-import { FC, useEffect, useState } from "react";
-import {
-  Button,
-  CheckBox,
-  Input,
-  Typography,
-} from "../../../../../../../components";
-import { Field, PetitionRadioOption } from "../../../../../../../types";
+import { StyleSheet, View } from "react-native";
+import { FC } from "react";
+import { Button, Typography } from "../../../../../../../components";
+import { Field } from "../../../../../../../types";
 import { theme } from "../../../../../../../constants/theme";
 import { RadioButton } from "react-native-radio-buttons-group";
-import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { faTrash } from "@fortawesome/free-solid-svg-icons";
+import { RADIO_FIELD_TYPES } from "../../../../../../../constants/radioFieldTypes";
+import { Question, RadioOptions } from "../components";
+import { usePetitionRadioOptions, usePetitionFieldType } from "../hooks";
+import { useInputValue } from "../../../../../../../components/Input/hooks";
 
 type FieldAddProps = {
   close: () => void;
@@ -18,62 +15,39 @@ type FieldAddProps = {
 };
 
 export const FieldAdd: FC<FieldAddProps> = ({ close, addField }) => {
-  const [questionType, setQuestionType] = useState<string>("text");
-  const [questionText, setQuestionText] = useState("");
-  const [radioOptions, setRadioOptions] = useState<Array<PetitionRadioOption>>([
-    { text: "", conforming: false },
-  ]);
-
-  useEffect(() => {
-    resetForm();
-  }, [questionType]);
+  const { fieldType, setFieldType } = usePetitionFieldType();
+  const [questionText, setQuestionText] = useInputValue();
+  const {
+    radioOptions,
+    setRadioOptions,
+    handleAddOption,
+    handleOptionChange,
+    handleCheckboxChange,
+    handleOptionDelete,
+  } = usePetitionRadioOptions();
 
   const resetForm = () => {
     setQuestionText("");
     setRadioOptions([{ text: "", conforming: false }]);
   };
 
-  const handleAddOption = () => {
-    setRadioOptions([...radioOptions, { text: "", conforming: false }]);
-  };
-
-  const handleOptionChange = (index: number, value: string) => {
-    const updatedOptions = [...radioOptions];
-    updatedOptions[index].text = value;
-    setRadioOptions(updatedOptions);
-  };
-
-  const handleCheckboxChange = (index: number) => {
-    const updatedSelection = [...radioOptions];
-    updatedSelection[index].conforming = !updatedSelection[index].conforming;
-    setRadioOptions(updatedSelection);
-  };
-
-  const handleOptionDelete = (index: number) => {
-    if (radioOptions.length === 1) {
-      return;
-    }
-
-    setRadioOptions((prevOptions) => prevOptions.filter((_, i) => i !== index));
-  };
-
   const createFieldObject = () => {
-    if (questionType == "text") {
+    if (fieldType == "text") {
       const field: Field = {
-        type: questionType,
+        type: fieldType,
         text: questionText,
       };
 
       addField(field);
     }
 
-    if (questionType === "radio") {
+    if (fieldType === "radio") {
       if (!radioOptions.map((option) => option.conforming).includes(true)) {
         return;
       }
 
       const field: Field = {
-        type: questionType,
+        type: fieldType,
         text: questionText,
         options: radioOptions,
       };
@@ -84,92 +58,61 @@ export const FieldAdd: FC<FieldAddProps> = ({ close, addField }) => {
     close();
   };
   return (
-    <View style={{ gap: theme.spacing(3) }}>
+    <View style={styles.container}>
       <View>
         <Typography text="Select Question Type:" />
-
-        <RadioButton
-          id="text"
-          containerStyle={{ marginHorizontal: 0 }}
-          borderColor={theme.colors["text-success"]}
-          color={theme.colors["text-success"]}
-          label="text"
-          value="text"
-          selected={"text" === questionType}
-          onPress={setQuestionType}
-        />
-
-        <RadioButton
-          id="radio"
-          containerStyle={{ marginHorizontal: 0 }}
-          borderColor={theme.colors["text-success"]}
-          color={theme.colors["text-success"]}
-          label="radio"
-          value="radio"
-          selected={"radio" === questionType}
-          onPress={setQuestionType}
-        />
+        {RADIO_FIELD_TYPES.map((radio) => {
+          return (
+            <RadioButton
+              key={`FIELD_TYPE-${radio.id}`}
+              id={radio.id}
+              containerStyle={{ marginHorizontal: 0 }}
+              borderColor={theme.colors["text-success"]}
+              color={theme.colors["text-success"]}
+              label={radio.label}
+              value={radio.value}
+              selected={radio.value === fieldType}
+              onPress={() => {
+                resetForm();
+                setFieldType(radio.id);
+              }}
+            />
+          );
+        })}
       </View>
 
-      {questionType === "text" && (
-        <View>
-          <Typography text="Question:" />
-          <Input text={questionText} onChange={setQuestionText} />
-        </View>
+      {fieldType === "text" && (
+        <Question
+          questionText={questionText}
+          setQuestionText={setQuestionText}
+        />
       )}
 
-      {questionType === "radio" && (
-        <View style={{ gap: theme.spacing(4) }}>
-          <View>
-            <Typography text="Question:" />
-            <Input text={questionText} onChange={setQuestionText} />
-          </View>
-          <View>
-            <View
-              style={{
-                flexDirection: "row",
-                justifyContent: "space-between",
-                alignItems: "flex-end",
-              }}
-            >
-              <Typography text="Options:" />
-              <Button
-                text="Add Option"
-                onPress={handleAddOption}
-                size="small"
-              />
-            </View>
-            <View style={{ gap: theme.spacing(1) }}>
-              {radioOptions.map((option, index) => (
-                <View
-                  key={`RADIO-${index}`}
-                  style={{ flexDirection: "row", alignItems: "center" }}
-                >
-                  <View style={{ flex: 1 }}>
-                    <Input
-                      text={option.text}
-                      onChange={(value) => handleOptionChange(index, value)}
-                    />
-                  </View>
-                  <CheckBox
-                    checked={option.conforming}
-                    onPress={() => handleCheckboxChange(index)}
-                  />
-                  <TouchableOpacity onPress={() => handleOptionDelete(index)}>
-                    <FontAwesomeIcon
-                      icon={faTrash}
-                      color={theme.colors["text-success"]}
-                      size={theme.spacing(8)}
-                    />
-                  </TouchableOpacity>
-                </View>
-              ))}
-            </View>
-          </View>
-        </View>
+      {fieldType === "radio" && (
+        <>
+          <Question
+            questionText={questionText}
+            setQuestionText={setQuestionText}
+          />
+          <RadioOptions
+            radioOptions={radioOptions}
+            handleAddOption={handleAddOption}
+            handleOptionChange={handleOptionChange}
+            handleCheckboxChange={handleCheckboxChange}
+            handleOptionDelete={handleOptionDelete}
+          />
+        </>
       )}
-      <Button text="Add Field" onPress={createFieldObject} />
-      <Button text="Cancel" onPress={close} variant="secondary" />
+
+      <View style={styles.buttons}>
+        <Button text="Add Field" onPress={createFieldObject} />
+        <Button text="Cancel" onPress={close} variant="secondary" />
+      </View>
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: { gap: theme.spacing(3) },
+  buttons: { gap: theme.spacing(2) },
+});

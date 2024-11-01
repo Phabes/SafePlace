@@ -1,6 +1,6 @@
 export type { AccountTabs } from "./AccountTabs";
 
-export type { AccountTypes } from "./AccountTypes";
+export type { AccountType, RadioAccountType } from "./AccountType";
 
 export type { DatabaseUser, DatabaseShelter } from "./DatabaseAccount";
 
@@ -11,6 +11,7 @@ export type {
   PetitionRadioOption,
   RadioField,
   Field,
+  RadioFieldType,
 } from "./FieldTypes";
 
 export type { SignInData } from "./SignInData";

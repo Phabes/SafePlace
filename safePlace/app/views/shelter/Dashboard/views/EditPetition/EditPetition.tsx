@@ -12,8 +12,10 @@ import { Field } from "../../../../../types";
 
 export const EditPetition = () => {
   const userID = useAppSelector(selectUserID);
-  const [turnNew, setTurnNew] = useState<boolean>(false);
-  const [turnEdit, setTurnEdit] = useState<number>(-1);
+  const [textLoading, setTextLoading] = useState("Loading fields...");
+  const [turnNew, setTurnNew] = useState(false);
+  const [disabled, setDisabled] = useState(true);
+  const [turnEdit, setTurnEdit] = useState(-1);
   const [fields, setFields] = useState<Array<Field>>([]);
   const [loading, setLoading] = useState(true);
 
@@ -35,38 +37,35 @@ export const EditPetition = () => {
 
   const handleFieldDelete = (index: number) => {
     setFields((prevFields) => prevFields.filter((_, i) => i !== index));
+    setDisabled(false);
   };
 
-  const save = () => {
+  const save = async () => {
     if (!userID) {
       return;
     }
 
-    savePetition(fields, userID);
+    setTextLoading("Saving...");
+    setLoading(true);
+    await savePetition(fields, userID);
+    setDisabled(true);
+    setLoading(false);
   };
 
   return (
-    <LoadingWrapper isLoading={loading} text="Loading fields...">
+    <LoadingWrapper isLoading={loading} text={textLoading}>
       {!turnNew && turnEdit === -1 && (
-        <View style={{ gap: theme.spacing(3) }}>
-          <View style={{ gap: theme.spacing(1) }}>
+        <View style={styles.container}>
+          <View style={styles.fields}>
             {fields.map((field, index) => {
               return (
-                <View style={styles.container} key={`VIEW-${index}`}>
-                  <Typography
-                    key={`TYPO-${index}`}
-                    text={field.text}
-                    numberOfLines={1}
-                  />
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      gap: theme.spacing(2),
-                    }}
-                  >
+                <View style={styles.field} key={`FIELD-${index}`}>
+                  <View style={styles.fieldText}>
+                    <Typography text={field.text} />
+                  </View>
+                  <View style={styles.fieldButtons}>
                     <TouchableOpacity onPress={() => handleEditDelete(index)}>
                       <FontAwesomeIcon
-                        key={`ICO-${index}`}
                         icon={faPenToSquare}
                         color={theme.colors["text-success"]}
                         size={theme.spacing(8)}
@@ -74,7 +73,6 @@ export const EditPetition = () => {
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => handleFieldDelete(index)}>
                       <FontAwesomeIcon
-                        key={`DEL-${index}`}
                         icon={faTrash}
                         color={theme.colors["text-success"]}
                         size={theme.spacing(8)}
@@ -85,17 +83,22 @@ export const EditPetition = () => {
               );
             })}
           </View>
-          <Button text="New Field" onPress={() => setTurnNew(true)} />
-          <Button text="Save Petition" onPress={save} />
+          <View style={styles.mainButtons}>
+            <Button text="New Field" onPress={() => setTurnNew(true)} />
+            <Button text="Save Petition" onPress={save} disabled={disabled} />
+          </View>
         </View>
       )}
       {turnNew && (
         <FieldAdd
           close={() => setTurnNew(false)}
-          addField={(field) => setFields([...fields, field])}
+          addField={(field) => {
+            setFields([...fields, field]);
+            setDisabled(false);
+          }}
         />
       )}
-      {turnEdit !== -1 && fields[turnEdit].type === "text" && (
+      {turnEdit !== -1 && (
         <FieldEdit
           close={() => setTurnEdit(-1)}
           editField={(field) => {
@@ -103,23 +106,9 @@ export const EditPetition = () => {
               prevFields[turnEdit] = field;
               return prevFields;
             });
+            setDisabled(false);
           }}
-          type={fields[turnEdit].type}
-          text={fields[turnEdit].text}
-        />
-      )}
-      {turnEdit !== -1 && fields[turnEdit].type === "radio" && (
-        <FieldEdit
-          close={() => setTurnEdit(-1)}
-          editField={(field) => {
-            setFields((prevFields) => {
-              prevFields[turnEdit] = field;
-              return prevFields;
-            });
-          }}
-          type={fields[turnEdit].type}
-          text={fields[turnEdit].text}
-          radios={fields[turnEdit].options}
+          field={fields[turnEdit]}
         />
       )}
     </LoadingWrapper>
@@ -127,13 +116,22 @@ export const EditPetition = () => {
 };
 
 const styles = StyleSheet.create({
-  container: {
+  container: { gap: theme.spacing(3) },
+  fields: { gap: theme.spacing(1) },
+  field: {
     backgroundColor: theme.colors["background-subtle"],
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
     padding: theme.spacing(4),
     borderRadius: theme.spacing(2),
+    gap: theme.spacing(1),
     elevation: 2,
   },
+  fieldText: { flex: 1 },
+  fieldButtons: {
+    flexDirection: "row",
+    gap: theme.spacing(2),
+  },
+  mainButtons: { gap: theme.spacing(2) },
 });

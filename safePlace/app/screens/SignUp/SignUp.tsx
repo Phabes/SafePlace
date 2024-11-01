@@ -101,7 +101,7 @@ export const SignUp = () => {
               {RADIO_ACCOUNT_TYPES.map((radio) => {
                 return (
                   <RadioButton
-                    key={radio.id}
+                    key={`ACCOUNT_TYPE-${radio.id}`}
                     id={radio.id}
                     containerStyle={{ marginHorizontal: 0 }}
                     borderColor={theme.colors["text-success"]}

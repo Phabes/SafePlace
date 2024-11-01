@@ -20,3 +20,9 @@ export interface RadioField extends BaseField {
 }
 
 export type Field = TextField | RadioField;
+
+export type RadioFieldType<T extends FieldType = FieldType> = {
+  id: T;
+  label: string;
+  value: T;
+};
