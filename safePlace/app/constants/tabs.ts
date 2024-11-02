@@ -10,7 +10,7 @@ export const USER_TABS: AccountTabs["User"] = {
 };
 
 export const SHELTER_TABS: AccountTabs["Shelter"] = {
-  initialTab: 0,
+  initialTab: 1,
   tabs: [
     { viewID: "Animals", text: "Animals" },
     { viewID: "Dashboard", text: "Dashboard" },

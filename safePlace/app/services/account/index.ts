@@ -1,6 +1,4 @@
 export {
-  DatabaseUser,
-  DatabaseShelter,
   createAccount,
   login,
   logout,

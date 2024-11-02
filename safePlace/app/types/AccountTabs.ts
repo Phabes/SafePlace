@@ -1,8 +1,8 @@
 import { ViewList } from "../navigation";
-import { AccountTypes } from "./AccountTypes";
+import { AccountType } from "./AccountType";
 
 export type AccountTabs = {
-  [K in AccountTypes]: {
+  [K in AccountType]: {
     initialTab: number;
     tabs: Tab[];
   };

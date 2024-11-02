@@ -1,15 +1,15 @@
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
-import { AccountTypes } from "../types";
 import { selectUserID } from "../redux/accountSlice";
 import { getShelterData, getUserData } from "../services";
 import { setActiveTab } from "../redux/appNavigationSlice";
 import { getInitialTab } from "../utils";
+import { AccountType } from "../types";
 
 export const useAccountType = () => {
   const dispatch = useAppDispatch();
   const userID = useAppSelector(selectUserID);
-  const [type, setType] = useState<AccountTypes>("User");
+  const [type, setType] = useState<AccountType>("User");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
 

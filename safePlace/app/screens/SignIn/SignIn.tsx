@@ -58,7 +58,7 @@ export const SignIn = () => {
 
   const signInInputChange = (
     value: string,
-    onChange: (...event: any[]) => void,
+    onChange: (...event: Array<any>) => void,
     toClear: keyof SignInData
   ) => {
     setSignInError(null);

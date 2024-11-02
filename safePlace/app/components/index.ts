@@ -1,6 +1,7 @@
 export * from "./BottomNavigation";
 export * from "./Button";
 export * from "./ButtonLogout";
+export * from "./CheckBox";
 export * from "./ErrorPage";
 export * from "./FormLabel";
 export * from "./Input";
@@ -9,5 +10,6 @@ export * from "./Loading";
 export * from "./LoadingWrapper";
 export * from "./Navbar";
 export * from "./NavbarWithLogout";
+export * from "./RadioBox";
 export * from "./Tab";
 export * from "./Typography";

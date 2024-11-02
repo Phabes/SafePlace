@@ -10,9 +10,9 @@ import {
   LayoutProvider,
   LoadingWrapper,
   Navbar,
+  RadioBox,
 } from "../../components";
 import { useState } from "react";
-import { RadioButton } from "react-native-radio-buttons-group";
 import { useSignUpData } from "./hooks";
 import { FieldError } from "react-hook-form";
 import { CommonForm, ShelterForm, UserForm } from "./components";
@@ -100,12 +100,9 @@ export const SignUp = () => {
             <View>
               {RADIO_ACCOUNT_TYPES.map((radio) => {
                 return (
-                  <RadioButton
-                    key={radio.id}
+                  <RadioBox
+                    key={`ACCOUNT_TYPE-${radio.id}`}
                     id={radio.id}
-                    containerStyle={{ marginHorizontal: 0 }}
-                    borderColor={theme.colors["text-success"]}
-                    color={theme.colors["text-success"]}
                     label={radio.label}
                     value={radio.value}
                     selected={radio.id === accountType}
