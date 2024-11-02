@@ -16,3 +16,8 @@ export type RadioAccountType = {
   label: string;
   value: string;
 };
+
+export type PhotoRes = {
+  hasPhoto: boolean;
+  photo: any;
+};
