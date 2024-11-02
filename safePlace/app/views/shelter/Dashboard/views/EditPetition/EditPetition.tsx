@@ -11,7 +11,7 @@ import { useAppSelector } from "../../../../../redux/hooks";
 import { selectUserID } from "../../../../../redux/accountSlice";
 import { faTrash, faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 import { FieldAdd, FieldEdit } from "./subviews";
-import { useFields } from "./hooks/useFields";
+import { usePetitionFields } from "./hooks";
 
 export const EditPetition = () => {
   const userID = useAppSelector(selectUserID);
@@ -30,12 +30,12 @@ export const EditPetition = () => {
     handleNewField,
     handleFieldEdit,
     handleFieldDelete,
-  } = useFields(userID);
+  } = usePetitionFields(userID);
 
   if (error) {
     return (
       <ErrorPage
-        text={"Cannot load petition data."}
+        text={"Unable to load petition data."}
         action={"Please reload."}
         button={<Button text="Reload" onPress={() => loadPetitionData()} />}
       />

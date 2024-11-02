@@ -1,7 +1,7 @@
 import { StyleSheet, View } from "react-native";
 import { FC } from "react";
 import { Button, RadioBox, Typography } from "../../../../../../../components";
-import { Field } from "../../../../../../../types";
+import { PetitionField } from "../../../../../../../types";
 import { theme } from "../../../../../../../constants/theme";
 import { RADIO_FIELD_TYPES } from "../../../../../../../constants/radioFieldTypes";
 import { Question, RadioOptions } from "../components";
@@ -10,8 +10,8 @@ import { useInputValue } from "../../../../../../../components/Input/hooks";
 
 type FieldEditProps = {
   close: () => void;
-  editField: (field: Field) => void;
-  field: Field;
+  editField: (field: PetitionField) => void;
+  field: PetitionField;
 };
 
 export const FieldEdit: FC<FieldEditProps> = ({ close, editField, field }) => {
@@ -33,7 +33,7 @@ export const FieldEdit: FC<FieldEditProps> = ({ close, editField, field }) => {
 
   const createFieldObject = () => {
     if (fieldType == "text") {
-      const field: Field = {
+      const field: PetitionField = {
         type: fieldType,
         text: questionText,
       };
@@ -46,7 +46,7 @@ export const FieldEdit: FC<FieldEditProps> = ({ close, editField, field }) => {
         return;
       }
 
-      const field: Field = {
+      const field: PetitionField = {
         type: fieldType,
         text: questionText,
         options: radioOptions,

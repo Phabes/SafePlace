@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { FieldType } from "../../../../../../../types";
+import { PetitionFieldType } from "../../../../../../../types";
 
-export const usePetitionFieldType = (type: FieldType = "text") => {
-  const [fieldType, setFieldType] = useState<FieldType>(type);
+export const usePetitionFieldType = (type: PetitionFieldType = "text") => {
+  const [fieldType, setFieldType] = useState<PetitionFieldType>(type);
 
   return {
     fieldType,

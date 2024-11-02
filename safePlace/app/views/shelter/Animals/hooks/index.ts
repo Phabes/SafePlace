@@ -1,0 +1,1 @@
+export { useAnimals } from "./useAnimals";

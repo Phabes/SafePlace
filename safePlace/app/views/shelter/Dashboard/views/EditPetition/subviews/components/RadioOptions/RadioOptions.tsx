@@ -1,4 +1,5 @@
-import { TouchableOpacity, View } from "react-native";
+import { FC } from "react";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
 import {
   Button,
   CheckBox,
@@ -7,17 +8,18 @@ import {
   Typography,
 } from "../../../../../../../../components";
 import { theme } from "../../../../../../../../constants/theme";
-import { FC } from "react";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { PetitionRadioOption } from "../../../../../../../../types";
 
-export const RadioOptions: FC<{
+type RadioOptionsType = {
   radioOptions: Array<PetitionRadioOption>;
   handleAddOption: () => void;
   handleOptionChange: (index: number, values: string) => void;
   handleCheckboxChange: (index: number) => void;
   handleOptionDelete: (index: number) => void;
-}> = ({
+};
+
+export const RadioOptions: FC<RadioOptionsType> = ({
   radioOptions,
   handleAddOption,
   handleOptionChange,
@@ -25,7 +27,7 @@ export const RadioOptions: FC<{
   handleOptionDelete,
 }) => {
   return (
-    <View style={{ gap: theme.spacing(1) }}>
+    <View style={styles.container}>
       <View
         style={{
           flexDirection: "row",
@@ -36,13 +38,13 @@ export const RadioOptions: FC<{
         <Typography text="Options:" />
         <Button text="Add Option" onPress={handleAddOption} size="small" />
       </View>
-      <View style={{ gap: theme.spacing(1) }}>
+      <View style={styles.radioOptions}>
         {radioOptions.map((option, index) => (
           <View
             key={`RADIO-${index}`}
             style={{ flexDirection: "row", alignItems: "center" }}
           >
-            <View style={{ flex: 1 }}>
+            <View style={styles.inputContainer}>
               <Input
                 text={option.text}
                 onChange={(value) => handleOptionChange(index, value)}
@@ -61,3 +63,9 @@ export const RadioOptions: FC<{
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: { gap: theme.spacing(1) },
+  radioOptions: { gap: theme.spacing(1) },
+  inputContainer: { flex: 1 },
+});
