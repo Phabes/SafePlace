@@ -10,17 +10,12 @@ export const savePetition = async (fields: Array<Field>, userID: string) => {
 };
 
 export const getPetition = async (userID: string) => {
-  try {
-    const petitionRef = doc(FIREBASE_DB, "Petitions", userID);
-    const petitionSnapshot = await getDoc(petitionRef);
+  const petitionRef = doc(FIREBASE_DB, "Petitions", userID);
+  const petitionSnapshot = await getDoc(petitionRef);
 
-    if (petitionSnapshot.exists()) {
-      return petitionSnapshot.get("fields") as Field[];
-    } else {
-      return [];
-    }
-  } catch (error) {
-    console.error("Error fetching petition:", error);
+  if (petitionSnapshot.exists()) {
+    return petitionSnapshot.get("fields") as Field[];
+  } else {
     return [];
   }
 };

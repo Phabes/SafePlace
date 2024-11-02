@@ -1,56 +1,46 @@
-import { useEffect, useState } from "react";
-import { Button, LoadingWrapper, Typography } from "../../../../../components";
+import {
+  Button,
+  ErrorPage,
+  Icon,
+  LoadingWrapper,
+  Typography,
+} from "../../../../../components";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { theme } from "../../../../../constants/theme";
-import { getPetition, savePetition } from "../../../../../services/petitions";
 import { useAppSelector } from "../../../../../redux/hooks";
 import { selectUserID } from "../../../../../redux/accountSlice";
 import { faTrash, faPenToSquare } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { FieldAdd, FieldEdit } from "./components";
-import { Field } from "../../../../../types";
+import { FieldAdd, FieldEdit } from "./subviews";
+import { useFields } from "./hooks/useFields";
 
 export const EditPetition = () => {
   const userID = useAppSelector(selectUserID);
-  const [textLoading, setTextLoading] = useState("Loading fields...");
-  const [turnNew, setTurnNew] = useState(false);
-  const [disabled, setDisabled] = useState(true);
-  const [turnEdit, setTurnEdit] = useState(-1);
-  const [fields, setFields] = useState<Array<Field>>([]);
-  const [loading, setLoading] = useState(true);
+  const {
+    textLoading,
+    loading,
+    error,
+    disabled,
+    turnNew,
+    turnEdit,
+    fields,
+    loadPetitionData,
+    editField,
+    addField,
+    save,
+    handleNewField,
+    handleFieldEdit,
+    handleFieldDelete,
+  } = useFields(userID);
 
-  useEffect(() => {
-    if (!userID) {
-      return;
-    }
-
-    (async () => {
-      const dbFields: Field[] = await getPetition(userID);
-      setFields(dbFields);
-      setLoading(false);
-    })();
-  }, []);
-
-  const handleEditDelete = (index: number) => {
-    setTurnEdit(index);
-  };
-
-  const handleFieldDelete = (index: number) => {
-    setFields((prevFields) => prevFields.filter((_, i) => i !== index));
-    setDisabled(false);
-  };
-
-  const save = async () => {
-    if (!userID) {
-      return;
-    }
-
-    setTextLoading("Saving...");
-    setLoading(true);
-    await savePetition(fields, userID);
-    setDisabled(true);
-    setLoading(false);
-  };
+  if (error) {
+    return (
+      <ErrorPage
+        text={"Cannot load petition data."}
+        action={"Please reload."}
+        button={<Button text="Reload" onPress={() => loadPetitionData()} />}
+      />
+    );
+  }
 
   return (
     <LoadingWrapper isLoading={loading} text={textLoading}>
@@ -64,19 +54,11 @@ export const EditPetition = () => {
                     <Typography text={field.text} />
                   </View>
                   <View style={styles.fieldButtons}>
-                    <TouchableOpacity onPress={() => handleEditDelete(index)}>
-                      <FontAwesomeIcon
-                        icon={faPenToSquare}
-                        color={theme.colors["text-success"]}
-                        size={theme.spacing(8)}
-                      />
+                    <TouchableOpacity onPress={() => handleFieldEdit(index)}>
+                      <Icon icon={faPenToSquare} />
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => handleFieldDelete(index)}>
-                      <FontAwesomeIcon
-                        icon={faTrash}
-                        color={theme.colors["text-success"]}
-                        size={theme.spacing(8)}
-                      />
+                      <Icon icon={faTrash} />
                     </TouchableOpacity>
                   </View>
                 </View>
@@ -84,30 +66,18 @@ export const EditPetition = () => {
             })}
           </View>
           <View style={styles.mainButtons}>
-            <Button text="New Field" onPress={() => setTurnNew(true)} />
+            <Button text="New Field" onPress={() => handleNewField(true)} />
             <Button text="Save Petition" onPress={save} disabled={disabled} />
           </View>
         </View>
       )}
       {turnNew && (
-        <FieldAdd
-          close={() => setTurnNew(false)}
-          addField={(field) => {
-            setFields([...fields, field]);
-            setDisabled(false);
-          }}
-        />
+        <FieldAdd close={() => handleNewField(false)} addField={addField} />
       )}
       {turnEdit !== -1 && (
         <FieldEdit
-          close={() => setTurnEdit(-1)}
-          editField={(field) => {
-            setFields((prevFields) => {
-              prevFields[turnEdit] = field;
-              return prevFields;
-            });
-            setDisabled(false);
-          }}
+          close={() => handleFieldEdit(-1)}
+          editField={editField}
           field={fields[turnEdit]}
         />
       )}

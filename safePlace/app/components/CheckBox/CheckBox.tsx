@@ -21,13 +21,15 @@ export const CheckBox: FC<CheckBoxProps> = ({
 
   return (
     <View style={styles.container}>
-      <Checkbox
-        status={checked ? "checked" : "unchecked"}
-        onPress={onPress}
-        color={color}
-        uncheckedColor={color}
-        disabled={disabled}
-      />
+      <View style={styles.scale}>
+        <Checkbox
+          status={checked ? "checked" : "unchecked"}
+          onPress={onPress}
+          color={color}
+          uncheckedColor={color}
+          disabled={disabled}
+        />
+      </View>
       {label && (
         <Typography
           text={label}
@@ -47,5 +49,8 @@ const styles = StyleSheet.create({
   },
   label: {
     flex: 1,
+  },
+  scale: {
+    transform: [{ scaleX: 1.5 }, { scaleY: 1.5 }],
   },
 });

@@ -28,10 +28,11 @@ export const BottomNavigation: FC<BottomNavigationProps> = ({ type }) => {
 
         return (
           <Tab
-            key={`Tab-${i}`}
+            key={`Bottom-Tab-${i}`}
             text={tab.text}
             onPress={() => tabClick(i)}
             variant={current}
+            icon={tab.icon}
           />
         );
       })}
