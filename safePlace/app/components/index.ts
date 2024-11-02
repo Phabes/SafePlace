@@ -4,6 +4,7 @@ export * from "./ButtonLogout";
 export * from "./CheckBox";
 export * from "./ErrorPage";
 export * from "./FormLabel";
+export * from "./Icon";
 export * from "./Input";
 export * from "./LayoutProvider";
 export * from "./Loading";

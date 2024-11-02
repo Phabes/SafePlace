@@ -2,12 +2,12 @@ import { TouchableOpacity, View } from "react-native";
 import {
   Button,
   CheckBox,
+  Icon,
   Input,
   Typography,
 } from "../../../../../../../../components";
 import { theme } from "../../../../../../../../constants/theme";
 import { FC } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { PetitionRadioOption } from "../../../../../../../../types";
 
@@ -53,11 +53,7 @@ export const RadioOptions: FC<{
               onPress={() => handleCheckboxChange(index)}
             />
             <TouchableOpacity onPress={() => handleOptionDelete(index)}>
-              <FontAwesomeIcon
-                icon={faTrash}
-                color={theme.colors["text-success"]}
-                size={theme.spacing(8)}
-              />
+              <Icon icon={faTrash} />
             </TouchableOpacity>
           </View>
         ))}

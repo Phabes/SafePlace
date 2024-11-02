@@ -1,3 +1,4 @@
+import { IconDefinition } from "@fortawesome/free-solid-svg-icons";
 import { ViewList } from "../navigation";
 import { AccountType } from "./AccountType";
 
@@ -11,4 +12,5 @@ export type AccountTabs = {
 export type Tab = {
   viewID: keyof ViewList;
   text: string;
+  icon?: IconDefinition;
 };
