@@ -48,7 +48,7 @@ const useStyles = (
   disabled: ButtonProps["disabled"]
 ) => {
   const buttonColor = disabled
-    ? "background-subtle"
+    ? "background-disabled"
     : variant === "default"
     ? "text-success"
     : variant === "secondary"

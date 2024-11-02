@@ -13,9 +13,9 @@ export const Tab: FC<TabProps> = ({ text, onPress, variant = "default" }) => {
   const styles = useStyles(variant);
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={styles.container}>
       <TouchableOpacity
-        style={styles.container}
+        style={styles.tab}
         onPress={onPress}
         activeOpacity={0.5}
       >
@@ -26,28 +26,20 @@ export const Tab: FC<TabProps> = ({ text, onPress, variant = "default" }) => {
 };
 
 const useStyles = (variant: TabProps["variant"]) => {
-  const borderWidth = variant === "active" ? 4 : 4;
-  const borderStyles =
-    variant === "active"
-      ? {
-          borderWidth,
-          borderColor: theme.colors["text-success"],
-        }
-      : {
-          borderWidth,
-          borderColor: theme.colors["text-secondary"],
-        };
+  const borderColor = variant === "active" ? "text-success" : "text-secondary";
 
   return StyleSheet.create({
-    container: {
+    container: { flex: 1 },
+    tab: {
       flex: 1,
       justifyContent: "center",
       alignItems: "center",
       backgroundColor: theme.colors["background-primary"],
       margin: theme.spacing(2),
       paddingVertical: theme.spacing(2),
+      borderWidth: theme.spacing(1),
       borderRadius: theme.spacing(2),
-      ...borderStyles,
+      borderColor: theme.colors[borderColor],
     },
   });
 };

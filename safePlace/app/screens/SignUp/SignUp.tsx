@@ -100,17 +100,6 @@ export const SignUp = () => {
             <View>
               {RADIO_ACCOUNT_TYPES.map((radio) => {
                 return (
-                  // <RadioButton
-                  //   key={`ACCOUNT_TYPE-${radio.id}`}
-                  //   id={radio.id}
-                  //   containerStyle={{ marginHorizontal: 0 }}
-                  //   borderColor={theme.colors["text-success"]}
-                  //   color={theme.colors["text-success"]}
-                  //   label={radio.label}
-                  //   value={radio.value}
-                  //   selected={radio.id === accountType}
-                  //   onPress={setAccountType}
-                  // />
                   <RadioBox
                     key={`ACCOUNT_TYPE-${radio.id}`}
                     id={radio.id}

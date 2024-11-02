@@ -1,33 +1,40 @@
-import { View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { Tab, Typography } from "../../../components";
 import { useState } from "react";
-import { EditPetition } from "./views/EditPetition";
-import { ListPetitions } from "./views/ListPetitions";
+import { DashboardTab } from "./types";
+import { DASHBOARD_TABS } from "./constants/dashboardTabs";
+import { getDashboardSubview } from "./utils";
 
 export const Dashboard = () => {
-  const [activeTab, setActiveTab] = useState<"List" | "Edit">("Edit");
+  const [activeTab, setActiveTab] = useState<DashboardTab>("Edit");
+
+  const CurrentDashboardSubview = getDashboardSubview(activeTab);
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={styles.container}>
       <Typography text="Choose:" />
-      <View
-        style={{
-          flexDirection: "row",
-        }}
-      >
-        <Tab
-          text="Petitions"
-          onPress={() => setActiveTab("List")}
-          variant={activeTab === "List" ? "active" : "default"}
-        />
-        <Tab
-          text="Edit"
-          onPress={() => setActiveTab("Edit")}
-          variant={activeTab === "Edit" ? "active" : "default"}
-        />
+      <View style={styles.tabs}>
+        {DASHBOARD_TABS.map((tab) => {
+          const isActive = activeTab === tab.id ? "active" : "default";
+
+          return (
+            <Tab
+              key={`DASHBOARD-${tab.id}`}
+              text={tab.label}
+              onPress={() => setActiveTab(tab.id)}
+              variant={isActive}
+            />
+          );
+        })}
       </View>
-      {activeTab === "List" && <ListPetitions />}
-      {activeTab === "Edit" && <EditPetition />}
+      <CurrentDashboardSubview />
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: { flex: 1 },
+  tabs: {
+    flexDirection: "row",
+  },
+});
