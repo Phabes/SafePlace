@@ -42,18 +42,30 @@ export const Animals = () => {
   return (
     <LoadingWrapper isLoading={loading} text="Loading animals...">
       {!turnNew && turnEdit === -1 && (
-        <>
-          <Typography text="Animals in shelter:" />
-          {animals.map((animal, index) => {
-            return (
-              <EditListItem
-                key={`ANIMAL-${index}`}
-                text={`${animal.type} - ${animal.name}`}
-                editClick={() => handleAnimalEdit(index)}
-                deleteClick={() => {}}
-              />
-            );
-          })}
+        <View style={styles.container}>
+          <View style={styles.fields}>
+            <Typography text="Animals in shelter:" />
+            {animals.map((animal, index) => {
+              return (
+                <EditListItem
+                  key={`ANIMAL-${index}`}
+                  text={`${animal.type} - ${animal.name}`}
+                  editClick={() => handleAnimalEdit(index)}
+                  deleteClick={() => {}}
+                />
+              );
+            })}
+            {animals.map((animal, index) => {
+              return (
+                <EditListItem
+                  key={`ANIMAL-${index}`}
+                  text={`${animal.type} - ${animal.name}`}
+                  editClick={() => handleAnimalEdit(index)}
+                  deleteClick={() => {}}
+                />
+              );
+            })}
+          </View>
           <View style={styles.buttons}>
             <Button text="New Animal" onPress={() => handleNewAnimal(true)} />
             <Button
@@ -62,7 +74,7 @@ export const Animals = () => {
               disabled={disabled}
             />
           </View>
-        </>
+        </View>
       )}
       {turnNew && (
         <AnimalAdd close={() => handleNewAnimal(false)} addAnimal={addAnimal} />
@@ -79,5 +91,7 @@ export const Animals = () => {
 };
 
 const styles = StyleSheet.create({
+  container: { gap: theme.spacing(3) },
+  fields: { gap: theme.spacing(1) },
   buttons: { gap: theme.spacing(2) },
 });
