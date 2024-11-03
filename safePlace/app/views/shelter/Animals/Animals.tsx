@@ -1,6 +1,6 @@
-import { View } from "react-native";
 import {
   Button,
+  EditListItem,
   ErrorPage,
   LoadingWrapper,
   Typography,
@@ -8,10 +8,26 @@ import {
 import { useAnimals } from "./hooks";
 import { useAppSelector } from "../../../redux/hooks";
 import { selectUserID } from "../../../redux/accountSlice";
+import { StyleSheet, View } from "react-native";
+import { theme } from "../../../constants/theme";
+import { AnimalAdd, AnimalEdit } from "./subviews";
 
 export const Animals = () => {
   const userID = useAppSelector(selectUserID);
-  const { loading, error, animals, loadAnimalsData } = useAnimals(userID);
+  const {
+    loading,
+    error,
+    disabled,
+    turnNew,
+    turnEdit,
+    animals,
+    loadAnimalsData,
+    saveAnimals,
+    handleNewAnimal,
+    handleAnimalEdit,
+    editAnimal,
+    addAnimal,
+  } = useAnimals(userID);
 
   if (error) {
     return (
@@ -25,10 +41,43 @@ export const Animals = () => {
 
   return (
     <LoadingWrapper isLoading={loading} text="Loading animals...">
-      <Typography text="Animals" />
-      {animals.map((animal, index) => {
-        return <Typography key={`ANIMAL-${index}`} text={animal.type} />;
-      })}
+      {!turnNew && turnEdit === -1 && (
+        <>
+          <Typography text="Animals in shelter:" />
+          {animals.map((animal, index) => {
+            return (
+              <EditListItem
+                key={`ANIMAL-${index}`}
+                text={`${animal.type} - ${animal.name}`}
+                editClick={() => handleAnimalEdit(index)}
+                deleteClick={() => {}}
+              />
+            );
+          })}
+          <View style={styles.buttons}>
+            <Button text="New Animal" onPress={() => handleNewAnimal(true)} />
+            <Button
+              text="Save Animals Data"
+              onPress={saveAnimals}
+              disabled={disabled}
+            />
+          </View>
+        </>
+      )}
+      {turnNew && (
+        <AnimalAdd close={() => handleNewAnimal(false)} addAnimal={addAnimal} />
+      )}
+      {turnEdit !== -1 && (
+        <AnimalEdit
+          close={() => handleAnimalEdit(-1)}
+          editAnimal={editAnimal}
+          animal={animals[turnEdit]}
+        />
+      )}
     </LoadingWrapper>
   );
 };
+
+const styles = StyleSheet.create({
+  buttons: { gap: theme.spacing(2) },
+});

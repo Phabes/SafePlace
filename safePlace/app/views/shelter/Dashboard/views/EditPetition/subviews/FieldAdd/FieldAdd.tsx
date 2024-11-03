@@ -56,6 +56,7 @@ export const FieldAdd: FC<FieldAddProps> = ({ close, addField }) => {
 
     close();
   };
+
   return (
     <View style={styles.container}>
       <View>

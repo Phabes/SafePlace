@@ -1,4 +1,5 @@
 export type Animal = {
+  name: string;
   type: string;
   environment: string;
   friendly: boolean;

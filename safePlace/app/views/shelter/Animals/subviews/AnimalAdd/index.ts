@@ -1,0 +1,1 @@
+export { AnimalAdd } from "./AnimalAdd";
