@@ -8,7 +8,8 @@ import {
 import { useAccountType } from "../../hooks";
 import { useAppSelector } from "../../redux/hooks";
 import { selectActiveTab } from "../../redux/appNavigationSlice";
-import { getAccountTabProps, getCurrentView } from "../../utils";
+import { getCurrentView } from "../../navigation/getCurrentView";
+import { getAccountTabProps } from "../../utils";
 
 export const Main = () => {
   const { type, loading, error } = useAccountType();

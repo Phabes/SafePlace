@@ -5,9 +5,10 @@ import { StyleSheet, View } from "react-native";
 import { Typography } from "../Typography/Typography";
 import { theme } from "../../constants/theme";
 import { Dropdown } from "react-native-element-dropdown";
+import { SelectData } from "../../types";
 
 export type SelectProps = {
-  selectData: Array<{ label: string; value: string }>;
+  selectData: Array<SelectData>;
   disabled?: boolean;
   value: string;
   onSelect: (value: string) => void;

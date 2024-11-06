@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { ViewList } from "../navigation";
+import { ViewList } from ".";
 import {
   Search,
   Favourite,

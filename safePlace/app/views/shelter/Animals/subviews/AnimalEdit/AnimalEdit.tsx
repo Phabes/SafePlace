@@ -1,8 +1,9 @@
-import { FC } from "react";
+import { FC, useState } from "react";
 import { Animal } from "../../../../../types";
 import { StyleSheet, View } from "react-native";
-import { Button, Select, Typography } from "../../../../../components";
+import { Button, Input, Select, Typography } from "../../../../../components";
 import { theme } from "../../../../../constants/theme";
+import { getAnimalsTypesToSelect } from "../../../../../utils";
 
 type AnimalEditProps = {
   close: () => void;
@@ -20,25 +21,19 @@ export const AnimalEdit: FC<AnimalEditProps> = ({
 
     close();
   };
-  const data = [
-    { label: "Item 1", value: "1" },
-    { label: "Item 2", value: "2" },
-    { label: "Item 3", value: "3" },
-    { label: "Item 4", value: "4" },
-    { label: "Item 5", value: "5" },
-    { label: "Item 6", value: "6" },
-    { label: "Item 7", value: "7" },
-    { label: "Item 8", value: "8" },
-  ];
+  const [currentName, setCurrentName] = useState(animal.name);
+  const [currentType, setCurrentType] = useState<string>(animal.type);
+  const selectAnimalsData = getAnimalsTypesToSelect();
 
   return (
     <View style={styles.buttons}>
       <Typography text={`${animal.type} - ${animal.name}`} />
+      <Input text={currentName} onChange={setCurrentName} />
       <Select
-        selectData={data}
-        value="3"
+        selectData={selectAnimalsData}
+        value={currentType}
         onSelect={(value) => {
-          console.log(value);
+          setCurrentType(value);
         }}
       />
       <Button text="Edit Animal" onPress={createAnimalObject} />
