@@ -55,16 +55,6 @@ export const Animals = () => {
                 />
               );
             })}
-            {animals.map((animal, index) => {
-              return (
-                <EditListItem
-                  key={`ANIMAL-${index}`}
-                  text={`${animal.type} - ${animal.name}`}
-                  editClick={() => handleAnimalEdit(index)}
-                  deleteClick={() => {}}
-                />
-              );
-            })}
           </View>
           <View style={styles.buttons}>
             <Button text="New Animal" onPress={() => handleNewAnimal(true)} />
