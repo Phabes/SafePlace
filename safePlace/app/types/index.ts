@@ -4,7 +4,7 @@ export type { AccountType, RadioAccountType } from "./AccountType";
 
 export type { DatabaseUser, DatabaseShelter } from "./DatabaseAccount";
 
-export type { Animal, AnimalTypes } from "./Animal";
+export type { Animal, AnimalTypes, EnvironmentTypes } from "./Animal";
 
 export {
   PetitionFieldType,
