@@ -38,8 +38,8 @@ export const SignIn = () => {
 
   const loginClick = async (data: SignInData) => {
     setLoading(true);
-    Keyboard.dismiss();
     setSignInError(null);
+    Keyboard.dismiss();
 
     try {
       await login(data.email, data.password);

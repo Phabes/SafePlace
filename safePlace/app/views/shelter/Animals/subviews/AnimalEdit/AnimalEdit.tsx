@@ -1,24 +1,26 @@
 import { FC } from "react";
-import { Animal } from "../../../../../types";
 import { StyleSheet, View } from "react-native";
+import { Controller } from "react-hook-form";
 import {
   Button,
   CheckBox,
+  FormLabel,
   Input,
   Select,
   Typography,
 } from "../../../../../components";
 import { theme } from "../../../../../constants/theme";
+import { Animal, AnimalDB } from "../../../../../types";
 import {
+  capitalizeFirstLetter,
   getAnimalEnvironmentsToSelect,
   getAnimalTypesToSelect,
 } from "../../../../../utils";
-import { Controller } from "react-hook-form";
-import { useAnimalData } from "../../hooks/useAnimalData";
+import { useAnimalData } from "../../hooks";
 
 type AnimalEditProps = {
   close: () => void;
-  editAnimal: (animal: Animal) => void;
+  editAnimal: (animal: AnimalDB) => void;
   animal: Animal;
 };
 
@@ -27,28 +29,33 @@ export const AnimalEdit: FC<AnimalEditProps> = ({
   editAnimal,
   animal,
 }) => {
-  const createAnimalObject = () => {
-    // editAnimal(...)
-
-    close();
-  };
-  const { animalControl, handleAnimalSubmit } = useAnimalData(animal);
+  const { animalControl, handleAnimalSubmit, animalErrors } =
+    useAnimalData(animal);
   const animalTypesData = getAnimalTypesToSelect();
   const animalEnvironmentsData = getAnimalEnvironmentsToSelect();
+
+  const createAnimalObject = () => {
+    const edittedAnimal = animalControl._formValues as AnimalDB;
+    editAnimal(edittedAnimal);
+  };
 
   return (
     <View style={styles.container}>
       <Typography text={`${animal.type} - ${animal.name}`} />
       <View style={styles.form}>
-        <Typography text="Name" />
+        <FormLabel text={"Name"} errors={animalErrors.name} />
         <Controller
           control={animalControl}
           name="name"
-          render={({ field: { onChange, value } }) => (
-            <Input text={value} onChange={onChange} />
+          render={({ field: { onChange, value, name } }) => (
+            <Input
+              text={value}
+              onChange={onChange}
+              placeholder={capitalizeFirstLetter(name)}
+            />
           )}
         />
-        <Typography text="Type" />
+        <FormLabel text={"Type"} errors={animalErrors.type} />
         <Controller
           control={animalControl}
           name="type"
@@ -60,7 +67,7 @@ export const AnimalEdit: FC<AnimalEditProps> = ({
             />
           )}
         />
-        <Typography text="Environment" />
+        <FormLabel text={"Environment"} errors={animalErrors.environment} />
         <Controller
           control={animalControl}
           name="environment"
@@ -72,7 +79,7 @@ export const AnimalEdit: FC<AnimalEditProps> = ({
             />
           )}
         />
-        <Typography text="Friendly" />
+        <FormLabel text={"Friendly"} errors={animalErrors.friendly} />
         <Controller
           control={animalControl}
           name="friendly"
@@ -80,29 +87,37 @@ export const AnimalEdit: FC<AnimalEditProps> = ({
             <CheckBox checked={value} onPress={() => onChange(!value)} />
           )}
         />
-        <Typography text="Age" />
+        <FormLabel text={"Age"} errors={animalErrors.age} />
         <Controller
           control={animalControl}
           name="age"
-          render={({ field: { onChange, value } }) => (
+          render={({ field: { onChange, value, name } }) => (
             <Input
-              text={value.toString()}
-              onChange={onChange}
+              text={value !== undefined ? value.toString() : ""}
+              onChange={(age) => onChange(parseInt(age !== "" ? age : "0", 10))}
               keyboardType="numeric"
+              placeholder={capitalizeFirstLetter(name)}
             />
           )}
         />
-        <Typography text="Details" />
+        <FormLabel text={"Details (optional)"} errors={animalErrors.details} />
         <Controller
           control={animalControl}
           name="details"
-          render={({ field: { onChange, value } }) => (
-            <Input text={value} onChange={onChange} />
+          render={({ field: { onChange, value, name } }) => (
+            <Input
+              text={value}
+              onChange={onChange}
+              placeholder={capitalizeFirstLetter(name)}
+            />
           )}
         />
       </View>
       <View style={styles.buttons}>
-        <Button text="Edit Animal" onPress={createAnimalObject} />
+        <Button
+          text="Edit Animal"
+          onPress={handleAnimalSubmit(createAnimalObject)}
+        />
         <Button text="Cancel" onPress={close} variant="secondary" />
       </View>
     </View>

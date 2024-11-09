@@ -1,3 +1,4 @@
+import { StyleSheet, View } from "react-native";
 import {
   Button,
   EditListItem,
@@ -8,21 +9,18 @@ import {
 import { useAnimals } from "./hooks";
 import { useAppSelector } from "../../../redux/hooks";
 import { selectUserID } from "../../../redux/accountSlice";
-import { StyleSheet, View } from "react-native";
-import { theme } from "../../../constants/theme";
 import { AnimalAdd, AnimalEdit } from "./subviews";
+import { theme } from "../../../constants/theme";
 
 export const Animals = () => {
   const userID = useAppSelector(selectUserID);
   const {
     loading,
     error,
-    disabled,
     turnNew,
     turnEdit,
     animals,
     loadAnimalsData,
-    saveAnimals,
     handleNewAnimal,
     handleAnimalEdit,
     editAnimal,
@@ -34,7 +32,7 @@ export const Animals = () => {
       <ErrorPage
         text={"Unable to load animals data."}
         action={"Please reload."}
-        button={<Button text="Reload" onPress={() => loadAnimalsData()} />}
+        button={<Button text="Reload" onPress={loadAnimalsData} />}
       />
     );
   }
@@ -48,7 +46,7 @@ export const Animals = () => {
             {animals.map((animal, index) => {
               return (
                 <EditListItem
-                  key={`ANIMAL-${index}`}
+                  key={`ANIMAL-${animal.id}`}
                   text={`${animal.type} - ${animal.name}`}
                   editClick={() => handleAnimalEdit(index)}
                   deleteClick={() => {}}
@@ -58,11 +56,6 @@ export const Animals = () => {
           </View>
           <View style={styles.buttons}>
             <Button text="New Animal" onPress={() => handleNewAnimal(true)} />
-            <Button
-              text="Save Animals Data"
-              onPress={saveAnimals}
-              disabled={disabled}
-            />
           </View>
         </View>
       )}

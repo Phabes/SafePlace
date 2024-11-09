@@ -9,16 +9,18 @@ import { SelectData } from "../../types";
 
 export type SelectProps = {
   selectData: Array<SelectData>;
-  disabled?: boolean;
   value: string;
   onSelect: (value: string) => void;
+  disabled?: boolean;
+  placeholder?: string;
 };
 
 export const Select: FC<SelectProps> = ({
   selectData,
-  disabled = false,
   value,
   onSelect,
+  disabled = false,
+  placeholder = "",
 }) => {
   const [isFocus, setIsFocus] = useState(false);
 
@@ -31,8 +33,8 @@ export const Select: FC<SelectProps> = ({
       disable={disabled}
       labelField="label"
       valueField="value"
-      placeholder={!isFocus ? "Select item" : ""}
-      searchPlaceholder="Search..."
+      placeholder={!isFocus ? placeholder : ""}
+      placeholderStyle={styles.placeholder}
       value={value}
       onFocus={() => setIsFocus(true)}
       onBlur={() => setIsFocus(false)}
@@ -68,36 +70,22 @@ const useStyles = (isFocus: boolean, disabled: SelectProps["disabled"]) => {
     ? "action-selected"
     : "background-subtle";
   const selectedText = disabled ? "background-disabled" : "text-primary";
+  const placeholderText = disabled ? "background-disabled" : "text-secondary";
 
   return StyleSheet.create({
     dropdown: {
       borderWidth: theme.spacing(1),
       borderColor: theme.colors[borderColor],
-      padding: theme.spacing(1),
+      paddingHorizontal: theme.spacing(4),
+      paddingVertical: theme.spacing(1),
       borderRadius: theme.spacing(2),
+    },
+    placeholder: {
+      textTransform: "capitalize",
+      color: theme.colors[placeholderText],
     },
     selectedText: {
       color: theme.colors[selectedText],
     },
-    // label: {
-    //   position: "absolute",
-    //   backgroundColor: "white",
-    //   left: 22,
-    //   top: 8,
-    //   zIndex: 999,
-    //   paddingHorizontal: 8,
-    //   fontSize: 14,
-    // },
-    // placeholderStyle: {
-    //   fontSize: 16,
-    // },
-    // selectedTextStyle: {
-    //   fontSize: 16,
-    // },
-    // iconStyle: {
-    //   width: 20,
-    //   height: 20,
-    // },
-    // inputSearchStyle: theme.typography["body-small"],
   });
 };

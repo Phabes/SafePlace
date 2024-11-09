@@ -1,3 +1,4 @@
+export { capitalizeFirstLetter } from "./capitalizeFirstLetter";
 export { getAccountTabProps } from "./getAccountTabProps";
 export { getAccountTabs } from "./getAccountTabs";
 export {

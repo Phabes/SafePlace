@@ -1,21 +1,51 @@
-import { doc, getDoc, setDoc } from "firebase/firestore";
+import {
+  addDoc,
+  arrayUnion,
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  query,
+  setDoc,
+  updateDoc,
+  where,
+} from "firebase/firestore";
 import { FIREBASE_DB } from "../../../firebaseConfig/firebaseConfig";
-import { Animal } from "../../types";
+import { Animal, AnimalDB } from "../../types";
 
-export const saveAnimal = async (fields: Array<Animal>, userID: string) => {
-  await setDoc(doc(FIREBASE_DB, "Animals", userID), {
-    fields,
+export const saveAnimalDB = async (animal: Animal, shelterID: string) => {
+  const shelterRef = doc(FIREBASE_DB, "Shelters", shelterID);
+
+  return await addDoc(collection(FIREBASE_DB, "Animals"), {
+    data: animal,
+    shelterID: shelterRef,
     createdAt: new Date(),
   });
 };
 
-export const getShelterAnimals = async (userID: string) => {
-  const animalsRef = doc(FIREBASE_DB, "Animals", userID);
-  const animalsSnapshot = await getDoc(animalsRef);
+export const editAnimalDB = async (animal: AnimalDB) => {
+  const { id, ...animalData } = animal;
 
-  if (animalsSnapshot.exists()) {
-    return animalsSnapshot.get("animals") as Array<Animal>;
-  } else {
-    return [];
-  }
+  const animalRef = doc(FIREBASE_DB, "Animals", id);
+
+  await updateDoc(animalRef, { data: { ...animalData } });
+};
+
+export const getShelterAnimals = async (shelterID: string) => {
+  const animalsRef = collection(FIREBASE_DB, "Animals");
+  const shelterRef = doc(FIREBASE_DB, "Shelters", shelterID);
+
+  const q = query(animalsRef, where("shelterID", "==", shelterRef));
+
+  const querySnapshot = await getDocs(q);
+
+  const animals: Array<AnimalDB> = querySnapshot.docs.map(
+    (doc) =>
+      ({
+        id: doc.id,
+        ...(doc.data().data as Animal),
+      } as AnimalDB)
+  );
+
+  return animals;
 };

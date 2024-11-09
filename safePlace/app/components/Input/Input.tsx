@@ -56,7 +56,7 @@ export const Input: FC<InputProps> = ({
 
   return (
     <TextInput
-      placeholder={placeholder}
+      placeholder={type === "active" ? "" : placeholder}
       value={text}
       keyboardType={keyboardType}
       onChangeText={onChangeInput}
