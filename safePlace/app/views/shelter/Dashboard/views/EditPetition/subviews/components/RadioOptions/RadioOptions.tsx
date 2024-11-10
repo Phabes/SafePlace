@@ -8,8 +8,8 @@ import {
   Typography,
 } from "../../../../../../../../components";
 import { theme } from "../../../../../../../../constants/theme";
-import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { PetitionRadioOption } from "../../../../../../../../types";
+import { faTrash } from "@fortawesome/free-solid-svg-icons";
 
 type RadioOptionsType = {
   radioOptions: Array<PetitionRadioOption>;
@@ -28,22 +28,13 @@ export const RadioOptions: FC<RadioOptionsType> = ({
 }) => {
   return (
     <View style={styles.container}>
-      <View
-        style={{
-          flexDirection: "row",
-          justifyContent: "space-between",
-          alignItems: "flex-end",
-        }}
-      >
+      <View style={styles.radioTitle}>
         <Typography text="Options:" />
         <Button text="Add Option" onPress={handleAddOption} size="small" />
       </View>
       <View style={styles.radioOptions}>
         {radioOptions.map((option, index) => (
-          <View
-            key={`RADIO-${index}`}
-            style={{ flexDirection: "row", alignItems: "center" }}
-          >
+          <View key={`RADIO-${index}`} style={styles.radioOption}>
             <View style={styles.inputContainer}>
               <Input
                 text={option.text}
@@ -66,6 +57,12 @@ export const RadioOptions: FC<RadioOptionsType> = ({
 
 const styles = StyleSheet.create({
   container: { gap: theme.spacing(1) },
+  radioTitle: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "flex-end",
+  },
   radioOptions: { gap: theme.spacing(1) },
+  radioOption: { flexDirection: "row", alignItems: "center" },
   inputContainer: { flex: 1 },
 });

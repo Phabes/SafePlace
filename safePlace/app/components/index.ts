@@ -2,6 +2,7 @@ export * from "./BottomNavigation";
 export * from "./Button";
 export * from "./ButtonLogout";
 export * from "./CheckBox";
+export * from "./DialogPopUp";
 export * from "./EditListItem";
 export * from "./ErrorPage";
 export * from "./FormLabel";

@@ -1,1 +1,6 @@
-export { saveAnimalDB, editAnimalDB, getShelterAnimals } from "./animals";
+export {
+  getShelterAnimals,
+  saveAnimalDB,
+  editAnimalDB,
+  deleteAnimalDB,
+} from "./animals";

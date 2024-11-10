@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import {
+  deleteAnimalDB,
   editAnimalDB,
   getShelterAnimals,
   saveAnimalDB,
@@ -9,8 +10,9 @@ import { Animal, AnimalDB } from "../../../../types";
 export const useAnimals = (userID: string | null) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
-  const [turnNew, setTurnNew] = useState(false);
-  const [turnEdit, setTurnEdit] = useState(-1);
+  const [creating, setCreating] = useState(false);
+  const [editing, setEditing] = useState(-1);
+  const [deleting, setDeleting] = useState(-1);
   const [animals, setAnimals] = useState<Array<AnimalDB>>([]);
 
   useEffect(() => {
@@ -36,27 +38,31 @@ export const useAnimals = (userID: string | null) => {
     })();
   };
 
-  const handleNewAnimal = (createNew: boolean) => {
-    setTurnNew(createNew);
+  const handleAnimalAdd = (createNew: boolean) => {
+    setCreating(createNew);
   };
 
   const handleAnimalEdit = (index: number) => {
-    setTurnEdit(index);
+    setEditing(index);
+  };
+
+  const handleAnimalDelete = (index: number) => {
+    setDeleting(index);
   };
 
   const editAnimal = async (animal: AnimalDB) => {
     setLoading(true);
-    handleAnimalEdit(-1);
     try {
       await editAnimalDB(animal);
 
       setAnimals((prevAnimals) => {
-        prevAnimals[turnEdit] = animal;
+        prevAnimals[editing] = animal;
         return prevAnimals;
       });
     } catch (error) {
       setError(true);
     } finally {
+      handleAnimalEdit(-1);
       setLoading(false);
     }
   };
@@ -67,19 +73,40 @@ export const useAnimals = (userID: string | null) => {
     }
 
     setLoading(true);
-    handleNewAnimal(false);
     try {
       const createdAnimal = await saveAnimalDB(animal, userID);
 
       setAnimals((prevAnimals) => {
-        prevAnimals.push({
+        prevAnimals.unshift({
           id: createdAnimal.id,
           ...animal,
         });
         return prevAnimals;
       });
     } catch (error) {
-      console.log(error);
+      setError(true);
+    } finally {
+      handleAnimalAdd(false);
+      setLoading(false);
+    }
+  };
+
+  const deleteAnimal = async () => {
+    if (deleting === -1) {
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const deleteIndex = deleting;
+      handleAnimalDelete(-1);
+      await deleteAnimalDB(animals[deleteIndex].id);
+
+      setAnimals((prevAnimals) => {
+        prevAnimals.splice(deleteIndex, 1);
+        return prevAnimals;
+      });
+    } catch (error) {
       setError(true);
     } finally {
       setLoading(false);
@@ -89,13 +116,16 @@ export const useAnimals = (userID: string | null) => {
   return {
     loading,
     error,
-    turnNew,
-    turnEdit,
-    animals,
     loadAnimalsData,
-    handleNewAnimal,
+    animals,
+    creating,
+    editing,
+    deleting,
+    handleAnimalAdd,
     handleAnimalEdit,
-    editAnimal,
+    handleAnimalDelete,
     addAnimal,
+    editAnimal,
+    deleteAnimal,
   };
 };

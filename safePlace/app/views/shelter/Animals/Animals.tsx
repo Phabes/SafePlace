@@ -1,6 +1,7 @@
 import { StyleSheet, View } from "react-native";
 import {
   Button,
+  DialogPopUp,
   EditListItem,
   ErrorPage,
   LoadingWrapper,
@@ -17,21 +18,24 @@ export const Animals = () => {
   const {
     loading,
     error,
-    turnNew,
-    turnEdit,
-    animals,
     loadAnimalsData,
-    handleNewAnimal,
+    animals,
+    creating,
+    editing,
+    deleting,
+    handleAnimalAdd,
     handleAnimalEdit,
-    editAnimal,
+    handleAnimalDelete,
     addAnimal,
+    editAnimal,
+    deleteAnimal,
   } = useAnimals(userID);
 
   if (error) {
     return (
       <ErrorPage
-        text={"Unable to load animals data."}
-        action={"Please reload."}
+        text="Unable to load animals data."
+        action="Please reload."
         button={<Button text="Reload" onPress={loadAnimalsData} />}
       />
     );
@@ -39,7 +43,17 @@ export const Animals = () => {
 
   return (
     <LoadingWrapper isLoading={loading} text="Loading animals...">
-      {!turnNew && turnEdit === -1 && (
+      {deleting !== -1 && (
+        <DialogPopUp
+          header="Do you want to delete animal?"
+          content={`${animals[deleting].type} - ${animals[deleting].name}`}
+          handleAccept={deleteAnimal}
+          handleCancel={() => {
+            handleAnimalDelete(-1);
+          }}
+        />
+      )}
+      {!creating && editing === -1 && (
         <View style={styles.container}>
           <View style={styles.fields}>
             <Typography text="Animals in shelter:" />
@@ -49,24 +63,26 @@ export const Animals = () => {
                   key={`ANIMAL-${animal.id}`}
                   text={`${animal.type} - ${animal.name}`}
                   editClick={() => handleAnimalEdit(index)}
-                  deleteClick={() => {}}
+                  deleteClick={() => {
+                    handleAnimalDelete(index);
+                  }}
                 />
               );
             })}
           </View>
           <View style={styles.buttons}>
-            <Button text="New Animal" onPress={() => handleNewAnimal(true)} />
+            <Button text="New Animal" onPress={() => handleAnimalAdd(true)} />
           </View>
         </View>
       )}
-      {turnNew && (
-        <AnimalAdd close={() => handleNewAnimal(false)} addAnimal={addAnimal} />
+      {creating && (
+        <AnimalAdd close={() => handleAnimalAdd(false)} addAnimal={addAnimal} />
       )}
-      {turnEdit !== -1 && (
+      {editing !== -1 && (
         <AnimalEdit
           close={() => handleAnimalEdit(-1)}
           editAnimal={editAnimal}
-          animal={animals[turnEdit]}
+          animal={animals[editing]}
         />
       )}
     </LoadingWrapper>

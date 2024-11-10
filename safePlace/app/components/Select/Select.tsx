@@ -43,7 +43,7 @@ export const Select: FC<SelectProps> = ({
         setIsFocus(false);
       }}
       renderItem={(item) => (
-        <View style={{ padding: theme.spacing(2), borderTopWidth: 1 }}>
+        <View style={styles.option}>
           <Typography
             variant="body-large"
             text={item.label}
@@ -84,6 +84,7 @@ const useStyles = (isFocus: boolean, disabled: SelectProps["disabled"]) => {
       textTransform: "capitalize",
       color: theme.colors[placeholderText],
     },
+    option: { padding: theme.spacing(2), borderTopWidth: 1 },
     selectedText: {
       color: theme.colors[selectedText],
     },
