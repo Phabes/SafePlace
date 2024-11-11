@@ -1,4 +1,4 @@
-import { doc, setDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc } from "firebase/firestore";
 import {
   FIREBASE_AUTH,
   FIREBASE_DB,
@@ -7,17 +7,7 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
 } from "firebase/auth";
-
-export type DatabaseUser = {
-  email: string;
-  name: string;
-  surname: string;
-};
-
-export type DatabaseShelter = {
-  email: string;
-  shelterName: string;
-};
+import { DatabaseShelter, DatabaseUser } from "../../types";
 
 export const createAccount = async (email: string, password: string) => {
   return await createUserWithEmailAndPassword(FIREBASE_AUTH, email, password);
@@ -54,4 +44,12 @@ export const saveShelter = async (signUpData: any, userID: string) => {
     ...shelter,
     createdAt: new Date(),
   });
+};
+
+export const getUserData = async (userID: string) => {
+  return await getDoc(doc(FIREBASE_DB, "Users", userID));
+};
+
+export const getShelterData = async (userID: string) => {
+  return await getDoc(doc(FIREBASE_DB, "Shelters", userID));
 };

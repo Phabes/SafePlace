@@ -4,9 +4,11 @@ import {
   UnknownAction,
 } from "@reduxjs/toolkit";
 import accountSlice from "./accountSlice";
+import appNavigationSlice from "./appNavigationSlice";
 
 const appReducer = combineReducers({
   account: accountSlice,
+  appNavigation: appNavigationSlice,
 });
 
 const reducerProxy = (state: any, action: UnknownAction) => {

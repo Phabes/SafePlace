@@ -9,8 +9,9 @@ export const theme: Theme = {
     "text-error": "#d62222",
     "text-success": "#ffaa78",
     "background-primary": "#fafafa",
-    "background-subtle": "#d3d7db", 
     "background-clickable":"#dee3e7",
+    "background-subtle": "#dcdee0",
+    "background-disabled": "#c8cacc",
     "action-selected": "#ffaa78",
   },
   typography: {
@@ -23,7 +24,7 @@ export const theme: Theme = {
       fontWeight: "700",
     },
     "header-small": {
-      fontSize: 20,
+      fontSize: 18,
       fontWeight: "700",
     },
     "body-large": {
@@ -58,6 +59,7 @@ export type ColorKeys =
   | "background-primary"
   | "background-subtle"
   | "background-clickable"
+  | "background-disabled"
   | "action-selected";
 
 export type Theme = {
