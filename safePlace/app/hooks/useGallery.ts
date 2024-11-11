@@ -1,5 +1,5 @@
 import * as ImagePicker from 'expo-image-picker';
-import { PhotoRes } from "../constants/radioAccountTypes";
+import { PhotoRes } from "../types/photoType";
 
 
 export const useGallery = async (): Promise<PhotoRes> => {

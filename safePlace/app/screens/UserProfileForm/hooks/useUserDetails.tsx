@@ -2,7 +2,7 @@ import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import { SignInData } from "../../../types";
-import { AdditionalUserData } from "../../../constants/userAccount";
+import { AdditionalUserData } from "../../../types/userAccount";
 
 const userDetailSchema = Yup.object().shape({
   age: Yup.number(),

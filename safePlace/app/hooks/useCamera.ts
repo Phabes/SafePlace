@@ -1,6 +1,6 @@
 import { PermissionsAndroid, Platform } from "react-native";
 import * as ImagePicker from 'expo-image-picker';
-import { PhotoRes } from "../constants/radioAccountTypes";
+import { PhotoRes } from "../types/photoType";
 
 
 const requestCameraPermissionAndroid = async () => {

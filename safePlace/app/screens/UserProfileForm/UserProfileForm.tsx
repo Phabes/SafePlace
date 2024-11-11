@@ -3,20 +3,28 @@ import { FormLabel, Input, LayoutProvider, Typography } from "../../components";
 import { NavbarWithLogout } from "../../components/NavbarWithLogout";
 import { theme } from "../../constants/theme";
 import { MediaImagePlus as MediaImagePlusIcon,Camera as CameraIcon, MediaImageList as MediaImageListIcon} from "iconoir-react-native";
-import { useState } from "react";
+import React, { useState } from "react";
 import * as ImagePicker from 'expo-image-picker';
 import { AddImageModal } from "../../components/AddImageModal";
 import { AddImageModalRes } from "../../components/AddImageModal/AddImageModal";
 import { Controller, FieldError } from "react-hook-form";
 import { useUserDetails } from "./hooks/useUserDetails";
-import { AdditionalUserData } from "../../constants/userAccount";
+import { AdditionalUserData } from "../../types/userAccount";
+import { Dropdown } from "../../components/Dropdown";
 
 
+const OPTIONS = [
+  { label: 'None', value: 'None' },
+  { label: 'Little Experience', value: 'Little Experience' },
+  { label: 'Experienced', value: 'Experienced' },
+];
 
 export const UserProfileForm = () => {
   const [isProfileModalVisible, setProfileModalVisible] = useState(false);
   const [isBackgroundModalVisible, setBackgroundModalVisible] = useState(false);
   const [signInError, setSignInError] = useState<FieldError | null>(null);
+  
+
 
   const {
     detailsControl,
@@ -48,6 +56,7 @@ export const UserProfileForm = () => {
     onChange: (...event: any[]) => void,
     toClear: keyof AdditionalUserData
   ) => {
+    console.log("Change value to :" + value)
     setSignInError(null);
     clearDetailsErrors(toClear);
     onChange(value);
@@ -97,36 +106,34 @@ export const UserProfileForm = () => {
         </TouchableOpacity >
        
       </View>
-      <FormLabel text={"Age"} />
-      <Controller
-        control={detailsControl}
-        name="age"
-        render={({ field: { onChange, value, name } }) => (
-          <Input
-            text={value ? value.toString() : ""}
-            keyboardType="numeric"
-            placeholder="Age"
-            autoCapitalize="none"
-            variant="default"
-            onChange={(e) => inputChange(e, onChange, name)}
-          />
-        )}
-      />
-      <FormLabel text={"Experience with animals"} />
-      <Controller
-        control={detailsControl}
-        name="experience"
-        render={({ field: { onChange, value, name } }) => (
-          <Input
-            text={value ? value.toString() : ""}
-            keyboardType="default"
-            placeholder="Experience with animals"
-            autoCapitalize="none"
-            variant="default"
-            onChange={(e) => inputChange(e, onChange, name)}
-          />
-        )}
-      />
+      <View>
+        <FormLabel text={"Age"} />
+        <Controller
+          control={detailsControl}
+          name="age"
+          render={({ field: { onChange, value, name } }) => (
+            <Input
+              text={value ? value.toString() : ""}
+              keyboardType="numeric"
+              placeholder="Age"
+              autoCapitalize="none"
+              variant="default"
+              onChange={(e) => inputChange(e, onChange, name)}
+            />
+          )}
+        />
+        <FormLabel text={"Experience with animals"} />
+        <Controller
+          control={detailsControl}
+          name="experience"
+          render={({ field: { onChange, value, name } }) => (
+            <Dropdown options={OPTIONS} onChange={(e) => {
+              inputChange(e, onChange, name);
+            }} value={value} label={"Experience with animals"} />
+          )}
+        />
+      </View>
+      
     </LayoutProvider>
   );
 };

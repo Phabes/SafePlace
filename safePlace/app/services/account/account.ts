@@ -26,6 +26,7 @@ export const saveUser = async (signUpData: any, userID: string) => {
     email: signUpData.email,
     name: signUpData.name,
     surname: signUpData.surname,
+    details:{}
   };
 
   await setDoc(doc(FIREBASE_DB, "Users", userID), {
