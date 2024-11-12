@@ -1,12 +1,12 @@
 import React, { FC, PropsWithChildren } from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
 import { theme } from "../../constants/theme";
-import { AccountTypes } from "../../types";
 import { BottomNavigation } from "../BottomNavigation";
+import { AccountType } from "../../types";
 
 type LayoutProviderProps = PropsWithChildren<{
   navbar?: JSX.Element;
-  userType?: AccountTypes;
+  userType?: AccountType;
 }>;
 
 export const LayoutProvider: FC<LayoutProviderProps> = ({

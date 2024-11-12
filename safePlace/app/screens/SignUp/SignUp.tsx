@@ -1,9 +1,4 @@
-import {
-  Keyboard,
-  StyleSheet,
-  TouchableWithoutFeedback,
-  View,
-} from "react-native";
+import { Keyboard, StyleSheet, View } from "react-native";
 import { theme } from "../../constants/theme";
 import {
   Button,
@@ -95,56 +90,54 @@ export const SignUp = () => {
   return (
     <LoadingWrapper isLoading={loading} text={"Signing Up..."}>
       <LayoutProvider navbar={<Navbar text="Sign Up" />}>
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-          <View style={styles.form}>
-            <View>
-              {RADIO_ACCOUNT_TYPES.map((radio) => {
-                return (
-                  <RadioBox
-                    key={`ACCOUNT_TYPE-${radio.id}`}
-                    id={radio.id}
-                    label={radio.label}
-                    value={radio.value}
-                    selected={radio.id === accountType}
-                    onPress={setAccountType}
-                  />
-                );
-              })}
-            </View>
-            <CommonForm
-              control={commonControl}
-              errors={commonErrors}
-              clearErrors={clearCommonErrors}
-              signUpError={signUpError}
-              signUpEmailInputChange={signUpEmailInputChange}
-            />
-            {accountType === "User" ? (
-              <UserForm
-                control={userControl}
-                errors={userErrors}
-                clearErrors={clearUserErrors}
-              />
-            ) : (
-              <ShelterForm
-                control={shelterControl}
-                errors={shelterErrors}
-                clearErrors={clearShelterErrors}
-              />
-            )}
-            <View style={styles.buttons}>
-              <Button text="Sign Up" onPress={registerClick} />
-              <Button
-                text="Already have account?"
-                variant="secondary"
-                onPress={() => {
-                  setSignUpError(null);
-                  resetSignUp();
-                  navigation.replace("SignIn");
-                }}
-              />
-            </View>
+        <View style={styles.form}>
+          <View>
+            {RADIO_ACCOUNT_TYPES.map((radio) => {
+              return (
+                <RadioBox
+                  key={`ACCOUNT_TYPE-${radio.id}`}
+                  id={radio.id}
+                  label={radio.label}
+                  value={radio.value}
+                  selected={radio.id === accountType}
+                  onPress={setAccountType}
+                />
+              );
+            })}
           </View>
-        </TouchableWithoutFeedback>
+          <CommonForm
+            control={commonControl}
+            errors={commonErrors}
+            clearErrors={clearCommonErrors}
+            signUpError={signUpError}
+            signUpEmailInputChange={signUpEmailInputChange}
+          />
+          {accountType === "User" ? (
+            <UserForm
+              control={userControl}
+              errors={userErrors}
+              clearErrors={clearUserErrors}
+            />
+          ) : (
+            <ShelterForm
+              control={shelterControl}
+              errors={shelterErrors}
+              clearErrors={clearShelterErrors}
+            />
+          )}
+          <View style={styles.buttons}>
+            <Button text="Sign Up" onPress={registerClick} />
+            <Button
+              text="Already have account?"
+              variant="secondary"
+              onPress={() => {
+                setSignUpError(null);
+                resetSignUp();
+                navigation.replace("SignIn");
+              }}
+            />
+          </View>
+        </View>
       </LayoutProvider>
     </LoadingWrapper>
   );

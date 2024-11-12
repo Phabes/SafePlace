@@ -2,7 +2,6 @@ import { FC } from "react";
 import { StyleSheet, View } from "react-native";
 import { Typography } from "../Typography";
 import { theme, TypographyKeys } from "../../constants/theme";
-import { STATUS_BAR_HEIGHT } from "../../constants/statusBarHeight";
 
 export type NavbarProps = {
   text: string;
@@ -36,7 +35,6 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors["background-subtle"],
     elevation: 2,
     zIndex: 1,
-    marginTop: STATUS_BAR_HEIGHT,
   },
   leftSide: {
     flexDirection: "row",

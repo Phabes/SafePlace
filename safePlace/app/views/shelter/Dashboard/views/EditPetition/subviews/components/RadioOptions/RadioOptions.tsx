@@ -1,4 +1,5 @@
-import { TouchableOpacity, View } from "react-native";
+import { FC } from "react";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
 import {
   Button,
   CheckBox,
@@ -7,17 +8,18 @@ import {
   Typography,
 } from "../../../../../../../../components";
 import { theme } from "../../../../../../../../constants/theme";
-import { FC } from "react";
-import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { PetitionRadioOption } from "../../../../../../../../types";
+import { faTrash } from "@fortawesome/free-solid-svg-icons";
 
-export const RadioOptions: FC<{
+type RadioOptionsType = {
   radioOptions: Array<PetitionRadioOption>;
   handleAddOption: () => void;
   handleOptionChange: (index: number, values: string) => void;
   handleCheckboxChange: (index: number) => void;
   handleOptionDelete: (index: number) => void;
-}> = ({
+};
+
+export const RadioOptions: FC<RadioOptionsType> = ({
   radioOptions,
   handleAddOption,
   handleOptionChange,
@@ -25,24 +27,15 @@ export const RadioOptions: FC<{
   handleOptionDelete,
 }) => {
   return (
-    <View style={{ gap: theme.spacing(1) }}>
-      <View
-        style={{
-          flexDirection: "row",
-          justifyContent: "space-between",
-          alignItems: "flex-end",
-        }}
-      >
+    <View style={styles.container}>
+      <View style={styles.radioTitle}>
         <Typography text="Options:" />
         <Button text="Add Option" onPress={handleAddOption} size="small" />
       </View>
-      <View style={{ gap: theme.spacing(1) }}>
+      <View style={styles.radioOptions}>
         {radioOptions.map((option, index) => (
-          <View
-            key={`RADIO-${index}`}
-            style={{ flexDirection: "row", alignItems: "center" }}
-          >
-            <View style={{ flex: 1 }}>
+          <View key={`RADIO-${index}`} style={styles.radioOption}>
+            <View style={styles.inputContainer}>
               <Input
                 text={option.text}
                 onChange={(value) => handleOptionChange(index, value)}
@@ -61,3 +54,15 @@ export const RadioOptions: FC<{
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: { gap: theme.spacing(1) },
+  radioTitle: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "flex-end",
+  },
+  radioOptions: { gap: theme.spacing(1) },
+  radioOption: { flexDirection: "row", alignItems: "center" },
+  inputContainer: { flex: 1 },
+});

@@ -1,17 +1,15 @@
 import {
   Button,
+  EditListItem,
   ErrorPage,
-  Icon,
   LoadingWrapper,
-  Typography,
 } from "../../../../../components";
-import { StyleSheet, TouchableOpacity, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { theme } from "../../../../../constants/theme";
 import { useAppSelector } from "../../../../../redux/hooks";
 import { selectUserID } from "../../../../../redux/accountSlice";
-import { faTrash, faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 import { FieldAdd, FieldEdit } from "./subviews";
-import { useFields } from "./hooks/useFields";
+import { usePetitionFields } from "./hooks";
 
 export const EditPetition = () => {
   const userID = useAppSelector(selectUserID);
@@ -30,12 +28,12 @@ export const EditPetition = () => {
     handleNewField,
     handleFieldEdit,
     handleFieldDelete,
-  } = useFields(userID);
+  } = usePetitionFields(userID);
 
   if (error) {
     return (
       <ErrorPage
-        text={"Cannot load petition data."}
+        text={"Unable to load petition data."}
         action={"Please reload."}
         button={<Button text="Reload" onPress={() => loadPetitionData()} />}
       />
@@ -49,19 +47,12 @@ export const EditPetition = () => {
           <View style={styles.fields}>
             {fields.map((field, index) => {
               return (
-                <View style={styles.field} key={`FIELD-${index}`}>
-                  <View style={styles.fieldText}>
-                    <Typography text={field.text} />
-                  </View>
-                  <View style={styles.fieldButtons}>
-                    <TouchableOpacity onPress={() => handleFieldEdit(index)}>
-                      <Icon icon={faPenToSquare} />
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={() => handleFieldDelete(index)}>
-                      <Icon icon={faTrash} />
-                    </TouchableOpacity>
-                  </View>
-                </View>
+                <EditListItem
+                  key={`FIELD-${index}`}
+                  text={field.text}
+                  editClick={() => handleFieldEdit(index)}
+                  deleteClick={() => handleFieldDelete(index)}
+                />
               );
             })}
           </View>
@@ -88,20 +79,5 @@ export const EditPetition = () => {
 const styles = StyleSheet.create({
   container: { gap: theme.spacing(3) },
   fields: { gap: theme.spacing(1) },
-  field: {
-    backgroundColor: theme.colors["background-subtle"],
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    padding: theme.spacing(4),
-    borderRadius: theme.spacing(2),
-    gap: theme.spacing(1),
-    elevation: 2,
-  },
-  fieldText: { flex: 1 },
-  fieldButtons: {
-    flexDirection: "row",
-    gap: theme.spacing(2),
-  },
   mainButtons: { gap: theme.spacing(2) },
 });

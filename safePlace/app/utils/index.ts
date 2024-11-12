@@ -1,5 +1,9 @@
+export { capitalizeFirstLetter } from "./capitalizeFirstLetter";
 export { getAccountTabProps } from "./getAccountTabProps";
 export { getAccountTabs } from "./getAccountTabs";
-export { getCurrentView } from "./getCurrentView";
+export {
+  getAnimalTypesToSelect,
+  getAnimalEnvironmentsToSelect,
+} from "./getAnimalSelectData";
 export { getFirebaseErrorMessage } from "./getFirebaseErrorMessage";
 export { getInitialTab } from "./getInitialTab";

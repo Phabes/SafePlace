@@ -1,15 +1,15 @@
 import { useEffect, useState } from "react";
-import { Field } from "../../../../../../types";
+import { PetitionField } from "../../../../../../types";
 import { getPetition, savePetition } from "../../../../../../services";
 
-export const useFields = (userID: string | null) => {
+export const usePetitionFields = (userID: string | null) => {
   const [textLoading, setTextLoading] = useState("Loading fields...");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [disabled, setDisabled] = useState(true);
   const [turnNew, setTurnNew] = useState(false);
   const [turnEdit, setTurnEdit] = useState(-1);
-  const [fields, setFields] = useState<Array<Field>>([]);
+  const [fields, setFields] = useState<Array<PetitionField>>([]);
 
   useEffect(() => {
     loadPetitionData();
@@ -24,8 +24,8 @@ export const useFields = (userID: string | null) => {
     setError(false);
     (async () => {
       try {
-        const dbFields: Field[] = await getPetition(userID);
-        setFields(dbFields);
+        const dbPetitionFields = await getPetition(userID);
+        setFields(dbPetitionFields);
       } catch (error) {
         setError(true);
       } finally {
@@ -58,7 +58,7 @@ export const useFields = (userID: string | null) => {
     setLoading(false);
   };
 
-  const editField = (field: Field) => {
+  const editField = (field: PetitionField) => {
     setFields((prevFields) => {
       prevFields[turnEdit] = field;
       return prevFields;
@@ -66,7 +66,7 @@ export const useFields = (userID: string | null) => {
     setDisabled(false);
   };
 
-  const addField = (field: Field) => {
+  const addField = (field: PetitionField) => {
     setFields([...fields, field]);
     setDisabled(false);
   };

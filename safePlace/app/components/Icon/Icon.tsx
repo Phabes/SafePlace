@@ -3,13 +3,13 @@ import { ColorKeys, theme } from "../../constants/theme";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { IconDefinition } from "@fortawesome/free-solid-svg-icons";
 
-export type LoadingProps = {
+export type IconProps = {
   icon: IconDefinition;
   color?: ColorKeys;
   size?: "small" | "large";
 };
 
-export const Icon: FC<LoadingProps> = ({
+export const Icon: FC<IconProps> = ({
   icon,
   color = "text-success",
   size = "small",

@@ -4,15 +4,19 @@ export type { AccountType, RadioAccountType } from "./AccountType";
 
 export type { DatabaseUser, DatabaseShelter } from "./DatabaseAccount";
 
+export type { Animal, AnimalDB, AnimalTypes, EnvironmentTypes } from "./Animal";
+
 export type {
-  FieldType,
-  BaseField,
-  TextField,
+  PetitionFieldType,
+  BasePetitionField,
+  TextPetitionField,
   PetitionRadioOption,
-  RadioField,
-  Field,
+  RadioPetitionField,
+  PetitionField,
   RadioFieldType,
-} from "./FieldTypes";
+} from "./PetitionFieldTypes";
+
+export type { SelectData } from "./SelectData";
 
 export type { SignInData } from "./SignInData";
 
