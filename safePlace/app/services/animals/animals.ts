@@ -3,6 +3,9 @@ import {
   collection,
   deleteDoc,
   doc,
+  DocumentData,
+  DocumentReference,
+  getDoc,
   getDocs,
   orderBy,
   query,
@@ -19,6 +22,7 @@ export const getShelterAnimals = async (shelterID: string) => {
   const q = query(
     animalsRef,
     where("shelterID", "==", shelterRef),
+    where("available", "==", true),
     orderBy("createdAt", "desc")
   );
 
@@ -42,6 +46,7 @@ export const saveAnimalDB = async (animal: Animal, shelterID: string) => {
     data: animal,
     shelterID: shelterRef,
     createdAt: new Date(),
+    available: true,
   });
 };
 
@@ -56,4 +61,53 @@ export const editAnimalDB = async (animal: AnimalDB) => {
 export const deleteAnimalDB = async (animalID: string) => {
   const animalDocRef = doc(FIREBASE_DB, "Animals", animalID);
   await deleteDoc(animalDocRef);
+};
+
+export const getSearchAnimals = async () => {
+  const animalsRef = collection(FIREBASE_DB, "Animals");
+
+  const q = query(
+    animalsRef,
+    where("available", "==", true),
+    orderBy("createdAt", "desc")
+  );
+
+  const querySnapshot = await getDocs(q);
+
+  const animals: Array<AnimalDB> = querySnapshot.docs.map(
+    (doc) =>
+      ({
+        id: doc.id,
+        ...(doc.data().data as Animal),
+      } as AnimalDB)
+  );
+
+  return animals;
+};
+
+export const addAnimalToFavourites = async (
+  userID: string,
+  favouriteAnimals: Array<DocumentReference>,
+  animalID: string
+) => {
+  const userRef = doc(FIREBASE_DB, "Users", userID);
+
+  const animalRef = doc(FIREBASE_DB, "Animals", animalID);
+
+  const updatedFavourites = [...favouriteAnimals, animalRef];
+
+  await updateDoc(userRef, { updatedFavourites });
+  return animalRef;
+};
+
+export const getUserFavouriteAnimals = async (userID: string) => {
+  const userRef = doc(FIREBASE_DB, "Users", userID);
+
+  const userSnapshot = await getDoc(userRef);
+
+  if (userSnapshot.exists()) {
+    return userSnapshot.get("favouriteAnimals") as Array<DocumentReference>;
+  } else {
+    return [];
+  }
 };

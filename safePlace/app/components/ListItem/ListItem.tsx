@@ -2,32 +2,34 @@ import { FC } from "react";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { Typography } from "../Typography";
 import { Icon } from "../Icon";
-import { faPenToSquare, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { IconDefinition } from "@fortawesome/free-solid-svg-icons";
 import { theme } from "../../constants/theme";
 
-type EditListItemProps = {
+type ListItemProps = {
   text: string;
-  editClick: () => void;
-  deleteClick: () => void;
+  buttons: Array<{
+    onPress: () => void;
+    icon: IconDefinition;
+  }>;
 };
 
-export const EditListItem: FC<EditListItemProps> = ({
-  text,
-  editClick,
-  deleteClick,
-}) => {
+export const ListItem: FC<ListItemProps> = ({ text, buttons }) => {
   return (
     <View style={styles.container}>
       <View style={styles.text}>
         <Typography text={text} />
       </View>
       <View style={styles.buttons}>
-        <TouchableOpacity onPress={editClick}>
-          <Icon icon={faPenToSquare} />
-        </TouchableOpacity>
-        <TouchableOpacity onPress={deleteClick}>
-          <Icon icon={faTrash} />
-        </TouchableOpacity>
+        {buttons.map((button, index) => {
+          return (
+            <TouchableOpacity
+              key={`ICON-BUTTON-${index}`}
+              onPress={button.onPress}
+            >
+              <Icon icon={button.icon} />
+            </TouchableOpacity>
+          );
+        })}
       </View>
     </View>
   );
