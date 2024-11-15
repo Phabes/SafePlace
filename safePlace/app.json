@@ -3,10 +3,11 @@
     "name": "SafePlace",
     "slug": "SafePlace",
     "version": "1.0.0",
-    "newArchEnabled": true,
     "orientation": "portrait",
     "icon": "./app/assets/images/app-icon.png",
-    "userInterfaceStyle": "light",
+    "scheme": "SafePlace",
+    "userInterfaceStyle": "automatic",
+    "newArchEnabled": true,
     "splash": {
       "image": "./app/assets/images/splash.png",
       "resizeMode": "contain",
