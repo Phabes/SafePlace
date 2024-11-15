@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { AnimalDB } from "../../../../types";
 import {
   addAnimalToFavourites,
+  deleteAnimalFromFavourites,
   getSearchAnimals,
   getUserFavouriteAnimals,
 } from "../../../../services";
@@ -39,13 +40,25 @@ export const useSearchAnimals = (userID: string | null) => {
   const addFavourite = async (animalID: string) => {
     try {
       // TO DO - CHANGE IT TO KEEP FAVOURITE ANIMALS IN SEPARATE COLLECTION
-      const animalRef = await addAnimalToFavourites(
+      const updatedFavourites = await addAnimalToFavourites(
         userID!,
         favourite,
         animalID
       );
 
-      setFavourite((prevFavourite) => [...prevFavourite, animalRef]);
+      setFavourite(updatedFavourites);
+    } catch (error) {}
+  };
+
+  const deleteFavourite = async (animalID: string) => {
+    try {
+      const updatedFavourites = await deleteAnimalFromFavourites(
+        userID!,
+        favourite,
+        animalID
+      );
+
+      setFavourite(updatedFavourites);
     } catch (error) {}
   };
 
@@ -56,5 +69,6 @@ export const useSearchAnimals = (userID: string | null) => {
     favourite,
     loadAvailableAnimals,
     addFavourite,
+    deleteFavourite,
   };
 };

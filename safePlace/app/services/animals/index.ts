@@ -5,5 +5,6 @@ export {
   deleteAnimalDB,
   getSearchAnimals,
   addAnimalToFavourites,
+  deleteAnimalFromFavourites,
   getUserFavouriteAnimals,
 } from "./animals";

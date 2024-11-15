@@ -13,7 +13,6 @@ import { faHeart as faHeartSolid } from "@fortawesome/free-solid-svg-icons";
 import { faHeart as faHeartRegular } from "@fortawesome/free-regular-svg-icons";
 import { useAppSelector } from "../../../redux/hooks";
 import { selectUserID } from "../../../redux/accountSlice";
-import { DocumentReference } from "firebase/firestore";
 
 export const Search = () => {
   const userID = useAppSelector(selectUserID);
@@ -24,6 +23,7 @@ export const Search = () => {
     favourite,
     loadAvailableAnimals,
     addFavourite,
+    deleteFavourite,
   } = useSearchAnimals(userID);
 
   if (error) {
@@ -49,7 +49,11 @@ export const Search = () => {
                   { onPress: () => {}, icon: faPen },
                   {
                     onPress: () => {
-                      addFavourite(animal.id);
+                      favourite
+                        .map((a) => a.path)
+                        .includes(`Animals/${animal.id}`)
+                        ? deleteFavourite(animal.id)
+                        : addFavourite(animal.id);
                     },
                     icon: favourite
                       .map((a) => a.path)

@@ -3,7 +3,6 @@ import {
   collection,
   deleteDoc,
   doc,
-  DocumentData,
   DocumentReference,
   getDoc,
   getDocs,
@@ -87,17 +86,34 @@ export const getSearchAnimals = async () => {
 
 export const addAnimalToFavourites = async (
   userID: string,
-  favouriteAnimals: Array<DocumentReference>,
+  favourite: Array<DocumentReference>,
   animalID: string
 ) => {
   const userRef = doc(FIREBASE_DB, "Users", userID);
 
   const animalRef = doc(FIREBASE_DB, "Animals", animalID);
 
-  const updatedFavourites = [...favouriteAnimals, animalRef];
+  const updatedFavourites = [...favourite, animalRef];
 
-  await updateDoc(userRef, { updatedFavourites });
-  return animalRef;
+  await updateDoc(userRef, { favouriteAnimals: updatedFavourites });
+  return updatedFavourites;
+};
+
+export const deleteAnimalFromFavourites = async (
+  userID: string,
+  favourite: Array<DocumentReference>,
+  animalID: string
+) => {
+  const userRef = doc(FIREBASE_DB, "Users", userID);
+
+  const animalRef = doc(FIREBASE_DB, "Animals", animalID);
+
+  const updatedFavourites = favourite.filter(
+    (animal) => animal.id !== animalRef.id
+  );
+
+  await updateDoc(userRef, { favouriteAnimals: updatedFavourites });
+  return updatedFavourites;
 };
 
 export const getUserFavouriteAnimals = async (userID: string) => {
