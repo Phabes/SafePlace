@@ -13,6 +13,7 @@ import { faHeart as faHeartSolid } from "@fortawesome/free-solid-svg-icons";
 import { faHeart as faHeartRegular } from "@fortawesome/free-regular-svg-icons";
 import { useAppSelector } from "../../../redux/hooks";
 import { selectUserID } from "../../../redux/accountSlice";
+import { getSortedAnimals } from "./utils";
 
 export const Search = () => {
   const userID = useAppSelector(selectUserID);
@@ -25,6 +26,8 @@ export const Search = () => {
     addFavourite,
     deleteFavourite,
   } = useSearchAnimals(userID);
+  const favouriteIDs = favourite.map((a) => a.id);
+  const sortedAnimals = getSortedAnimals(animals, favouriteIDs);
 
   if (error) {
     return (
@@ -35,12 +38,15 @@ export const Search = () => {
       />
     );
   }
+
   return (
     <LoadingWrapper isLoading={loading} text="Loading animals...">
       <View style={styles.container}>
         <View style={styles.fields}>
           <Typography text="Available animals:" />
-          {animals.map((animal, index) => {
+          {sortedAnimals.map((animal, index) => {
+            const isAnimalInFavourite = favouriteIDs.includes(animal.id);
+
             return (
               <ListItem
                 key={`ANIMAL-${animal.id}`}
@@ -49,17 +55,11 @@ export const Search = () => {
                   { onPress: () => {}, icon: faPen },
                   {
                     onPress: () => {
-                      favourite
-                        .map((a) => a.path)
-                        .includes(`Animals/${animal.id}`)
+                      isAnimalInFavourite
                         ? deleteFavourite(animal.id)
                         : addFavourite(animal.id);
                     },
-                    icon: favourite
-                      .map((a) => a.path)
-                      .includes(`Animals/${animal.id}`)
-                      ? faHeartSolid
-                      : faHeartRegular,
+                    icon: isAnimalInFavourite ? faHeartSolid : faHeartRegular,
                   },
                 ]}
               />

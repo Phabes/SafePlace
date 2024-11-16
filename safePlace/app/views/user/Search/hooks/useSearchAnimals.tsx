@@ -39,7 +39,6 @@ export const useSearchAnimals = (userID: string | null) => {
 
   const addFavourite = async (animalID: string) => {
     try {
-      // TO DO - CHANGE IT TO KEEP FAVOURITE ANIMALS IN SEPARATE COLLECTION
       const updatedFavourites = await addAnimalToFavourites(
         userID!,
         favourite,
