@@ -5,7 +5,9 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./app/assets/images/app-icon.png",
-    "userInterfaceStyle": "light",
+    "scheme": "SafePlace",
+    "userInterfaceStyle": "automatic",
+    "newArchEnabled": true,
     "splash": {
       "image": "./app/assets/images/splash.png",
       "resizeMode": "contain",

@@ -1,0 +1,1 @@
+export { useSearchAnimals } from "./useSearchAnimals";

@@ -2,8 +2,8 @@ import { StyleSheet, View } from "react-native";
 import {
   Button,
   DialogPopUp,
-  EditListItem,
   ErrorPage,
+  ListItem,
   LoadingWrapper,
   Typography,
 } from "../../../components";
@@ -12,6 +12,7 @@ import { useAppSelector } from "../../../redux/hooks";
 import { selectUserID } from "../../../redux/accountSlice";
 import { AnimalAdd, AnimalEdit } from "./subviews";
 import { theme } from "../../../constants/theme";
+import { faPenToSquare, faTrash } from "@fortawesome/free-solid-svg-icons";
 
 export const Animals = () => {
   const userID = useAppSelector(selectUserID);
@@ -59,13 +60,19 @@ export const Animals = () => {
             <Typography text="Animals in shelter:" />
             {animals.map((animal, index) => {
               return (
-                <EditListItem
+                <ListItem
                   key={`ANIMAL-${animal.id}`}
                   text={`${animal.type} - ${animal.name}`}
-                  editClick={() => handleAnimalEdit(index)}
-                  deleteClick={() => {
-                    handleAnimalDelete(index);
-                  }}
+                  buttons={[
+                    {
+                      onPress: () => handleAnimalEdit(index),
+                      icon: faPenToSquare,
+                    },
+                    {
+                      onPress: () => handleAnimalDelete(index),
+                      icon: faTrash,
+                    },
+                  ]}
                 />
               );
             })}

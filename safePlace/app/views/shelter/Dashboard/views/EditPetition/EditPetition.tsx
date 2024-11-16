@@ -1,7 +1,7 @@
 import {
   Button,
-  EditListItem,
   ErrorPage,
+  ListItem,
   LoadingWrapper,
 } from "../../../../../components";
 import { StyleSheet, View } from "react-native";
@@ -10,6 +10,7 @@ import { useAppSelector } from "../../../../../redux/hooks";
 import { selectUserID } from "../../../../../redux/accountSlice";
 import { FieldAdd, FieldEdit } from "./subviews";
 import { usePetitionFields } from "./hooks";
+import { faPenToSquare, faTrash } from "@fortawesome/free-solid-svg-icons";
 
 export const EditPetition = () => {
   const userID = useAppSelector(selectUserID);
@@ -47,11 +48,19 @@ export const EditPetition = () => {
           <View style={styles.fields}>
             {fields.map((field, index) => {
               return (
-                <EditListItem
+                <ListItem
                   key={`FIELD-${index}`}
                   text={field.text}
-                  editClick={() => handleFieldEdit(index)}
-                  deleteClick={() => handleFieldDelete(index)}
+                  buttons={[
+                    {
+                      onPress: () => handleFieldEdit(index),
+                      icon: faPenToSquare,
+                    },
+                    {
+                      onPress: () => handleFieldDelete(index),
+                      icon: faTrash,
+                    },
+                  ]}
                 />
               );
             })}

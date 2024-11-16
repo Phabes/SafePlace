@@ -1,0 +1,1 @@
+export { getSortedAnimals } from "./getSortedAnimals";
