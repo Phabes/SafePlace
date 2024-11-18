@@ -6,8 +6,11 @@ import {
   saveAnimalDB,
 } from "../../../../services";
 import { Animal, AnimalDB } from "../../../../types";
+import { useAppSelector } from "../../../../redux/hooks";
+import { selectUserID } from "../../../../redux/accountSlice";
 
-export const useAnimals = (userID: string | null) => {
+export const useAnimals = () => {
+  const userID = useAppSelector(selectUserID);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [creating, setCreating] = useState(false);
@@ -20,10 +23,6 @@ export const useAnimals = (userID: string | null) => {
   }, []);
 
   const loadAnimalsData = () => {
-    if (!userID) {
-      return;
-    }
-
     setLoading(true);
     setError(false);
     (async () => {
@@ -68,10 +67,6 @@ export const useAnimals = (userID: string | null) => {
   };
 
   const addAnimal = async (animal: Animal) => {
-    if (!userID) {
-      return;
-    }
-
     setLoading(true);
     try {
       const createdAnimal = await saveAnimalDB(animal, userID);
@@ -79,6 +74,7 @@ export const useAnimals = (userID: string | null) => {
       setAnimals((prevAnimals) => {
         prevAnimals.unshift({
           id: createdAnimal.id,
+          shelterID: userID,
           ...animal,
         });
         return prevAnimals;

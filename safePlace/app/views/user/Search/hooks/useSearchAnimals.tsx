@@ -8,7 +8,7 @@ import {
 } from "../../../../services";
 import { DocumentReference } from "firebase/firestore";
 
-export const useSearchAnimals = (userID: string | null) => {
+export const useSearchAnimals = (userID: string) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [animals, setAnimals] = useState<Array<AnimalDB>>([]);
@@ -24,10 +24,8 @@ export const useSearchAnimals = (userID: string | null) => {
     (async () => {
       try {
         const dbSearchAnimals = await getSearchAnimals();
-        if (userID) {
-          const favouriteAnimals = await getUserFavouriteAnimals(userID);
-          setFavourite(favouriteAnimals);
-        }
+        const favouriteAnimals = await getUserFavouriteAnimals(userID);
+        setFavourite(favouriteAnimals);
         setAnimals(dbSearchAnimals);
       } catch (error) {
         setError(true);
@@ -40,7 +38,7 @@ export const useSearchAnimals = (userID: string | null) => {
   const addFavourite = async (animalID: string) => {
     try {
       const updatedFavourites = await addAnimalToFavourites(
-        userID!,
+        userID,
         favourite,
         animalID
       );
@@ -52,7 +50,7 @@ export const useSearchAnimals = (userID: string | null) => {
   const deleteFavourite = async (animalID: string) => {
     try {
       const updatedFavourites = await deleteAnimalFromFavourites(
-        userID!,
+        userID,
         favourite,
         animalID
       );

@@ -1,7 +1,12 @@
 import { useForm } from "react-hook-form";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Animal, AnimalTypes, EnvironmentTypes } from "../../../../types";
+import {
+  Animal,
+  AnimalDB,
+  AnimalTypes,
+  EnvironmentTypes,
+} from "../../../../types";
 import { ANIMAL_TYPES } from "../../../../constants/animalTypes";
 import { ANIMAL_ENVIRONMENT } from "../../../../constants/animalEnvironments";
 
@@ -20,7 +25,18 @@ const animalSchema = Yup.object().shape({
   details: Yup.string().default(""),
 });
 
-export const useAnimalData = (animal?: Animal) => {
+export const useAnimalData = (animalDB?: AnimalDB) => {
+  const animal: Animal | undefined = animalDB
+    ? {
+        name: animalDB.name,
+        type: animalDB.type,
+        environment: animalDB.environment,
+        friendly: animalDB.friendly,
+        age: animalDB.age,
+        details: animalDB.details,
+      }
+    : undefined;
+
   const {
     control: animalControl,
     handleSubmit: handleAnimalSubmit,

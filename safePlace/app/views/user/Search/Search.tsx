@@ -14,6 +14,8 @@ import { faHeart as faHeartRegular } from "@fortawesome/free-regular-svg-icons";
 import { useAppSelector } from "../../../redux/hooks";
 import { selectUserID } from "../../../redux/accountSlice";
 import { getSortedAnimals } from "./utils";
+import { useState } from "react";
+import { FillPetition } from "./subviews/FillPetition";
 
 export const Search = () => {
   const userID = useAppSelector(selectUserID);
@@ -28,6 +30,15 @@ export const Search = () => {
   } = useSearchAnimals(userID);
   const favouriteIDs = favourite.map((a) => a.id);
   const sortedAnimals = getSortedAnimals(animals, favouriteIDs);
+  const [petitionAnimalIndex, setPetitionAnimalIndex] = useState<number>(-1);
+
+  const handleFillPetitionClick = (index: number) => {
+    setPetitionAnimalIndex(index);
+  };
+
+  const cancelFillPetition = () => {
+    setPetitionAnimalIndex(-1);
+  };
 
   if (error) {
     return (
@@ -43,28 +54,44 @@ export const Search = () => {
     <LoadingWrapper isLoading={loading} text="Loading animals...">
       <View style={styles.container}>
         <View style={styles.fields}>
-          <Typography text="Available animals:" />
-          {sortedAnimals.map((animal, index) => {
-            const isAnimalInFavourite = favouriteIDs.includes(animal.id);
+          {petitionAnimalIndex !== -1 ? (
+            <FillPetition
+              animalID={animals[petitionAnimalIndex].id}
+              shelterID={animals[petitionAnimalIndex].shelterID}
+              userID={userID}
+              onClose={cancelFillPetition}
+            />
+          ) : (
+            <>
+              <Typography text="Available animals:" />
+              {sortedAnimals.map((animal, index) => {
+                const isAnimalInFavourite = favouriteIDs.includes(animal.id);
 
-            return (
-              <ListItem
-                key={`ANIMAL-${animal.id}`}
-                text={`${animal.type} - ${animal.name}`}
-                buttons={[
-                  { onPress: () => {}, icon: faPen },
-                  {
-                    onPress: () => {
-                      isAnimalInFavourite
-                        ? deleteFavourite(animal.id)
-                        : addFavourite(animal.id);
-                    },
-                    icon: isAnimalInFavourite ? faHeartSolid : faHeartRegular,
-                  },
-                ]}
-              />
-            );
-          })}
+                return (
+                  <ListItem
+                    key={`ANIMAL-${animal.id}`}
+                    text={`${animal.type} - ${animal.name}`}
+                    buttons={[
+                      {
+                        onPress: () => handleFillPetitionClick(index),
+                        icon: faPen,
+                      },
+                      {
+                        onPress: () => {
+                          isAnimalInFavourite
+                            ? deleteFavourite(animal.id)
+                            : addFavourite(animal.id);
+                        },
+                        icon: isAnimalInFavourite
+                          ? faHeartSolid
+                          : faHeartRegular,
+                      },
+                    ]}
+                  />
+                );
+              })}
+            </>
+          )}
         </View>
       </View>
     </LoadingWrapper>

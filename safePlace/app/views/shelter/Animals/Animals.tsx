@@ -8,14 +8,11 @@ import {
   Typography,
 } from "../../../components";
 import { useAnimals } from "./hooks";
-import { useAppSelector } from "../../../redux/hooks";
-import { selectUserID } from "../../../redux/accountSlice";
 import { AnimalAdd, AnimalEdit } from "./subviews";
 import { theme } from "../../../constants/theme";
 import { faPenToSquare, faTrash } from "@fortawesome/free-solid-svg-icons";
 
 export const Animals = () => {
-  const userID = useAppSelector(selectUserID);
   const {
     loading,
     error,
@@ -30,7 +27,7 @@ export const Animals = () => {
     addAnimal,
     editAnimal,
     deleteAnimal,
-  } = useAnimals(userID);
+  } = useAnimals();
 
   if (error) {
     return (

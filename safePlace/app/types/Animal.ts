@@ -15,4 +15,5 @@ export interface Animal {
 
 export interface AnimalDB extends Animal {
   id: string;
+  shelterID: string;
 }

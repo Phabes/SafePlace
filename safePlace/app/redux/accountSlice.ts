@@ -2,11 +2,11 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "./store";
 
 interface AccountState {
-  userID: string | null;
+  userID: string;
 }
 
 const initialState: AccountState = {
-  userID: null,
+  userID: "",
 };
 
 const accountSlice = createSlice({
