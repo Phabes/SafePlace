@@ -53,52 +53,48 @@ export const Search = () => {
   return (
     <LoadingWrapper isLoading={loading} text="Loading animals...">
       <View style={styles.container}>
-        <View style={styles.fields}>
-          {petitionAnimalIndex !== -1 ? (
-            <FillPetition
-              animalID={animals[petitionAnimalIndex].id}
-              shelterID={animals[petitionAnimalIndex].shelterID}
-              userID={userID}
-              onClose={cancelFillPetition}
-            />
-          ) : (
-            <>
-              <Typography text="Available animals:" />
-              {sortedAnimals.map((animal, index) => {
-                const isAnimalInFavourite = favouriteIDs.includes(animal.id);
+        {petitionAnimalIndex !== -1 ? (
+          <FillPetition
+            animalID={animals[petitionAnimalIndex].id}
+            shelterID={animals[petitionAnimalIndex].shelterID}
+            userID={userID}
+            onClose={cancelFillPetition}
+          />
+        ) : (
+          <View style={styles.fields}>
+            <Typography text="Available animals:" />
+            {sortedAnimals.map((animal, index) => {
+              const isAnimalInFavourite = favouriteIDs.includes(animal.id);
 
-                return (
-                  <ListItem
-                    key={`ANIMAL-${animal.id}`}
-                    text={`${animal.type} - ${animal.name}`}
-                    buttons={[
-                      {
-                        onPress: () => handleFillPetitionClick(index),
-                        icon: faPen,
+              return (
+                <ListItem
+                  key={`ANIMAL-${animal.id}`}
+                  text={`${animal.type} - ${animal.name}`}
+                  buttons={[
+                    {
+                      onPress: () => handleFillPetitionClick(index),
+                      icon: faPen,
+                    },
+                    {
+                      onPress: () => {
+                        isAnimalInFavourite
+                          ? deleteFavourite(animal.id)
+                          : addFavourite(animal.id);
                       },
-                      {
-                        onPress: () => {
-                          isAnimalInFavourite
-                            ? deleteFavourite(animal.id)
-                            : addFavourite(animal.id);
-                        },
-                        icon: isAnimalInFavourite
-                          ? faHeartSolid
-                          : faHeartRegular,
-                      },
-                    ]}
-                  />
-                );
-              })}
-            </>
-          )}
-        </View>
+                      icon: isAnimalInFavourite ? faHeartSolid : faHeartRegular,
+                    },
+                  ]}
+                />
+              );
+            })}
+          </View>
+        )}
       </View>
     </LoadingWrapper>
   );
 };
 
 const styles = StyleSheet.create({
-  container: { gap: theme.spacing(3) },
+  container: { gap: theme.spacing(3), flex: 1 },
   fields: { gap: theme.spacing(1) },
 });
