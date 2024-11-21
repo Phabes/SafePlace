@@ -9,7 +9,7 @@ import {
   RadioBox,
   Typography,
 } from "../../../../../components";
-import { usePetitionFields } from "./hooks";
+import { usePetitionAnswers, usePetitionFields } from "./hooks";
 import { theme } from "../../../../../constants/theme";
 
 type FillPetitionProps = {
@@ -26,14 +26,11 @@ export const FillPetition: FC<FillPetitionProps> = ({
   onClose,
 }) => {
   const { loading, error, fields } = usePetitionFields(shelterID);
-  const [answers, setAnswers] = useState<{ [key: number]: string }>({});
-
-  const handleAnswerChange = (fieldId: number, value: string) => {
-    setAnswers((prevAnswers) => ({
-      ...prevAnswers,
-      [fieldId]: value,
-    }));
-  };
+  const { answers, handleAnswerChange, submitPetition } = usePetitionAnswers(
+    animalID,
+    shelterID,
+    userID
+  );
 
   if (error) {
     return (
@@ -80,7 +77,8 @@ export const FillPetition: FC<FillPetitionProps> = ({
             </View>
           );
         })}
-        <Button text="Cancel" onPress={onClose} />
+        <Button text="Submit" onPress={submitPetition} />
+        <Button text="Cancel" onPress={onClose} variant="secondary" />
       </View>
     </LoadingWrapper>
   );
