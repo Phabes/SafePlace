@@ -26,11 +26,8 @@ export const FillPetition: FC<FillPetitionProps> = ({
   onClose,
 }) => {
   const { loading, error, fields } = usePetitionFields(shelterID);
-  const { answers, handleAnswerChange, submitPetition } = usePetitionAnswers(
-    animalID,
-    shelterID,
-    userID
-  );
+  const { answers, petitionErros, handleAnswerChange, submitPetition } =
+    usePetitionAnswers(animalID, shelterID, userID, fields);
 
   if (error) {
     return (
@@ -49,7 +46,7 @@ export const FillPetition: FC<FillPetitionProps> = ({
         {fields.map((field, index) => {
           return (
             <View key={`FIELD-${index}`}>
-              <FormLabel text={field.text} />
+              <FormLabel text={field.text} errors={petitionErros[index]} />
               {field.type === "text" ? (
                 <Input
                   placeholder="Enter your response"

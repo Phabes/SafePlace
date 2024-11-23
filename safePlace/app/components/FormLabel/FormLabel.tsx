@@ -13,14 +13,18 @@ export const FormLabel: FC<FormLabelInputs> = ({ text, errors }) => {
 
   return (
     <View style={styles.container}>
-      <Typography text={text} variant="body-small" />
-      {errors && errors.message && (
-        <Typography
-          text={errors.message}
-          variant="body-small"
-          color="text-error"
-        />
-      )}
+      <View style={{ flex: 1 }}>
+        <Typography text={text} variant="body-small" />
+      </View>
+      <View>
+        {errors && errors.message && (
+          <Typography
+            text={errors.message}
+            variant="body-small"
+            color="text-error"
+          />
+        )}
+      </View>
     </View>
   );
 };
