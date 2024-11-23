@@ -16,6 +16,8 @@ import { selectUserID } from "../../../redux/accountSlice";
 import { getSortedAnimals } from "./utils";
 import { useState } from "react";
 import { FillPetition } from "./subviews/FillPetition";
+import { fillPetition } from "../../../services";
+import { PetitionAnswer } from "../../../types";
 
 export const Search = () => {
   const userID = useAppSelector(selectUserID);
@@ -41,11 +43,18 @@ export const Search = () => {
     setPetitionAnimalIndex(index);
   };
 
-  const cancelFillPetition = (signed: boolean) => {
-    if (signed) {
+  const cancelFillPetition = async (answers?: Array<PetitionAnswer>) => {
+    console.log(answers);
+    if (answers) {
       const signedAnimal = sortedAnimals[petitionAnimalIndex].id;
       const notInFavourite = !favouriteIDs.includes(signedAnimal);
-      addToFilled(signedAnimal, notInFavourite);
+      await fillPetition(
+        signedAnimal,
+        animals[petitionAnimalIndex].shelterID,
+        userID,
+        answers
+      );
+      await addToFilled(signedAnimal, notInFavourite);
     }
     setPetitionAnimalIndex(-1);
   };

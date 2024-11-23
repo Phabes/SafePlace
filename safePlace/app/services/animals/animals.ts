@@ -147,6 +147,5 @@ export const getUserFilledPetitionAnimals = async (userID: string) => {
     return (doc.data().animalID as DocumentReference).id;
   });
 
-  console.log(filledPetitions);
   return filledPetitions;
 };

@@ -11,12 +11,13 @@ import {
 } from "../../../../../components";
 import { usePetitionAnswers, usePetitionFields } from "./hooks";
 import { theme } from "../../../../../constants/theme";
+import { PetitionAnswer } from "../../../../../types";
 
 type FillPetitionProps = {
   animalID: string;
   shelterID: string;
   userID: string;
-  onClose: (signed: boolean) => void;
+  onClose: (answers?: Array<PetitionAnswer>) => void;
 };
 
 export const FillPetition: FC<FillPetitionProps> = ({
@@ -34,14 +35,14 @@ export const FillPetition: FC<FillPetitionProps> = ({
     handleAnswerChange,
     submitPetition,
     setErrorFill,
-  } = usePetitionAnswers(animalID, shelterID, userID, fields, onClose);
+  } = usePetitionAnswers(fields, onClose);
 
   if (error) {
     return (
       <ErrorPage
         text="Unable to load animal petition."
         action="Please try again."
-        button={<Button text="Close" onPress={() => onClose(false)} />}
+        button={<Button text="Close" onPress={() => onClose()} />}
       />
     );
   }
@@ -98,11 +99,7 @@ export const FillPetition: FC<FillPetitionProps> = ({
           );
         })}
         <Button text="Submit" onPress={submitPetition} />
-        <Button
-          text="Cancel"
-          onPress={() => onClose(false)}
-          variant="secondary"
-        />
+        <Button text="Cancel" onPress={() => onClose()} variant="secondary" />
       </View>
     </LoadingWrapper>
   );

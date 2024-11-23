@@ -40,12 +40,16 @@ export const useSearchAnimals = (userID: string) => {
   };
 
   const addToFilled = async (animalID: string, notInFavourite: boolean) => {
-    if (notInFavourite) {
-      await addFavourite(animalID);
+    setLoading(true);
+    try {
+      if (notInFavourite) {
+        await addFavourite(animalID);
+      }
+      setFilled((prevFilled) => [...prevFilled, animalID]);
+    } catch (error) {
+    } finally {
+      setLoading(false);
     }
-    setFilled((prevFilled) => {
-      return [...prevFilled, animalID];
-    });
   };
 
   const addFavourite = async (animalID: string) => {

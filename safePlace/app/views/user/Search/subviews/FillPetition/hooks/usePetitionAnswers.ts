@@ -1,19 +1,15 @@
 import { useState } from "react";
-import { PetitionField } from "../../../../../../types";
+import { PetitionAnswer, PetitionField } from "../../../../../../types";
 import {
   createPetitionAnswers,
   createPetitionFieldError,
   validatePetitionField,
 } from "../utils";
 import { FieldError } from "react-hook-form";
-import { fillPetition } from "../../../../../../services";
 
 export const usePetitionAnswers = (
-  animalID: string,
-  shelterID: string,
-  userID: string,
   fields: Array<PetitionField>,
-  onClose: (signed: boolean) => void
+  onClose: (answers?: Array<PetitionAnswer>) => void
 ) => {
   const [loadingFill, setLoadingFill] = useState(false);
   const [errorFill, setErrorFill] = useState(false);
@@ -59,8 +55,7 @@ export const usePetitionAnswers = (
     setLoadingFill(true);
     setErrorFill(false);
     try {
-      await fillPetition(animalID, shelterID, userID, answersDB);
-      onClose(true);
+      onClose(answersDB);
     } catch (error) {
       setErrorFill(true);
     } finally {
