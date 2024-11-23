@@ -44,7 +44,6 @@ export const Search = () => {
   };
 
   const cancelFillPetition = async (answers?: Array<PetitionAnswer>) => {
-    console.log(answers);
     if (answers) {
       const signedAnimal = sortedAnimals[petitionAnimalIndex].id;
       const notInFavourite = !favouriteIDs.includes(signedAnimal);
