@@ -130,3 +130,23 @@ export const getUserFavouriteAnimals = async (userID: string) => {
     return [];
   }
 };
+
+export const getUserFilledPetitionAnimals = async (userID: string) => {
+  const userRef = doc(FIREBASE_DB, "Users", userID);
+
+  const filledPetitionsRef = collection(FIREBASE_DB, "FilledPetitions");
+
+  const userPetitionsQuery = query(
+    filledPetitionsRef,
+    where("userID", "==", userRef)
+  );
+
+  const querySnapshot = await getDocs(userPetitionsQuery);
+
+  const filledPetitions = querySnapshot.docs.map((doc) => {
+    return (doc.data().animalID as DocumentReference).id;
+  });
+
+  console.log(filledPetitions);
+  return filledPetitions;
+};

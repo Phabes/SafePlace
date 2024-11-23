@@ -1,5 +1,5 @@
 import { FieldError } from "react-hook-form";
-import { PetitionFieldType } from "../../../../../../types";
+import { PetitionField, PetitionFieldType } from "../../../../../../types";
 
 const petitionFieldError = ["Answer required", "Choose option"];
 
@@ -25,4 +25,23 @@ export const createPetitionFieldError = (errorType: number) => {
   };
 
   return error;
+};
+
+export const createPetitionAnswers = (
+  fields: Array<PetitionField>,
+  answers: { [key: number]: string }
+) => {
+  const answersDB = fields.map((field, index) => {
+    const answer = {
+      text: field.text,
+      answer:
+        field.type === "radio"
+          ? field.options[parseInt(answers[index])].text
+          : answers[index],
+    };
+
+    return answer;
+  });
+
+  return answersDB;
 };

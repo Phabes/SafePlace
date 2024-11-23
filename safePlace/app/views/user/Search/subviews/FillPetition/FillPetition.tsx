@@ -16,7 +16,7 @@ type FillPetitionProps = {
   animalID: string;
   shelterID: string;
   userID: string;
-  onClose: () => void;
+  onClose: (signed: boolean) => void;
 };
 
 export const FillPetition: FC<FillPetitionProps> = ({
@@ -26,27 +26,50 @@ export const FillPetition: FC<FillPetitionProps> = ({
   onClose,
 }) => {
   const { loading, error, fields } = usePetitionFields(shelterID);
-  const { answers, petitionErros, handleAnswerChange, submitPetition } =
-    usePetitionAnswers(animalID, shelterID, userID, fields);
+  const {
+    answers,
+    loadingFill,
+    errorFill,
+    petitionErrors,
+    handleAnswerChange,
+    submitPetition,
+    setErrorFill,
+  } = usePetitionAnswers(animalID, shelterID, userID, fields, onClose);
 
   if (error) {
     return (
       <ErrorPage
         text="Unable to load animal petition."
         action="Please try again."
-        button={<Button text="Close" onPress={onClose} />}
+        button={<Button text="Close" onPress={() => onClose(false)} />}
       />
     );
   }
 
+  if (errorFill) {
+    return (
+      <ErrorPage
+        text="Unable to sign petition."
+        action="Please try again."
+        button={<Button text="Try again" onPress={() => setErrorFill(false)} />}
+      />
+    );
+  }
+
+  const loadingText = loading
+    ? "Loading petition..."
+    : loadingFill
+    ? "Signing petition..."
+    : "";
+
   return (
-    <LoadingWrapper isLoading={loading} text="Loading petition...">
+    <LoadingWrapper isLoading={loading || loadingFill} text={loadingText}>
       <View style={styles.container}>
         <Typography text="Fill petition:" />
         {fields.map((field, index) => {
           return (
             <View key={`FIELD-${index}`}>
-              <FormLabel text={field.text} errors={petitionErros[index]} />
+              <FormLabel text={field.text} errors={petitionErrors[index]} />
               {field.type === "text" ? (
                 <Input
                   placeholder="Enter your response"
@@ -75,7 +98,11 @@ export const FillPetition: FC<FillPetitionProps> = ({
           );
         })}
         <Button text="Submit" onPress={submitPetition} />
-        <Button text="Cancel" onPress={onClose} variant="secondary" />
+        <Button
+          text="Cancel"
+          onPress={() => onClose(false)}
+          variant="secondary"
+        />
       </View>
     </LoadingWrapper>
   );

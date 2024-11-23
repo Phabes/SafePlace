@@ -23,20 +23,30 @@ export const Search = () => {
     loading,
     error,
     animals,
+    filled,
     favourite,
     loadAvailableAnimals,
+    addToFilled,
     addFavourite,
     deleteFavourite,
   } = useSearchAnimals(userID);
   const favouriteIDs = favourite.map((a) => a.id);
-  const sortedAnimals = getSortedAnimals(animals, favouriteIDs);
+  const filteredAnimals = animals.filter(
+    (animal) => !filled.includes(animal.id)
+  );
+  const sortedAnimals = getSortedAnimals(filteredAnimals, favouriteIDs);
   const [petitionAnimalIndex, setPetitionAnimalIndex] = useState<number>(-1);
 
   const handleFillPetitionClick = (index: number) => {
     setPetitionAnimalIndex(index);
   };
 
-  const cancelFillPetition = () => {
+  const cancelFillPetition = (signed: boolean) => {
+    if (signed) {
+      const signedAnimal = sortedAnimals[petitionAnimalIndex].id;
+      const notInFavourite = !favouriteIDs.includes(signedAnimal);
+      addToFilled(signedAnimal, notInFavourite);
+    }
     setPetitionAnimalIndex(-1);
   };
 
