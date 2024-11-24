@@ -5,7 +5,7 @@ import {
   deleteAnimalFromFavourites,
   getSearchAnimals,
   getUserFavouriteAnimals,
-  getUserFilledPetitionAnimals,
+  getUserNotDeclinedFilledPetitionAnimals,
 } from "../../../../services";
 import { DocumentReference } from "firebase/firestore";
 
@@ -26,7 +26,9 @@ export const useSearchAnimals = (userID: string) => {
     (async () => {
       try {
         const favouriteAnimals = await getUserFavouriteAnimals(userID);
-        const filledAnimals = await getUserFilledPetitionAnimals(userID);
+        const filledAnimals = await getUserNotDeclinedFilledPetitionAnimals(
+          userID
+        );
         const dbSearchAnimals = await getSearchAnimals();
         setFavourite(favouriteAnimals);
         setFilled(filledAnimals);

@@ -1,0 +1,1 @@
+export { getPetitionsData } from "./getPetitionsData";

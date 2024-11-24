@@ -131,7 +131,29 @@ export const getUserFavouriteAnimals = async (userID: string) => {
   }
 };
 
-export const getUserFilledPetitionAnimals = async (userID: string) => {
+export const getUserNotDeclinedFilledPetitionAnimals = async (
+  userID: string
+) => {
+  const userRef = doc(FIREBASE_DB, "Users", userID);
+
+  const filledPetitionsRef = collection(FIREBASE_DB, "FilledPetitions");
+
+  const userPetitionsQuery = query(
+    filledPetitionsRef,
+    where("userID", "==", userRef),
+    where("status", "!=", "Declined")
+  );
+
+  const querySnapshot = await getDocs(userPetitionsQuery);
+
+  const filledPetitions = querySnapshot.docs.map((doc) => {
+    return (doc.data().animalID as DocumentReference).id;
+  });
+
+  return filledPetitions;
+};
+
+export const getUserFilledPetitions = async (userID: string) => {
   const userRef = doc(FIREBASE_DB, "Users", userID);
 
   const filledPetitionsRef = collection(FIREBASE_DB, "FilledPetitions");
@@ -143,9 +165,24 @@ export const getUserFilledPetitionAnimals = async (userID: string) => {
 
   const querySnapshot = await getDocs(userPetitionsQuery);
 
-  const filledPetitions = querySnapshot.docs.map((doc) => {
-    return (doc.data().animalID as DocumentReference).id;
+  const petitionData = querySnapshot.docs.map((doc) => {
+    const data = doc.data();
+
+    return {
+      animalRef: data.animalID as DocumentReference,
+      status: data.status as string,
+    };
   });
 
-  return filledPetitions;
+  const animalPromises = petitionData.map((data) => getDoc(data.animalRef));
+  const animalDocs = await Promise.all(animalPromises);
+
+  const result = animalDocs
+    .filter((animalDoc) => animalDoc.exists())
+    .map((animalDoc, index) => ({
+      animalsName: animalDoc.data().data.name as string,
+      status: petitionData[index].status,
+    }));
+
+  return result;
 };
