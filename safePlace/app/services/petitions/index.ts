@@ -1,1 +1,1 @@
-export { savePetition, getPetition } from "./petitions";
+export { savePetition, getPetition, fillPetition } from "./petitions";

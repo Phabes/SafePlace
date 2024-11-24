@@ -14,9 +14,6 @@ export const useAccountType = () => {
   const [error, setError] = useState(false);
 
   useEffect(() => {
-    if (!userID) {
-      return;
-    }
     setLoading(true);
     setError(false);
 

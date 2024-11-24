@@ -26,3 +26,8 @@ export type RadioFieldType<T extends PetitionFieldType = PetitionFieldType> = {
   label: string;
   value: T;
 };
+
+export type PetitionAnswer = {
+  text: string;
+  answer: string;
+};

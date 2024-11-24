@@ -31,6 +31,7 @@ export const getShelterAnimals = async (shelterID: string) => {
     (doc) =>
       ({
         id: doc.id,
+        shelterID: shelterRef.id,
         ...(doc.data().data as Animal),
       } as AnimalDB)
   );
@@ -50,7 +51,7 @@ export const saveAnimalDB = async (animal: Animal, shelterID: string) => {
 };
 
 export const editAnimalDB = async (animal: AnimalDB) => {
-  const { id, ...animalData } = animal;
+  const { id, shelterID, ...animalData } = animal;
 
   const animalRef = doc(FIREBASE_DB, "Animals", id);
 
@@ -73,13 +74,15 @@ export const getSearchAnimals = async () => {
 
   const querySnapshot = await getDocs(q);
 
-  const animals: Array<AnimalDB> = querySnapshot.docs.map(
-    (doc) =>
-      ({
-        id: doc.id,
-        ...(doc.data().data as Animal),
-      } as AnimalDB)
-  );
+  const animals: Array<AnimalDB> = querySnapshot.docs.map((doc) => {
+    const animalData = doc.data();
+
+    return {
+      id: doc.id,
+      shelterID: (animalData.shelterID as DocumentReference).id,
+      ...(animalData.data as Animal),
+    } as AnimalDB;
+  });
 
   return animals;
 };
@@ -126,4 +129,23 @@ export const getUserFavouriteAnimals = async (userID: string) => {
   } else {
     return [];
   }
+};
+
+export const getUserFilledPetitionAnimals = async (userID: string) => {
+  const userRef = doc(FIREBASE_DB, "Users", userID);
+
+  const filledPetitionsRef = collection(FIREBASE_DB, "FilledPetitions");
+
+  const userPetitionsQuery = query(
+    filledPetitionsRef,
+    where("userID", "==", userRef)
+  );
+
+  const querySnapshot = await getDocs(userPetitionsQuery);
+
+  const filledPetitions = querySnapshot.docs.map((doc) => {
+    return (doc.data().animalID as DocumentReference).id;
+  });
+
+  return filledPetitions;
 };

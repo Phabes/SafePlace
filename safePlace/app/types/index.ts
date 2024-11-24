@@ -14,6 +14,7 @@ export type {
   RadioPetitionField,
   PetitionField,
   RadioFieldType,
+  PetitionAnswer,
 } from "./PetitionFieldTypes";
 
 export type { SelectData } from "./SelectData";

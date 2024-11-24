@@ -21,7 +21,7 @@ import { useAnimalData } from "../../hooks";
 type AnimalEditProps = {
   close: () => void;
   editAnimal: (animal: AnimalDB) => void;
-  animal: Animal;
+  animal: AnimalDB;
 };
 
 export const AnimalEdit: FC<AnimalEditProps> = ({
@@ -35,7 +35,11 @@ export const AnimalEdit: FC<AnimalEditProps> = ({
   const animalEnvironmentsData = getAnimalEnvironmentsToSelect();
 
   const createAnimalObject = () => {
-    const edittedAnimal = animalControl._formValues as AnimalDB;
+    const edittedAnimal = {
+      id: animal.id,
+      shelterID: animal.shelterID,
+      ...(animalControl._formValues as Animal),
+    };
     editAnimal(edittedAnimal);
   };
 

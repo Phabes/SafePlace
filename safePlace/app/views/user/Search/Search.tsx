@@ -14,6 +14,10 @@ import { faHeart as faHeartRegular } from "@fortawesome/free-regular-svg-icons";
 import { useAppSelector } from "../../../redux/hooks";
 import { selectUserID } from "../../../redux/accountSlice";
 import { getSortedAnimals } from "./utils";
+import { useState } from "react";
+import { FillPetition } from "./subviews/FillPetition";
+import { fillPetition } from "../../../services";
+import { PetitionAnswer } from "../../../types";
 
 export const Search = () => {
   const userID = useAppSelector(selectUserID);
@@ -21,13 +25,38 @@ export const Search = () => {
     loading,
     error,
     animals,
+    filled,
     favourite,
     loadAvailableAnimals,
+    addToFilled,
     addFavourite,
     deleteFavourite,
   } = useSearchAnimals(userID);
   const favouriteIDs = favourite.map((a) => a.id);
-  const sortedAnimals = getSortedAnimals(animals, favouriteIDs);
+  const filteredAnimals = animals.filter(
+    (animal) => !filled.includes(animal.id)
+  );
+  const sortedAnimals = getSortedAnimals(filteredAnimals, favouriteIDs);
+  const [petitionAnimalIndex, setPetitionAnimalIndex] = useState<number>(-1);
+
+  const handleFillPetitionClick = (index: number) => {
+    setPetitionAnimalIndex(index);
+  };
+
+  const cancelFillPetition = async (answers?: Array<PetitionAnswer>) => {
+    if (answers) {
+      const signedAnimal = sortedAnimals[petitionAnimalIndex].id;
+      const notInFavourite = !favouriteIDs.includes(signedAnimal);
+      await fillPetition(
+        signedAnimal,
+        animals[petitionAnimalIndex].shelterID,
+        userID,
+        answers
+      );
+      await addToFilled(signedAnimal, notInFavourite);
+    }
+    setPetitionAnimalIndex(-1);
+  };
 
   if (error) {
     return (
@@ -42,36 +71,48 @@ export const Search = () => {
   return (
     <LoadingWrapper isLoading={loading} text="Loading animals...">
       <View style={styles.container}>
-        <View style={styles.fields}>
-          <Typography text="Available animals:" />
-          {sortedAnimals.map((animal, index) => {
-            const isAnimalInFavourite = favouriteIDs.includes(animal.id);
+        {petitionAnimalIndex !== -1 ? (
+          <FillPetition
+            animalID={animals[petitionAnimalIndex].id}
+            shelterID={animals[petitionAnimalIndex].shelterID}
+            userID={userID}
+            onClose={cancelFillPetition}
+          />
+        ) : (
+          <View style={styles.fields}>
+            <Typography text="Available animals:" />
+            {sortedAnimals.map((animal, index) => {
+              const isAnimalInFavourite = favouriteIDs.includes(animal.id);
 
-            return (
-              <ListItem
-                key={`ANIMAL-${animal.id}`}
-                text={`${animal.type} - ${animal.name}`}
-                buttons={[
-                  { onPress: () => {}, icon: faPen },
-                  {
-                    onPress: () => {
-                      isAnimalInFavourite
-                        ? deleteFavourite(animal.id)
-                        : addFavourite(animal.id);
+              return (
+                <ListItem
+                  key={`ANIMAL-${animal.id}`}
+                  text={`${animal.type} - ${animal.name}`}
+                  buttons={[
+                    {
+                      onPress: () => handleFillPetitionClick(index),
+                      icon: faPen,
                     },
-                    icon: isAnimalInFavourite ? faHeartSolid : faHeartRegular,
-                  },
-                ]}
-              />
-            );
-          })}
-        </View>
+                    {
+                      onPress: () => {
+                        isAnimalInFavourite
+                          ? deleteFavourite(animal.id)
+                          : addFavourite(animal.id);
+                      },
+                      icon: isAnimalInFavourite ? faHeartSolid : faHeartRegular,
+                    },
+                  ]}
+                />
+              );
+            })}
+          </View>
+        )}
       </View>
     </LoadingWrapper>
   );
 };
 
 const styles = StyleSheet.create({
-  container: { gap: theme.spacing(3) },
+  container: { gap: theme.spacing(3), flex: 1 },
   fields: { gap: theme.spacing(1) },
 });

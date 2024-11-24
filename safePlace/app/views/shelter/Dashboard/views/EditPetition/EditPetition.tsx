@@ -6,14 +6,11 @@ import {
 } from "../../../../../components";
 import { StyleSheet, View } from "react-native";
 import { theme } from "../../../../../constants/theme";
-import { useAppSelector } from "../../../../../redux/hooks";
-import { selectUserID } from "../../../../../redux/accountSlice";
 import { FieldAdd, FieldEdit } from "./subviews";
 import { usePetitionFields } from "./hooks";
 import { faPenToSquare, faTrash } from "@fortawesome/free-solid-svg-icons";
 
 export const EditPetition = () => {
-  const userID = useAppSelector(selectUserID);
   const {
     textLoading,
     loading,
@@ -29,7 +26,7 @@ export const EditPetition = () => {
     handleNewField,
     handleFieldEdit,
     handleFieldDelete,
-  } = usePetitionFields(userID);
+  } = usePetitionFields();
 
   if (error) {
     return (

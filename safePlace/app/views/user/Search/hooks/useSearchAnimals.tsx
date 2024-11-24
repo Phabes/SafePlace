@@ -5,14 +5,16 @@ import {
   deleteAnimalFromFavourites,
   getSearchAnimals,
   getUserFavouriteAnimals,
+  getUserFilledPetitionAnimals,
 } from "../../../../services";
 import { DocumentReference } from "firebase/firestore";
 
-export const useSearchAnimals = (userID: string | null) => {
+export const useSearchAnimals = (userID: string) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [animals, setAnimals] = useState<Array<AnimalDB>>([]);
   const [favourite, setFavourite] = useState<Array<DocumentReference>>([]);
+  const [filled, setFilled] = useState<Array<string>>([]);
 
   useEffect(() => {
     loadAvailableAnimals();
@@ -23,11 +25,11 @@ export const useSearchAnimals = (userID: string | null) => {
     setError(false);
     (async () => {
       try {
+        const favouriteAnimals = await getUserFavouriteAnimals(userID);
+        const filledAnimals = await getUserFilledPetitionAnimals(userID);
         const dbSearchAnimals = await getSearchAnimals();
-        if (userID) {
-          const favouriteAnimals = await getUserFavouriteAnimals(userID);
-          setFavourite(favouriteAnimals);
-        }
+        setFavourite(favouriteAnimals);
+        setFilled(filledAnimals);
         setAnimals(dbSearchAnimals);
       } catch (error) {
         setError(true);
@@ -37,10 +39,23 @@ export const useSearchAnimals = (userID: string | null) => {
     })();
   };
 
+  const addToFilled = async (animalID: string, notInFavourite: boolean) => {
+    setLoading(true);
+    try {
+      if (notInFavourite) {
+        await addFavourite(animalID);
+      }
+      setFilled((prevFilled) => [...prevFilled, animalID]);
+    } catch (error) {
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const addFavourite = async (animalID: string) => {
     try {
       const updatedFavourites = await addAnimalToFavourites(
-        userID!,
+        userID,
         favourite,
         animalID
       );
@@ -52,7 +67,7 @@ export const useSearchAnimals = (userID: string | null) => {
   const deleteFavourite = async (animalID: string) => {
     try {
       const updatedFavourites = await deleteAnimalFromFavourites(
-        userID!,
+        userID,
         favourite,
         animalID
       );
@@ -65,8 +80,10 @@ export const useSearchAnimals = (userID: string | null) => {
     loading,
     error,
     animals,
+    filled,
     favourite,
     loadAvailableAnimals,
+    addToFilled,
     addFavourite,
     deleteFavourite,
   };

@@ -1,8 +1,11 @@
 import { useEffect, useState } from "react";
 import { PetitionField } from "../../../../../../types";
 import { getPetition, savePetition } from "../../../../../../services";
+import { useAppSelector } from "../../../../../../redux/hooks";
+import { selectUserID } from "../../../../../../redux/accountSlice";
 
-export const usePetitionFields = (userID: string | null) => {
+export const usePetitionFields = () => {
+  const userID = useAppSelector(selectUserID);
   const [textLoading, setTextLoading] = useState("Loading fields...");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
@@ -16,10 +19,6 @@ export const usePetitionFields = (userID: string | null) => {
   }, []);
 
   const loadPetitionData = () => {
-    if (!userID) {
-      return;
-    }
-
     setLoading(true);
     setError(false);
     (async () => {
@@ -47,10 +46,6 @@ export const usePetitionFields = (userID: string | null) => {
   };
 
   const save = async () => {
-    if (!userID) {
-      return;
-    }
-
     setTextLoading("Saving...");
     setLoading(true);
     await savePetition(fields, userID);

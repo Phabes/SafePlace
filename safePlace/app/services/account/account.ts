@@ -30,6 +30,7 @@ export const saveUser = async (signUpData: any, userID: string) => {
 
   await setDoc(doc(FIREBASE_DB, "Users", userID), {
     ...user,
+    favouriteAnimals: [],
     createdAt: new Date(),
   });
 };
