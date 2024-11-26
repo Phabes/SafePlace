@@ -113,6 +113,6 @@ export const Search = () => {
 };
 
 const styles = StyleSheet.create({
-  container: { gap: theme.spacing(3), flex: 1 },
+  container: { flex: 1, gap: theme.spacing(3) },
   fields: { gap: theme.spacing(1) },
 });

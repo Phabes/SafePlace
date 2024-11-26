@@ -1,14 +1,12 @@
 import { useEffect, useState } from "react";
 import { getUserFilledPetitions } from "../../../../services";
+import { SignedPetitionsUserFormat } from "../../../../types";
 
 export const getPetitionsData = (userID: string) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [petitionData, setPetitionData] = useState<
-    Array<{
-      animalsName: string;
-      status: string;
-    }>
+    Array<SignedPetitionsUserFormat>
   >([]);
 
   useEffect(() => {

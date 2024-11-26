@@ -1,1 +1,6 @@
-export const PETITION_STATUSES = ["Accepted", "Declined", "Pending", "Done"];
+export const PETITION_STATUSES = [
+  "Accepted",
+  "Pending",
+  "Declined",
+  "Done",
+] as const;

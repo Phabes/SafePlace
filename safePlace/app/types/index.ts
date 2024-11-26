@@ -17,6 +17,11 @@ export type {
   PetitionAnswer,
 } from "./PetitionFieldTypes";
 
+export type {
+  PetitionStatus,
+  SignedPetitionsUserFormat,
+} from "./PetitionStatus";
+
 export type { SelectData } from "./SelectData";
 
 export type { SignInData } from "./SignInData";

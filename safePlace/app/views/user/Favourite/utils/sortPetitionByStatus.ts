@@ -1,7 +1,8 @@
 import { PETITION_STATUSES } from "../../../../constants/petitionStatuses";
+import { SignedPetitionsUserFormat } from "../../../../types";
 
 export const sortPetitionByStatus = (
-  petitions: { animalsName: string; status: string }[]
+  petitions: Array<SignedPetitionsUserFormat>
 ) => {
   return petitions.sort(
     (a, b) =>

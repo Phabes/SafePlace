@@ -12,7 +12,12 @@ import {
   where,
 } from "firebase/firestore";
 import { FIREBASE_DB } from "../../../firebaseConfig/firebaseConfig";
-import { Animal, AnimalDB } from "../../types";
+import {
+  Animal,
+  AnimalDB,
+  PetitionStatus,
+  SignedPetitionsUserFormat,
+} from "../../types";
 
 export const getShelterAnimals = async (shelterID: string) => {
   const animalsRef = collection(FIREBASE_DB, "Animals");
@@ -153,7 +158,9 @@ export const getUserNotDeclinedFilledPetitionAnimals = async (
   return filledPetitions;
 };
 
-export const getUserFilledPetitions = async (userID: string) => {
+export const getUserFilledPetitions = async (
+  userID: string
+): Promise<Array<SignedPetitionsUserFormat>> => {
   const userRef = doc(FIREBASE_DB, "Users", userID);
 
   const filledPetitionsRef = collection(FIREBASE_DB, "FilledPetitions");
@@ -169,6 +176,7 @@ export const getUserFilledPetitions = async (userID: string) => {
     const data = doc.data();
 
     return {
+      filledPetitionID: doc.id,
       animalRef: data.animalID as DocumentReference,
       status: data.status as string,
     };
@@ -179,10 +187,14 @@ export const getUserFilledPetitions = async (userID: string) => {
 
   const result = animalDocs
     .filter((animalDoc) => animalDoc.exists())
-    .map((animalDoc, index) => ({
-      animalsName: animalDoc.data().data.name as string,
-      status: petitionData[index].status,
-    }));
+    .map((animalDoc, index) => {
+      const data = petitionData[index];
+      return {
+        filledPetitionID: data.filledPetitionID,
+        animalsName: animalDoc.data().data.name as string,
+        status: data.status as PetitionStatus,
+      };
+    });
 
   return result;
 };
