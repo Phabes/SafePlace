@@ -3,16 +3,17 @@ import {
   faListCheck,
   faMagnifyingGlass,
   faPaw,
+  faPenFancy,
   faUser,
   faUserTie,
 } from "@fortawesome/free-solid-svg-icons";
 import { AccountTabs } from "../types";
 
 export const USER_TABS: AccountTabs["User"] = {
-  initialTab: 1,
+  initialTab: 0,
   tabs: [
     { viewID: "Search", text: "Search", icon: faMagnifyingGlass },
-    { viewID: "Favourite", text: "Favourite", icon: faHeart },
+    { viewID: "Petitions", text: "Petitions", icon: faPenFancy },
     { viewID: "UserProfile", text: "Profile", icon: faUser },
   ],
 };

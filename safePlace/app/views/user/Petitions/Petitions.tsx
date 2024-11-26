@@ -14,7 +14,7 @@ import { theme } from "../../../constants/theme";
 import { groupPetitionsByStatus, sortPetitionByStatus } from "./utils";
 import { PETITION_STATUSES } from "../../../constants/petitionStatuses";
 
-export const Favourite = () => {
+export const Petitions = () => {
   const userID = useAppSelector(selectUserID);
   const { loading, error, petitionData, loadPetitionsData } =
     getPetitionsData(userID);
