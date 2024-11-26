@@ -2,7 +2,7 @@ import { FC } from "react";
 import { ViewList } from ".";
 import {
   Search,
-  Favourite,
+  Petitions,
   UserProfile,
   Animals,
   Dashboard,
@@ -11,7 +11,7 @@ import {
 
 const ViewComponents: Record<keyof ViewList, FC> = {
   Search: Search,
-  Favourite: Favourite,
+  Petitions: Petitions,
   UserProfile: UserProfile,
   Animals: Animals,
   Dashboard: Dashboard,

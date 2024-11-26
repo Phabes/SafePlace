@@ -7,5 +7,6 @@ export {
   addAnimalToFavourites,
   deleteAnimalFromFavourites,
   getUserFavouriteAnimals,
-  getUserFilledPetitionAnimals,
+  getUserNotDeclinedFilledPetitionAnimals,
+  getUserFilledPetitions,
 } from "./animals";

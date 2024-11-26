@@ -12,7 +12,12 @@ import {
   where,
 } from "firebase/firestore";
 import { FIREBASE_DB } from "../../../firebaseConfig/firebaseConfig";
-import { Animal, AnimalDB } from "../../types";
+import {
+  Animal,
+  AnimalDB,
+  PetitionStatus,
+  SignedPetitionsUserFormat,
+} from "../../types";
 
 export const getShelterAnimals = async (shelterID: string) => {
   const animalsRef = collection(FIREBASE_DB, "Animals");
@@ -131,7 +136,31 @@ export const getUserFavouriteAnimals = async (userID: string) => {
   }
 };
 
-export const getUserFilledPetitionAnimals = async (userID: string) => {
+export const getUserNotDeclinedFilledPetitionAnimals = async (
+  userID: string
+) => {
+  const userRef = doc(FIREBASE_DB, "Users", userID);
+
+  const filledPetitionsRef = collection(FIREBASE_DB, "FilledPetitions");
+
+  const userPetitionsQuery = query(
+    filledPetitionsRef,
+    where("userID", "==", userRef),
+    where("status", "!=", "Declined")
+  );
+
+  const querySnapshot = await getDocs(userPetitionsQuery);
+
+  const filledPetitions = querySnapshot.docs.map((doc) => {
+    return (doc.data().animalID as DocumentReference).id;
+  });
+
+  return filledPetitions;
+};
+
+export const getUserFilledPetitions = async (
+  userID: string
+): Promise<Array<SignedPetitionsUserFormat>> => {
   const userRef = doc(FIREBASE_DB, "Users", userID);
 
   const filledPetitionsRef = collection(FIREBASE_DB, "FilledPetitions");
@@ -143,9 +172,29 @@ export const getUserFilledPetitionAnimals = async (userID: string) => {
 
   const querySnapshot = await getDocs(userPetitionsQuery);
 
-  const filledPetitions = querySnapshot.docs.map((doc) => {
-    return (doc.data().animalID as DocumentReference).id;
+  const petitionData = querySnapshot.docs.map((doc) => {
+    const data = doc.data();
+
+    return {
+      filledPetitionID: doc.id,
+      animalRef: data.animalID as DocumentReference,
+      status: data.status as string,
+    };
   });
 
-  return filledPetitions;
+  const animalPromises = petitionData.map((data) => getDoc(data.animalRef));
+  const animalDocs = await Promise.all(animalPromises);
+
+  const result = animalDocs
+    .filter((animalDoc) => animalDoc.exists())
+    .map((animalDoc, index) => {
+      const data = petitionData[index];
+      return {
+        filledPetitionID: data.filledPetitionID,
+        animalsName: animalDoc.data().data.name as string,
+        status: data.status as PetitionStatus,
+      };
+    });
+
+  return result;
 };

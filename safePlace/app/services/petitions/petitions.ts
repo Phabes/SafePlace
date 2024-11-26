@@ -23,7 +23,7 @@ export const getPetition = async (userID: string) => {
   }
 };
 
-export const fillPetition = async (
+export const signPetition = async (
   animalID: string,
   shelterID: string,
   userID: string,
@@ -41,6 +41,7 @@ export const fillPetition = async (
     animalID: animalRef,
     shelterID: shelterRef,
     userID: userRef,
+    status: "Pending",
     createdAt: new Date(),
   });
 };
