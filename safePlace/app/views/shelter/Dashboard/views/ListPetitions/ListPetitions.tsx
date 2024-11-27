@@ -12,13 +12,19 @@ import { selectUserID } from "../../../../../redux/accountSlice";
 import { getShelterPetitionsData } from "./hooks";
 import { PETITION_STATUSES_SHELTER } from "../../../../../constants/petitionStatuses";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
-import { groupShelterPetitionsByStatus } from "./utils";
+import { groupPetitionsByStatus } from "../../../../../utils";
+import { SignedPetitionsShelterFormat } from "../../../../../types";
 
 export const ListPetitions = () => {
   const userID = useAppSelector(selectUserID);
   const { loading, error, petitionData, loadPetitionsData } =
     getShelterPetitionsData(userID);
-  const groupedPetitions = groupShelterPetitionsByStatus(petitionData);
+  const groupedPetitions = groupPetitionsByStatus(
+    petitionData,
+    PETITION_STATUSES_SHELTER
+  ) as {
+    [key: string]: SignedPetitionsShelterFormat[];
+  };
 
   if (error) {
     return (
@@ -50,7 +56,7 @@ export const ListPetitions = () => {
                 return (
                   <ListItem
                     key={`PETITION-${status}-${index}`}
-                    text={`${petition.animalsName} - ${petition.userName}`}
+                    text={`${petition.animalName} - ${petition.userName}`}
                     buttons={buttons}
                   />
                 );

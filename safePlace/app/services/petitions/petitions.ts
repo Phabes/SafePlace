@@ -103,22 +103,30 @@ export const getUserFilledPetitions = async (
     return {
       filledPetitionID: doc.id,
       animalRef: data.animalID as DocumentReference,
+      shelterRef: data.shelterID as DocumentReference,
       status: data.status as string,
     };
   });
 
-  const animalPromises = petitionData.map((data) => getDoc(data.animalRef));
-  const animalDocs = await Promise.all(animalPromises);
+  const animalRefs = petitionData.map((data) => data.animalRef);
+  const shelterRefs = petitionData.map((data) => data.shelterRef);
 
-  const result = animalDocs
-    .filter((animalDoc) => animalDoc.exists())
-    .map((animalDoc, index) => {
-      const data = petitionData[index];
+  const allRefs = [...animalRefs, ...shelterRefs];
+  const allDocs = await Promise.all(allRefs.map((ref) => getDoc(ref)));
 
+  const animalDocs = allDocs.slice(0, animalRefs.length);
+  const shelterDocs = allDocs.slice(animalRefs.length);
+
+  const result = petitionData
+    .filter((_, index) => {
+      return animalDocs[index].exists() && shelterDocs[index].exists();
+    })
+    .map((petition, index) => {
       return {
-        filledPetitionID: data.filledPetitionID,
-        animalsName: animalDoc.data().data.name as string,
-        status: data.status as PetitionStatus,
+        filledPetitionID: petition.filledPetitionID,
+        animalName: animalDocs[index].get("data.name") as string,
+        shelterName: shelterDocs[index].get("shelterName") as string,
+        status: petition.status as PetitionStatus,
       };
     });
 
@@ -166,8 +174,8 @@ export const getShelterFilledPetitions = async (
     .map((petition, index) => {
       return {
         filledPetitionID: petition.filledPetitionID,
-        animalsName: animalDocs[index].data()!.data.name as string,
-        userName: userDocs[index].data()!.name as string,
+        animalName: animalDocs[index].get("data.name") as string,
+        userName: userDocs[index].get("name") as string,
         status: petition.status as PetitionStatus,
       };
     });

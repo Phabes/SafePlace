@@ -19,6 +19,7 @@ export type {
 
 export type {
   PetitionStatus,
+  SignedPetitionsBaseFormat,
   SignedPetitionsUserFormat,
   SignedPetitionsShelterFormat,
 } from "./PetitionStatus";
