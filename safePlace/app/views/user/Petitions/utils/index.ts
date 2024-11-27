@@ -1,2 +1,2 @@
-export { groupPetitionsByStatus } from "./groupPetitionsByStatus";
+export { groupUserPetitionsByStatus } from "./groupUserPetitionsByStatus";
 export { sortPetitionByStatus } from "./sortPetitionByStatus";

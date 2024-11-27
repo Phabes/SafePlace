@@ -11,15 +11,15 @@ import { selectUserID } from "../../../redux/accountSlice";
 import { getPetitionsData } from "./hooks";
 import { faCalendarPlus } from "@fortawesome/free-regular-svg-icons";
 import { theme } from "../../../constants/theme";
-import { groupPetitionsByStatus, sortPetitionByStatus } from "./utils";
-import { PETITION_STATUSES } from "../../../constants/petitionStatuses";
+import { groupUserPetitionsByStatus, sortPetitionByStatus } from "./utils";
+import { PETITION_STATUSES_USER } from "../../../constants/petitionStatuses";
 
 export const Petitions = () => {
   const userID = useAppSelector(selectUserID);
   const { loading, error, petitionData, loadPetitionsData } =
     getPetitionsData(userID);
   // const sortedPetitions = sortPetitionByStatus(petitionData);
-  const groupedPetitions = groupPetitionsByStatus(petitionData);
+  const groupedPetitions = groupUserPetitionsByStatus(petitionData);
 
   if (error) {
     return (
@@ -51,7 +51,7 @@ export const Petitions = () => {
             );
           })}
         </View> */}
-        {PETITION_STATUSES.map((status) => {
+        {PETITION_STATUSES_USER.map((status) => {
           if (groupedPetitions[status].length == 0) {
             return null;
           }

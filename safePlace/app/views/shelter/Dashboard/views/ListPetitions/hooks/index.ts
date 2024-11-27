@@ -1,0 +1,1 @@
+export { getShelterPetitionsData } from "./getShelterPetitionsData";

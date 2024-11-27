@@ -1,4 +1,4 @@
-import { PETITION_STATUSES } from "../../../../constants/petitionStatuses";
+import { PETITION_STATUSES_USER } from "../../../../constants/petitionStatuses";
 import { SignedPetitionsUserFormat } from "../../../../types";
 
 export const sortPetitionByStatus = (
@@ -6,6 +6,7 @@ export const sortPetitionByStatus = (
 ) => {
   return petitions.sort(
     (a, b) =>
-      PETITION_STATUSES.indexOf(a.status) - PETITION_STATUSES.indexOf(b.status)
+      PETITION_STATUSES_USER.indexOf(a.status) -
+      PETITION_STATUSES_USER.indexOf(b.status)
   );
 };

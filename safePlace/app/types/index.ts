@@ -20,6 +20,7 @@ export type {
 export type {
   PetitionStatus,
   SignedPetitionsUserFormat,
+  SignedPetitionsShelterFormat,
 } from "./PetitionStatus";
 
 export type { SelectData } from "./SelectData";

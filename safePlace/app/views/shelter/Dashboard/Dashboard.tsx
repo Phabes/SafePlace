@@ -6,7 +6,7 @@ import { DASHBOARD_TABS } from "./constants/dashboardTabs";
 import { getDashboardSubview } from "./utils";
 
 export const Dashboard = () => {
-  const [activeTab, setActiveTab] = useState<DashboardTab>("Edit");
+  const [activeTab, setActiveTab] = useState<DashboardTab>("List");
 
   const CurrentDashboardSubview = getDashboardSubview(activeTab);
 
