@@ -5,4 +5,6 @@ export {
   getUserNotDeclinedFilledPetitionAnimals,
   getUserFilledPetitions,
   getShelterFilledPetitions,
+  getPetitionAnswers,
+  setPetitionStatus,
 } from "./petitions";

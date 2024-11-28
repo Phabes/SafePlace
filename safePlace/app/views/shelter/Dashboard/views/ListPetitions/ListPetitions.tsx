@@ -1,4 +1,5 @@
 import { StyleSheet, View } from "react-native";
+import { useState } from "react";
 import {
   Button,
   ErrorPage,
@@ -11,14 +12,22 @@ import { useAppSelector } from "../../../../../redux/hooks";
 import { selectUserID } from "../../../../../redux/accountSlice";
 import { getShelterPetitionsData } from "./hooks";
 import { PETITION_STATUSES_SHELTER } from "../../../../../constants/petitionStatuses";
-import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { groupPetitionsByStatus } from "../../../../../utils";
-import { SignedPetitionsShelterFormat } from "../../../../../types";
+import {
+  PetitionStatus,
+  SignedPetitionsShelterFormat,
+} from "../../../../../types";
+import { PetitionApprove } from "./subviews";
+import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 
 export const ListPetitions = () => {
   const userID = useAppSelector(selectUserID);
   const { loading, error, petitionData, loadPetitionsData } =
     getShelterPetitionsData(userID);
+  const [selectedPetitionStatus, setSelectedPetitionStatus] =
+    useState<PetitionStatus>("Accepted");
+  const [selectedPetitionID, setSelectedPetitionID] = useState("");
+
   const groupedPetitions = groupPetitionsByStatus(
     petitionData,
     PETITION_STATUSES_SHELTER
@@ -26,10 +35,23 @@ export const ListPetitions = () => {
     [key: string]: SignedPetitionsShelterFormat[];
   };
 
+  const closeAproveView = () => {
+    loadPetitionsData();
+    setSelectedPetitionID("");
+  };
+
+  const changeSelectedPetition = (
+    petition: SignedPetitionsShelterFormat,
+    status: PetitionStatus
+  ) => {
+    setSelectedPetitionStatus(status);
+    setSelectedPetitionID(petition.filledPetitionID);
+  };
+
   if (error) {
     return (
       <ErrorPage
-        text="Unable to signed animals data."
+        text="Unable to load signed petitions."
         action="Please reload."
         button={<Button text="Reload" onPress={loadPetitionsData} />}
       />
@@ -39,31 +61,45 @@ export const ListPetitions = () => {
   return (
     <LoadingWrapper isLoading={loading} text="Loading animals...">
       <View style={styles.container}>
-        {PETITION_STATUSES_SHELTER.map((status) => {
-          if (groupedPetitions[status].length == 0) {
-            return null;
-          }
+        {selectedPetitionID ? (
+          <PetitionApprove
+            filledPetitionID={selectedPetitionID}
+            currentStatus={selectedPetitionStatus}
+            close={closeAproveView}
+          />
+        ) : (
+          PETITION_STATUSES_SHELTER.map((status) => {
+            if (groupedPetitions[status].length == 0) {
+              return null;
+            }
 
-          return (
-            <View key={`PETITION-GROUP-${status}`} style={styles.fields}>
-              <Typography text={`${status}:`} />
-              {groupedPetitions[status].map((petition, index) => {
-                const buttons =
-                  petition.status === "Pending"
-                    ? [{ onPress: () => {}, icon: faMagnifyingGlass }]
-                    : [];
+            return (
+              <View key={`PETITION-GROUP-${status}`} style={styles.fields}>
+                <Typography text={`${status}:`} />
+                {groupedPetitions[status].map((petition, index) => {
+                  const buttons =
+                    petition.status !== "Done"
+                      ? [
+                          {
+                            onPress: () =>
+                              changeSelectedPetition(petition, status),
+                            icon: faMagnifyingGlass,
+                          },
+                        ]
+                      : [];
 
-                return (
-                  <ListItem
-                    key={`PETITION-${status}-${index}`}
-                    text={`${petition.animalName} - ${petition.userName}`}
-                    buttons={buttons}
-                  />
-                );
-              })}
-            </View>
-          );
-        })}
+                  return (
+                    <ListItem
+                      key={`PETITION-${status}-${index}`}
+                      text={`${petition.animalName} - ${petition.userName}`}
+                      buttons={buttons}
+                    />
+                  );
+                })}
+              </View>
+            );
+          })
+        )}
       </View>
     </LoadingWrapper>
   );

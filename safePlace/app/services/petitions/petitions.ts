@@ -7,10 +7,12 @@ import {
   getDocs,
   query,
   setDoc,
+  updateDoc,
   where,
 } from "firebase/firestore";
 import { FIREBASE_DB } from "../../../firebaseConfig/firebaseConfig";
 import {
+  PetitionAnswer,
   PetitionField,
   PetitionStatus,
   SignedPetitionsShelterFormat,
@@ -181,4 +183,24 @@ export const getShelterFilledPetitions = async (
     });
 
   return result;
+};
+
+export const getPetitionAnswers = async (filledPetitionID: string) => {
+  const petitionRef = doc(FIREBASE_DB, "FilledPetitions", filledPetitionID);
+  const petitionSnapshot = await getDoc(petitionRef);
+
+  if (petitionSnapshot.exists()) {
+    return petitionSnapshot.get("answers") as Array<PetitionAnswer>;
+  } else {
+    return [];
+  }
+};
+
+export const setPetitionStatus = async (
+  filledPetitionID: string,
+  status: PetitionStatus
+) => {
+  const petitionRef = doc(FIREBASE_DB, "FilledPetitions", filledPetitionID);
+
+  await updateDoc(petitionRef, { status });
 };
