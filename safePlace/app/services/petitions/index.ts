@@ -7,4 +7,5 @@ export {
   getShelterFilledPetitions,
   getPetitionAnswers,
   setPetitionStatus,
+  getPetitionCoreData,
 } from "./petitions";

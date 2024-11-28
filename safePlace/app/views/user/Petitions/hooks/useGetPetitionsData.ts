@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { getUserFilledPetitions } from "../../../../services";
 import { SignedPetitionsUserFormat } from "../../../../types";
 
-export const getPetitionsData = (userID: string) => {
+export const useGetPetitionsData = (userID: string) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [petitionData, setPetitionData] = useState<

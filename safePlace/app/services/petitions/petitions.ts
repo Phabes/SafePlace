@@ -204,3 +204,32 @@ export const setPetitionStatus = async (
 
   await updateDoc(petitionRef, { status });
 };
+
+export const getPetitionCoreData = async (filledPetitionID: string) => {
+  const petitionRef = doc(FIREBASE_DB, "FilledPetitions", filledPetitionID);
+  const petitionSnapshot = await getDoc(petitionRef);
+
+  if (!petitionSnapshot.exists()) {
+    throw new Error("Petition not found");
+  }
+
+  const animalID = (petitionSnapshot.get("animalID") as DocumentReference).id;
+  const shelterID = (petitionSnapshot.get("shelterID") as DocumentReference).id;
+  const userID = (petitionSnapshot.get("userID") as DocumentReference).id;
+
+  const [animalDoc, shelterDoc, userDoc] = await Promise.all([
+    getDoc(doc(FIREBASE_DB, "Animals", animalID)),
+    getDoc(doc(FIREBASE_DB, "Shelters", shelterID)),
+    getDoc(doc(FIREBASE_DB, "Users", userID)),
+  ]);
+
+  if (!animalDoc.exists() || !shelterDoc.exists() || !userDoc.exists()) {
+    throw new Error("One or more related documents not found");
+  }
+
+  return {
+    animalName: animalDoc.get("data.name") as string,
+    shelterName: shelterDoc.get("shelterName") as string,
+    userName: userDoc.get("name") as string,
+  };
+};

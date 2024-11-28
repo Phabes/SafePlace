@@ -10,7 +10,7 @@ import {
 import { AccountTabs } from "../types";
 
 export const USER_TABS: AccountTabs["User"] = {
-  initialTab: 0,
+  initialTab: 1,
   tabs: [
     { viewID: "Search", text: "Search", icon: faMagnifyingGlass },
     { viewID: "Petitions", text: "Petitions", icon: faPenFancy },
