@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { SignedPetitionsShelterFormat } from "../../../../../../types";
 import { getShelterFilledPetitions } from "../../../../../../services";
 
-export const getShelterPetitionsData = (userID: string) => {
+export const useShelterPetitionsData = (userID: string) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [petitionData, setPetitionData] = useState<

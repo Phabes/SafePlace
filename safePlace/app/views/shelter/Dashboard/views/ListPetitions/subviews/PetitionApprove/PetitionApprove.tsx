@@ -10,18 +10,20 @@ import {
   getPetitionAnswers,
   setPetitionStatus,
 } from "../../../../../../../services";
-import { PetitionAnswer, PetitionStatus } from "../../../../../../../types";
+import {
+  PetitionAnswer,
+  PetitionStatus,
+  SignedPetitionsShelterFormat,
+} from "../../../../../../../types";
 import { theme } from "../../../../../../../constants/theme";
 
 type PetitionApproveProps = {
-  filledPetitionID: string;
-  currentStatus: PetitionStatus;
+  petition: SignedPetitionsShelterFormat;
   close: () => void;
 };
 
 export const PetitionApprove: FC<PetitionApproveProps> = ({
-  filledPetitionID,
-  currentStatus,
+  petition,
   close,
 }) => {
   const [loading, setLoading] = useState(true);
@@ -33,10 +35,6 @@ export const PetitionApprove: FC<PetitionApproveProps> = ({
   const [userAnswers, setUserAnswers] = useState<Array<PetitionAnswer>>([]);
 
   useEffect(() => {
-    if (!filledPetitionID) {
-      return;
-    }
-
     loadPetitionAnswers();
   }, []);
 
@@ -44,7 +42,9 @@ export const PetitionApprove: FC<PetitionApproveProps> = ({
     setLoading(true);
     setError(false);
     try {
-      const petitionAnswers = await getPetitionAnswers(filledPetitionID);
+      const petitionAnswers = await getPetitionAnswers(
+        petition.filledPetitionID
+      );
       setUserAnswers(petitionAnswers);
     } catch (error) {
       setError(true);
@@ -72,7 +72,7 @@ export const PetitionApprove: FC<PetitionApproveProps> = ({
     setLoading(true);
     setError(false);
     try {
-      await setPetitionStatus(filledPetitionID, status);
+      await setPetitionStatus(petition.filledPetitionID, status);
       close();
     } catch (error) {
       setErrorMessage("Unable to change status");
@@ -96,7 +96,7 @@ export const PetitionApprove: FC<PetitionApproveProps> = ({
   return (
     <LoadingWrapper isLoading={loading} text={loadingMessage}>
       <View style={styles.container}>
-        <Typography text={`Current status: ${currentStatus}`} />
+        <Typography text={`Current status: ${petition.status}`} />
 
         <Typography text="Answers:" />
         {userAnswers.map((userAnswer, index) => {

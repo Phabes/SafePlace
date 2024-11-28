@@ -1,5 +1,4 @@
 import { StyleSheet, View } from "react-native";
-import { useState } from "react";
 import {
   Button,
   ErrorPage,
@@ -10,23 +9,18 @@ import {
 import { theme } from "../../../../../constants/theme";
 import { useAppSelector } from "../../../../../redux/hooks";
 import { selectUserID } from "../../../../../redux/accountSlice";
-import { getShelterPetitionsData } from "./hooks";
+import { useSelectPetition, useShelterPetitionsData } from "./hooks";
 import { PETITION_STATUSES_SHELTER } from "../../../../../constants/petitionStatuses";
 import { groupPetitionsByStatus } from "../../../../../utils";
-import {
-  PetitionStatus,
-  SignedPetitionsShelterFormat,
-} from "../../../../../types";
+import { SignedPetitionsShelterFormat } from "../../../../../types";
 import { PetitionApprove } from "./subviews";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 
 export const ListPetitions = () => {
   const userID = useAppSelector(selectUserID);
   const { loading, error, petitionData, loadPetitionsData } =
-    getShelterPetitionsData(userID);
-  const [selectedPetitionStatus, setSelectedPetitionStatus] =
-    useState<PetitionStatus>("Accepted");
-  const [selectedPetitionID, setSelectedPetitionID] = useState("");
+    useShelterPetitionsData(userID);
+  const { selectedPetition, setSelectedPetition } = useSelectPetition();
 
   const groupedPetitions = groupPetitionsByStatus(
     petitionData,
@@ -35,17 +29,13 @@ export const ListPetitions = () => {
     [key: string]: SignedPetitionsShelterFormat[];
   };
 
-  const closeAproveView = () => {
+  const closeApproveView = () => {
     loadPetitionsData();
-    setSelectedPetitionID("");
+    setSelectedPetition(undefined);
   };
 
-  const changeSelectedPetition = (
-    petition: SignedPetitionsShelterFormat,
-    status: PetitionStatus
-  ) => {
-    setSelectedPetitionStatus(status);
-    setSelectedPetitionID(petition.filledPetitionID);
+  const changeSelectedPetition = (petition: SignedPetitionsShelterFormat) => {
+    setSelectedPetition(petition);
   };
 
   if (error) {
@@ -61,11 +51,10 @@ export const ListPetitions = () => {
   return (
     <LoadingWrapper isLoading={loading} text="Loading animals...">
       <View style={styles.container}>
-        {selectedPetitionID ? (
+        {selectedPetition ? (
           <PetitionApprove
-            filledPetitionID={selectedPetitionID}
-            currentStatus={selectedPetitionStatus}
-            close={closeAproveView}
+            petition={selectedPetition}
+            close={closeApproveView}
           />
         ) : (
           PETITION_STATUSES_SHELTER.map((status) => {
@@ -81,8 +70,7 @@ export const ListPetitions = () => {
                     petition.status !== "Done"
                       ? [
                           {
-                            onPress: () =>
-                              changeSelectedPetition(petition, status),
+                            onPress: () => changeSelectedPetition(petition),
                             icon: faMagnifyingGlass,
                           },
                         ]
