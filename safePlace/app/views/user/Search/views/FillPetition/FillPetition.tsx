@@ -9,15 +9,15 @@ import {
   RadioBox,
   Typography,
 } from "../../../../../components";
-import { usePetitionAnswers, usePetitionFields } from "./hooks";
 import { theme } from "../../../../../constants/theme";
 import { PetitionAnswer } from "../../../../../types";
+import { usePetitionFieldsAndAnswers } from "./hooks";
 
 type FillPetitionProps = {
   animalID: string;
   shelterID: string;
   userID: string;
-  onClose: (answers?: Array<PetitionAnswer>) => void;
+  onClose: (answers?: Array<PetitionAnswer>) => Promise<void>;
 };
 
 export const FillPetition: FC<FillPetitionProps> = ({
@@ -26,45 +26,38 @@ export const FillPetition: FC<FillPetitionProps> = ({
   userID,
   onClose,
 }) => {
-  const { loading, error, fields } = usePetitionFields(shelterID);
   const {
+    loadingMessage,
+    loading,
+    errorMessage,
+    error,
+    setError,
+    fields,
     answers,
-    loadingFill,
-    errorFill,
     petitionErrors,
     handleAnswerChange,
     submitPetition,
-    setErrorFill,
-  } = usePetitionAnswers(fields, onClose);
+  } = usePetitionFieldsAndAnswers(shelterID, onClose);
 
   if (error) {
+    const errorButton =
+      errorMessage === "Unable to load animal petition." ? (
+        <Button text="Close" onPress={() => onClose()} />
+      ) : (
+        <Button text="Try again" onPress={() => setError(false)} />
+      );
+
     return (
       <ErrorPage
-        text="Unable to load animal petition."
+        text={errorMessage}
         action="Please try again."
-        button={<Button text="Close" onPress={() => onClose()} />}
+        button={errorButton}
       />
     );
   }
-
-  if (errorFill) {
-    return (
-      <ErrorPage
-        text="Unable to sign petition."
-        action="Please try again."
-        button={<Button text="Try again" onPress={() => setErrorFill(false)} />}
-      />
-    );
-  }
-
-  const loadingText = loading
-    ? "Loading petition..."
-    : loadingFill
-    ? "Signing petition..."
-    : "";
 
   return (
-    <LoadingWrapper isLoading={loading || loadingFill} text={loadingText}>
+    <LoadingWrapper isLoading={loading} text={loadingMessage}>
       <View style={styles.container}>
         <Typography text="Fill petition:" />
         {fields.map((field, index) => {

@@ -34,10 +34,6 @@ export const ListPetitions = () => {
     setSelectedPetition(undefined);
   };
 
-  const changeSelectedPetition = (petition: SignedPetitionsShelterFormat) => {
-    setSelectedPetition(petition);
-  };
-
   if (error) {
     return (
       <ErrorPage
@@ -70,7 +66,7 @@ export const ListPetitions = () => {
                     petition.status !== "Done"
                       ? [
                           {
-                            onPress: () => changeSelectedPetition(petition),
+                            onPress: () => setSelectedPetition(petition),
                             icon: faMagnifyingGlass,
                           },
                         ]

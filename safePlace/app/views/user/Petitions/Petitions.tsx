@@ -19,10 +19,6 @@ export const Petitions = () => {
   const userID = useAppSelector(selectUserID);
   const { loading, error, petitionData, loadPetitionsData } =
     getPetitionsData(userID);
-  // const sortedPetitions = sortPetitionByStatus(
-  //   petitionData,
-  //   PETITION_STATUSES_USER
-  // ) as SignedPetitionsUserFormat[];
   const groupedPetitions = groupPetitionsByStatus(
     petitionData,
     PETITION_STATUSES_USER
@@ -43,23 +39,6 @@ export const Petitions = () => {
   return (
     <LoadingWrapper isLoading={loading} text="Loading animals...">
       <View style={styles.container}>
-        {/* <View style={styles.fields}>
-          <Typography text="Available animals:" />
-          {sortedPetitions.map((petition, index) => {
-            const buttons =
-              petition.status === "Accepted"
-                ? [{ onPress: () => {}, icon: faCalendarPlus }]
-                : [];
-
-            return (
-              <ListItem
-                key={`PETITION-${index}`}
-                text={`${petition.animalName} - ${petition.status}`}
-                buttons={buttons}
-              />
-            );
-          })}
-        </View> */}
         {PETITION_STATUSES_USER.map((status) => {
           if (groupedPetitions[status].length == 0) {
             return null;

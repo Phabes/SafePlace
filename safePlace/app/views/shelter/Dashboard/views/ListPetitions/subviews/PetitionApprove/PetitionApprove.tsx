@@ -1,21 +1,14 @@
 import { StyleSheet, View } from "react-native";
-import { FC, useEffect, useState } from "react";
+import { FC } from "react";
 import {
   Button,
   ErrorPage,
   LoadingWrapper,
   Typography,
 } from "../../../../../../../components";
-import {
-  getPetitionAnswers,
-  setPetitionStatus,
-} from "../../../../../../../services";
-import {
-  PetitionAnswer,
-  PetitionStatus,
-  SignedPetitionsShelterFormat,
-} from "../../../../../../../types";
+import { SignedPetitionsShelterFormat } from "../../../../../../../types";
 import { theme } from "../../../../../../../constants/theme";
+import { useShelterPetitionAnswers } from "./hooks";
 
 type PetitionApproveProps = {
   petition: SignedPetitionsShelterFormat;
@@ -26,62 +19,17 @@ export const PetitionApprove: FC<PetitionApproveProps> = ({
   petition,
   close,
 }) => {
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false);
-  const [loadingMessage, setLoadingMessage] = useState("Loading answers...");
-  const [errorMessage, setErrorMessage] = useState(
-    "Unable to load petition answers."
-  );
-  const [userAnswers, setUserAnswers] = useState<Array<PetitionAnswer>>([]);
-
-  useEffect(() => {
-    loadPetitionAnswers();
-  }, []);
-
-  const loadPetitionAnswers = async () => {
-    setLoading(true);
-    setError(false);
-    try {
-      const petitionAnswers = await getPetitionAnswers(
-        petition.filledPetitionID
-      );
-      setUserAnswers(petitionAnswers);
-    } catch (error) {
-      setError(true);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const acceptPetition = () => {
-    setLoadingMessage("Accepting...");
-    changePetitionStatus("Accepted");
-  };
-
-  const pendingPetition = async () => {
-    setLoadingMessage("Pending...");
-    changePetitionStatus("Pending");
-  };
-
-  const declinePetition = async () => {
-    setLoadingMessage("Declining...");
-    changePetitionStatus("Declined");
-  };
-
-  const changePetitionStatus = async (status: PetitionStatus) => {
-    setLoading(true);
-    setError(false);
-    try {
-      await setPetitionStatus(petition.filledPetitionID, status);
-      close();
-    } catch (error) {
-      setErrorMessage("Unable to change status");
-      setError(true);
-      setLoadingMessage("Loading answers...");
-    } finally {
-      setLoading(false);
-    }
-  };
+  const {
+    loading,
+    error,
+    loadingMessage,
+    errorMessage,
+    loadPetitionAnswers,
+    userAnswers,
+    acceptPetition,
+    pendingPetition,
+    declinePetition,
+  } = useShelterPetitionAnswers(petition, close);
 
   if (error) {
     return (
