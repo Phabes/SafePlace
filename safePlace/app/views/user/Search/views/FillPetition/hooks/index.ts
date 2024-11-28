@@ -1,2 +1,1 @@
-export { usePetitionAnswers } from "./usePetitionAnswers";
-export { usePetitionFields } from "./usePetitionFields";
+export { usePetitionFieldsAndAnswers } from "./usePetitionFieldsAndAnswers";

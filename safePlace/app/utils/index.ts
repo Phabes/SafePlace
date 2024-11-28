@@ -7,3 +7,5 @@ export {
 } from "./getAnimalSelectData";
 export { getFirebaseErrorMessage } from "./getFirebaseErrorMessage";
 export { getInitialTab } from "./getInitialTab";
+export { groupPetitionsByStatus } from "./groupPetitionsByStatus";
+export { sortPetitionByStatus } from "./sortPetitionByStatus";

@@ -12,8 +12,9 @@ import { faPenToSquare, faTrash } from "@fortawesome/free-solid-svg-icons";
 
 export const EditPetition = () => {
   const {
-    textLoading,
+    loadingMessage,
     loading,
+    errorMessage,
     error,
     disabled,
     turnNew,
@@ -31,15 +32,15 @@ export const EditPetition = () => {
   if (error) {
     return (
       <ErrorPage
-        text={"Unable to load petition data."}
+        text={errorMessage}
         action={"Please reload."}
-        button={<Button text="Reload" onPress={() => loadPetitionData()} />}
+        button={<Button text="Reload" onPress={loadPetitionData} />}
       />
     );
   }
 
   return (
-    <LoadingWrapper isLoading={loading} text={textLoading}>
+    <LoadingWrapper isLoading={loading} text={loadingMessage}>
       {!turnNew && turnEdit === -1 && (
         <View style={styles.container}>
           <View style={styles.fields}>

@@ -4,28 +4,31 @@ import { useState } from "react";
 import { DashboardTab } from "./types";
 import { DASHBOARD_TABS } from "./constants/dashboardTabs";
 import { getDashboardSubview } from "./utils";
+import { theme } from "../../../constants/theme";
 
 export const Dashboard = () => {
-  const [activeTab, setActiveTab] = useState<DashboardTab>("Edit");
+  const [activeTab, setActiveTab] = useState<DashboardTab>("List");
 
   const CurrentDashboardSubview = getDashboardSubview(activeTab);
 
   return (
     <View style={styles.container}>
-      <Typography text="Choose:" />
-      <View style={styles.tabs}>
-        {DASHBOARD_TABS.map((tab) => {
-          const isActive = activeTab === tab.id ? "active" : "default";
+      <View>
+        <Typography text="Choose:" />
+        <View style={styles.tabs}>
+          {DASHBOARD_TABS.map((tab) => {
+            const isActive = activeTab === tab.id ? "active" : "default";
 
-          return (
-            <Tab
-              key={`DASHBOARD-${tab.id}`}
-              text={tab.label}
-              onPress={() => setActiveTab(tab.id)}
-              variant={isActive}
-            />
-          );
-        })}
+            return (
+              <Tab
+                key={`DASHBOARD-${tab.id}`}
+                text={tab.label}
+                onPress={() => setActiveTab(tab.id)}
+                variant={isActive}
+              />
+            );
+          })}
+        </View>
       </View>
       <CurrentDashboardSubview />
     </View>
@@ -33,7 +36,7 @@ export const Dashboard = () => {
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1 },
+  container: { flex: 1, gap: theme.spacing(2) },
   tabs: {
     flexDirection: "row",
   },

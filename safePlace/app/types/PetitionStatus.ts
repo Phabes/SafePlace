@@ -1,9 +1,18 @@
-import { PETITION_STATUSES } from "../constants/petitionStatuses";
+import { PETITION_STATUSES_USER } from "../constants/petitionStatuses";
 
-export type PetitionStatus = (typeof PETITION_STATUSES)[number];
+export type PetitionStatus = (typeof PETITION_STATUSES_USER)[number];
 
-export type SignedPetitionsUserFormat = {
+export interface SignedPetitionsBaseFormat {
   filledPetitionID: string;
-  animalsName: string;
+  animalName: string;
   status: PetitionStatus;
-};
+}
+
+export interface SignedPetitionsUserFormat extends SignedPetitionsBaseFormat {
+  shelterName: string;
+}
+
+export interface SignedPetitionsShelterFormat
+  extends SignedPetitionsBaseFormat {
+  userName: string;
+}

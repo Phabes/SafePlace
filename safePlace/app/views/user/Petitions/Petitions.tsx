@@ -11,15 +11,20 @@ import { selectUserID } from "../../../redux/accountSlice";
 import { getPetitionsData } from "./hooks";
 import { faCalendarPlus } from "@fortawesome/free-regular-svg-icons";
 import { theme } from "../../../constants/theme";
-import { groupPetitionsByStatus, sortPetitionByStatus } from "./utils";
-import { PETITION_STATUSES } from "../../../constants/petitionStatuses";
+import { PETITION_STATUSES_USER } from "../../../constants/petitionStatuses";
+import { groupPetitionsByStatus } from "../../../utils";
+import { SignedPetitionsUserFormat } from "../../../types";
 
 export const Petitions = () => {
   const userID = useAppSelector(selectUserID);
   const { loading, error, petitionData, loadPetitionsData } =
     getPetitionsData(userID);
-  // const sortedPetitions = sortPetitionByStatus(petitionData);
-  const groupedPetitions = groupPetitionsByStatus(petitionData);
+  const groupedPetitions = groupPetitionsByStatus(
+    petitionData,
+    PETITION_STATUSES_USER
+  ) as {
+    [key: string]: SignedPetitionsUserFormat[];
+  };
 
   if (error) {
     return (
@@ -34,24 +39,7 @@ export const Petitions = () => {
   return (
     <LoadingWrapper isLoading={loading} text="Loading animals...">
       <View style={styles.container}>
-        {/* <View style={styles.fields}>
-          <Typography text="Available animals:" />
-          {sortedPetitions.map((petition, index) => {
-            const buttons =
-              petition.status === "Accepted"
-                ? [{ onPress: () => {}, icon: faCalendarPlus }]
-                : [];
-
-            return (
-              <ListItem
-                key={`PETITION-${index}`}
-                text={`${petition.animalsName} - ${petition.status}`}
-                buttons={buttons}
-              />
-            );
-          })}
-        </View> */}
-        {PETITION_STATUSES.map((status) => {
+        {PETITION_STATUSES_USER.map((status) => {
           if (groupedPetitions[status].length == 0) {
             return null;
           }
@@ -68,7 +56,7 @@ export const Petitions = () => {
                 return (
                   <ListItem
                     key={`PETITION-${status}-${index}`}
-                    text={`${petition.animalsName} - ${petition.status}`}
+                    text={`${petition.animalName} - ${petition.shelterName}`}
                     buttons={buttons}
                   />
                 );
