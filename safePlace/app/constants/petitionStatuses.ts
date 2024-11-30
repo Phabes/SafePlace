@@ -4,6 +4,7 @@ export const PETITION_STATUSES_USER = [
   "Pending",
   "Declined",
   "Done",
+  "Closed",
 ] as const;
 
 export const PETITION_STATUSES_SHELTER = [
@@ -12,4 +13,5 @@ export const PETITION_STATUSES_SHELTER = [
   "Accepted",
   "Declined",
   "Done",
+  "Closed",
 ] as const;

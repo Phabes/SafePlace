@@ -8,4 +8,6 @@ export {
   getPetitionAnswers,
   setPetitionStatus,
   getPetitionCoreData,
+  getPetitionAnimal,
+  getAllPetitionsWithAnimal,
 } from "./petitions";

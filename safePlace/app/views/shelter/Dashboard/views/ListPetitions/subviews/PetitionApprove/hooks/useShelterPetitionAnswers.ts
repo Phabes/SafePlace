@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 import {
+  getAllPetitionsWithAnimal,
+  getPetitionAnimal,
   getPetitionAnswers,
+  setAnimalAvailability,
   setPetitionStatus,
 } from "../../../../../../../../services";
 import {
@@ -42,26 +45,51 @@ export const useShelterPetitionAnswers = (
     }
   };
 
+  const setAnimalAsTaken = async () => {
+    const animalRef = await getPetitionAnimal(petition.filledPetitionID);
+    await setAnimalAvailability(animalRef.id, false);
+
+    const animalPetitions = await getAllPetitionsWithAnimal(animalRef);
+    const filteredAnimalPetitions = animalPetitions.filter(
+      (petitionID) => petitionID !== petition.filledPetitionID
+    );
+
+    for (const animalPetition of filteredAnimalPetitions) {
+      await setPetitionStatus(animalPetition, "Closed");
+    }
+  };
+
+  const donePetition = () => {
+    setLoadingMessage("Closing...");
+    changePetitionStatus("Done", setAnimalAsTaken);
+  };
+
   const acceptPetition = () => {
     setLoadingMessage("Accepting...");
     changePetitionStatus("Accepted");
   };
 
-  const pendingPetition = async () => {
+  const pendingPetition = () => {
     setLoadingMessage("Pending...");
     changePetitionStatus("Pending");
   };
 
-  const declinePetition = async () => {
+  const declinePetition = () => {
     setLoadingMessage("Declining...");
     changePetitionStatus("Declined");
   };
 
-  const changePetitionStatus = async (status: PetitionStatus) => {
+  const changePetitionStatus = async (
+    status: PetitionStatus,
+    additionalModifications?: () => Promise<void>
+  ) => {
     setLoading(true);
     setError(false);
     try {
       await setPetitionStatus(petition.filledPetitionID, status);
+      if (additionalModifications) {
+        await additionalModifications();
+      }
       close();
     } catch (error) {
       setErrorMessage("Unable to change status");
@@ -79,6 +107,7 @@ export const useShelterPetitionAnswers = (
     errorMessage,
     loadPetitionAnswers,
     userAnswers,
+    donePetition,
     acceptPetition,
     pendingPetition,
     declinePetition,

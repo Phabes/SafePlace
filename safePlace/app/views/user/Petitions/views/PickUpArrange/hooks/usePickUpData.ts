@@ -43,11 +43,9 @@ export const usePickUpData = (
     try {
       const petitionData = await getPetitionCoreData(petitionID);
       setPetitionCoreData(petitionData);
-      if (petitionStatus === "In-Progress") {
-        const scheduleDate = await getPickUp(petitionID);
-        if (scheduleDate) {
-          setDate(scheduleDate);
-        }
+      const scheduleDate = await getPickUp(petitionID);
+      if (scheduleDate) {
+        setDate(scheduleDate);
       }
     } catch (error) {
       setErrorMessage("Unable to load pick up data.");

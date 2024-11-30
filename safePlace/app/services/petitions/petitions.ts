@@ -231,3 +231,31 @@ export const getPetitionCoreData = async (filledPetitionID: string) => {
     userName: userDoc.get("name") as string,
   };
 };
+
+export const getPetitionAnimal = async (petitionID: string) => {
+  const petitionRef = doc(FIREBASE_DB, "FilledPetitions", petitionID);
+
+  const petitionSnapshot = await getDoc(petitionRef);
+
+  if (!petitionSnapshot.exists()) {
+    throw new Error("No animal found");
+  }
+
+  return petitionSnapshot.get("animalID") as DocumentReference;
+};
+
+export const getAllPetitionsWithAnimal = async (
+  animalRef: DocumentReference
+) => {
+  const filledPetitionsRef = collection(FIREBASE_DB, "FilledPetitions");
+
+  const animalPetitionsQuery = query(
+    filledPetitionsRef,
+    where("animalID", "==", animalRef)
+  );
+
+  const querySnapshot = await getDocs(animalPetitionsQuery);
+  const petitions = querySnapshot.docs.map((doc) => doc.id);
+
+  return petitions;
+};

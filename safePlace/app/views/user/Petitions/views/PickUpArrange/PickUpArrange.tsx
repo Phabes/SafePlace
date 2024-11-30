@@ -101,7 +101,7 @@ export const PickUpArrange: FC<PickUpArrangeProps> = ({ petition, close }) => {
         <Typography text={`User: ${petitionCoreData?.userName}`} />
         <Typography text={`Shelter: ${petitionCoreData?.shelterName}`} />
         <Typography text={`Animal: ${petitionCoreData?.animalName}`} />
-        <View style={{ gap: theme.spacing(1) }}>
+        <View style={styles.selectedDate}>
           <Typography text="Current pick up date:" />
           <Typography text={formatDate(date)} center color={color} />
         </View>
@@ -137,6 +137,7 @@ export const PickUpArrange: FC<PickUpArrangeProps> = ({ petition, close }) => {
 
 const styles = StyleSheet.create({
   container: { gap: theme.spacing(2) },
+  selectedDate: { gap: theme.spacing(1) },
   buttons: { gap: theme.spacing(2) },
   selectTimeButtons: {
     flexDirection: "row",

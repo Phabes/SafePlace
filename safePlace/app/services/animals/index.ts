@@ -7,4 +7,5 @@ export {
   addAnimalToFavourites,
   deleteAnimalFromFavourites,
   getUserFavouriteAnimals,
+  setAnimalAvailability,
 } from "./animals";
