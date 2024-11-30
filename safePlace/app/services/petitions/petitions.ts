@@ -62,7 +62,7 @@ export const signPetition = async (
   });
 };
 
-export const getUserNotDeclinedFilledPetitionAnimals = async (
+export const getUserValidStatusFilledPetitionAnimals = async (
   userID: string
 ) => {
   const userRef = doc(FIREBASE_DB, "Users", userID);
@@ -72,7 +72,8 @@ export const getUserNotDeclinedFilledPetitionAnimals = async (
   const userPetitionsQuery = query(
     filledPetitionsRef,
     where("userID", "==", userRef),
-    where("status", "!=", "Declined")
+    where("status", "!=", "Declined"),
+    where("status", "!=", "Closed")
   );
 
   const querySnapshot = await getDocs(userPetitionsQuery);

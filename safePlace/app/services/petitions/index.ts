@@ -2,7 +2,7 @@ export {
   savePetition,
   getPetition,
   signPetition,
-  getUserNotDeclinedFilledPetitionAnimals,
+  getUserValidStatusFilledPetitionAnimals,
   getUserFilledPetitions,
   getShelterFilledPetitions,
   getPetitionAnswers,
