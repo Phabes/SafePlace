@@ -21,9 +21,6 @@ type PickUpArrangeProps = {
 };
 
 export const PickUpArrange: FC<PickUpArrangeProps> = ({ petition, close }) => {
-  const [date, setDate] = useState(new Date());
-  const [showDatePicker, setShowDatePicker] = useState(false);
-  const [showTimePicker, setShowTimePicker] = useState(false);
   const {
     loading,
     error,
@@ -31,7 +28,14 @@ export const PickUpArrange: FC<PickUpArrangeProps> = ({ petition, close }) => {
     errorMessage,
     petitionCoreData,
     loadPickUpData,
-  } = usePickUpData(petition.filledPetitionID, close);
+    schedulePickUp,
+    date,
+    setDate,
+    showDatePicker,
+    setShowDatePicker,
+    showTimePicker,
+    setShowTimePicker,
+  } = usePickUpData(petition.filledPetitionID, petition.status, close);
 
   const color =
     getTimeInMinutes(date) >= getTimeInMinutes(new Date())
@@ -103,8 +107,19 @@ export const PickUpArrange: FC<PickUpArrangeProps> = ({ petition, close }) => {
         </View>
 
         <View style={styles.buttons}>
-          <Button text="Select Date" onPress={() => setShowDatePicker(true)} />
-          <Button text="Select Time" onPress={() => setShowTimePicker(true)} />
+          <View style={styles.selectTimeButtons}>
+            <Button
+              text="Select Date"
+              onPress={() => setShowDatePicker(true)}
+              hasFullWidth
+            />
+            <Button
+              text="Select Time"
+              onPress={() => setShowTimePicker(true)}
+              hasFullWidth
+            />
+          </View>
+          <Button text="Arrange pick up" onPress={schedulePickUp} />
           <Button text="Back" onPress={close} variant="secondary" />
         </View>
       </View>
@@ -123,4 +138,9 @@ export const PickUpArrange: FC<PickUpArrangeProps> = ({ petition, close }) => {
 const styles = StyleSheet.create({
   container: { gap: theme.spacing(2) },
   buttons: { gap: theme.spacing(2) },
+  selectTimeButtons: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    gap: theme.spacing(2),
+  },
 });

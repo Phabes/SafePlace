@@ -1,4 +1,5 @@
 export const PETITION_STATUSES_USER = [
+  "In-Progress",
   "Accepted",
   "Pending",
   "Declined",
@@ -6,6 +7,7 @@ export const PETITION_STATUSES_USER = [
 ] as const;
 
 export const PETITION_STATUSES_SHELTER = [
+  "In-Progress",
   "Pending",
   "Accepted",
   "Declined",

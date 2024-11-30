@@ -126,7 +126,6 @@ export const getUserFavouriteAnimals = async (userID: string) => {
 
   if (userSnapshot.exists()) {
     return userSnapshot.get("favouriteAnimals") as Array<DocumentReference>;
-  } else {
-    return [];
   }
+  return [];
 };

@@ -35,9 +35,8 @@ export const getPetition = async (userID: string) => {
 
   if (petitionSnapshot.exists()) {
     return petitionSnapshot.get("fields") as Array<PetitionField>;
-  } else {
-    return [];
   }
+  return [];
 };
 
 export const signPetition = async (
@@ -191,9 +190,8 @@ export const getPetitionAnswers = async (filledPetitionID: string) => {
 
   if (petitionSnapshot.exists()) {
     return petitionSnapshot.get("answers") as Array<PetitionAnswer>;
-  } else {
-    return [];
   }
+  return [];
 };
 
 export const setPetitionStatus = async (

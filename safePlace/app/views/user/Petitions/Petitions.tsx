@@ -62,15 +62,16 @@ export const Petitions = () => {
               <View key={`PETITION-GROUP-${status}`} style={styles.fields}>
                 <Typography text={`${status}:`} />
                 {groupedPetitions[status].map((petition, index) => {
-                  const buttons =
-                    petition.status === "Accepted"
-                      ? [
-                          {
-                            onPress: () => setSelectedPetition(petition),
-                            icon: faCalendarPlus,
-                          },
-                        ]
-                      : [];
+                  const buttons = ["Accepted", "In-Progress"].includes(
+                    petition.status
+                  )
+                    ? [
+                        {
+                          onPress: () => setSelectedPetition(petition),
+                          icon: faCalendarPlus,
+                        },
+                      ]
+                    : [];
 
                   return (
                     <ListItem
