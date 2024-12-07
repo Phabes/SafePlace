@@ -75,7 +75,7 @@ const useStyles = (
       ...borderStyles,
     },
     fullWidth: {
-      width: "100%",
+      flex: 1,
     },
     fullHeight: {
       height: "100%",

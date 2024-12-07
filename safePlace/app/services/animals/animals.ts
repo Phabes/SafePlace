@@ -126,7 +126,15 @@ export const getUserFavouriteAnimals = async (userID: string) => {
 
   if (userSnapshot.exists()) {
     return userSnapshot.get("favouriteAnimals") as Array<DocumentReference>;
-  } else {
-    return [];
   }
+  return [];
+};
+
+export const setAnimalAvailability = async (
+  animalID: string,
+  available: boolean
+) => {
+  const animalRef = doc(FIREBASE_DB, "Animals", animalID);
+
+  await updateDoc(animalRef, { available });
 };

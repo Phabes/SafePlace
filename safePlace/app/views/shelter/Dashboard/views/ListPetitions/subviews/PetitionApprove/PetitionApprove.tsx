@@ -26,6 +26,7 @@ export const PetitionApprove: FC<PetitionApproveProps> = ({
     errorMessage,
     loadPetitionAnswers,
     userAnswers,
+    donePetition,
     acceptPetition,
     pendingPetition,
     declinePetition,
@@ -60,6 +61,9 @@ export const PetitionApprove: FC<PetitionApproveProps> = ({
         })}
 
         <View style={styles.buttons}>
+          {petition.status === "In-Progress" && (
+            <Button text="Done" onPress={donePetition} />
+          )}
           <Button text="Accept" onPress={acceptPetition} />
           <Button text="Pending" onPress={pendingPetition} />
           <Button text="Decline" onPress={declinePetition} />
