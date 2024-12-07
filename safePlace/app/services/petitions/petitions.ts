@@ -72,8 +72,7 @@ export const getUserValidStatusFilledPetitionAnimals = async (
   const userPetitionsQuery = query(
     filledPetitionsRef,
     where("userID", "==", userRef),
-    where("status", "!=", "Declined"),
-    where("status", "!=", "Closed")
+    where("status", "not-in", ["Declined", "Closed"])
   );
 
   const querySnapshot = await getDocs(userPetitionsQuery);

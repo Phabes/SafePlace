@@ -1,4 +1,5 @@
 export { capitalizeFirstLetter } from "./capitalizeFirstLetter";
+export { formatDate } from "./formatDate";
 export { getAccountTabProps } from "./getAccountTabProps";
 export { getAccountTabs } from "./getAccountTabs";
 export {

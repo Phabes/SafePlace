@@ -9,6 +9,7 @@ import {
 import { SignedPetitionsShelterFormat } from "../../../../../../../types";
 import { theme } from "../../../../../../../constants/theme";
 import { useShelterPetitionAnswers } from "./hooks";
+import { formatDate } from "../../../../../../../utils";
 
 type PetitionApproveProps = {
   petition: SignedPetitionsShelterFormat;
@@ -26,6 +27,7 @@ export const PetitionApprove: FC<PetitionApproveProps> = ({
     errorMessage,
     loadPetitionAnswers,
     userAnswers,
+    pickUpDate,
     donePetition,
     acceptPetition,
     pendingPetition,
@@ -46,6 +48,13 @@ export const PetitionApprove: FC<PetitionApproveProps> = ({
     <LoadingWrapper isLoading={loading} text={loadingMessage}>
       <View style={styles.container}>
         <Typography text={`Current status: ${petition.status}`} />
+
+        {petition.status === "In-Progress" && pickUpDate && (
+          <View>
+            <Typography text="Pick up date:" variant="header-medium" />
+            <Typography text={formatDate(pickUpDate)} variant="header-medium" />
+          </View>
+        )}
 
         <Typography text="Answers:" />
         {userAnswers.map((userAnswer, index) => {

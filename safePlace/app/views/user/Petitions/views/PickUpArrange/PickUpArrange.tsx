@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC } from "react";
 import { SignedPetitionsUserFormat } from "../../../../../types";
 import {
   Button,
@@ -12,8 +12,7 @@ import { usePickUpData } from "./hooks";
 import DateTimePicker, {
   DateTimePickerEvent,
 } from "@react-native-community/datetimepicker";
-import { DAY_OF_THE_WEEK } from "../../../../../constants/dayOfTheWeek";
-import { getTimeInMinutes } from "../../../../../utils";
+import { formatDate, getTimeInMinutes } from "../../../../../utils";
 
 type PickUpArrangeProps = {
   petition: SignedPetitionsUserFormat;
@@ -73,18 +72,6 @@ export const PickUpArrange: FC<PickUpArrangeProps> = ({ petition, close }) => {
     setShowTimePicker(false);
   };
 
-  const formatDate = (date: Date) => {
-    const day = String(date.getDate()).padStart(2, "0");
-    const month = String(date.getMonth() + 1).padStart(2, "0");
-    const year = date.getFullYear();
-    const dayOfWeek = DAY_OF_THE_WEEK[date.getDay()];
-
-    const hours = String(date.getHours()).padStart(2, "0");
-    const minutes = String(date.getMinutes()).padStart(2, "0");
-
-    return `${day}/${month}/${year} ${hours}:${minutes} (${dayOfWeek})`;
-  };
-
   if (error) {
     return (
       <ErrorPage
@@ -102,8 +89,13 @@ export const PickUpArrange: FC<PickUpArrangeProps> = ({ petition, close }) => {
         <Typography text={`Shelter: ${petitionCoreData?.shelterName}`} />
         <Typography text={`Animal: ${petitionCoreData?.animalName}`} />
         <View style={styles.selectedDate}>
-          <Typography text="Current pick up date:" />
-          <Typography text={formatDate(date)} center color={color} />
+          <Typography text="Current pick up date:" variant="header-medium" />
+          <Typography
+            text={formatDate(date)}
+            variant="header-medium"
+            center
+            color={color}
+          />
         </View>
 
         <View style={styles.buttons}>
