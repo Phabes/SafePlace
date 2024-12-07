@@ -1,1 +1,1 @@
-export { savePickUp } from "./schedule";
+export { savePickUp, getPickUp } from "./schedule";

@@ -18,5 +18,5 @@ export const getPickUp = async (petitionID: string) => {
   if (scheduleSnapshot.exists()) {
     return new Date(scheduleSnapshot.get("pickUpDate").seconds * 1000);
   }
-  return null;
+  return undefined;
 };

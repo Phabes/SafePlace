@@ -12,6 +12,7 @@ import {
   SignedPetitionsShelterFormat,
 } from "../../../../../../../../types";
 import { useLoadingAndErrorMessages } from "../../../../../../../../hooks";
+import { getPickUp } from "../../../../../../../../services/schedule";
 
 export const useShelterPetitionAnswers = (
   petition: SignedPetitionsShelterFormat,
@@ -20,6 +21,7 @@ export const useShelterPetitionAnswers = (
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [userAnswers, setUserAnswers] = useState<Array<PetitionAnswer>>([]);
+  const [pickUpDate, setPickUpDate] = useState<Date>();
   const { loadingMessage, setLoadingMessage, errorMessage, setErrorMessage } =
     useLoadingAndErrorMessages(
       "Loading answers...",
@@ -38,6 +40,8 @@ export const useShelterPetitionAnswers = (
         petition.filledPetitionID
       );
       setUserAnswers(petitionAnswers);
+      const scheduledDate = await getPickUp(petition.filledPetitionID);
+      setPickUpDate(scheduledDate);
     } catch (error) {
       setError(true);
     } finally {
@@ -107,6 +111,7 @@ export const useShelterPetitionAnswers = (
     errorMessage,
     loadPetitionAnswers,
     userAnswers,
+    pickUpDate,
     donePetition,
     acceptPetition,
     pendingPetition,
