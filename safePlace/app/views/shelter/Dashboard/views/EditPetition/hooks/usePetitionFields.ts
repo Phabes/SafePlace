@@ -50,6 +50,7 @@ export const usePetitionFields = () => {
 
   const handleFieldDelete = (index: number) => {
     setFields((prevFields) => prevFields.filter((_, i) => i !== index));
+    setDisabled(false);
   };
 
   const save = async () => {

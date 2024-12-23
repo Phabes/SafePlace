@@ -14,16 +14,14 @@ import { PetitionAnswer } from "../../../../../types";
 import { usePetitionFieldsAndAnswers } from "./hooks";
 
 type FillPetitionProps = {
-  animalID: string;
+  animalName: string;
   shelterID: string;
-  userID: string;
   onClose: (answers?: Array<PetitionAnswer>) => Promise<void>;
 };
 
 export const FillPetition: FC<FillPetitionProps> = ({
-  animalID,
+  animalName,
   shelterID,
-  userID,
   onClose,
 }) => {
   const {
@@ -59,7 +57,7 @@ export const FillPetition: FC<FillPetitionProps> = ({
   return (
     <LoadingWrapper isLoading={loading} text={loadingMessage}>
       <View style={styles.container}>
-        <Typography text="Fill petition:" />
+        <Typography text={`Fill petition for: ${animalName}`} />
         {fields.map((field, index) => {
           return (
             <View key={`FIELD-${index}`}>
@@ -71,7 +69,7 @@ export const FillPetition: FC<FillPetitionProps> = ({
                   onChange={(value) => handleAnswerChange(index, value)}
                 />
               ) : field.type === "radio" ? (
-                <>
+                <View>
                   {field.options.map((option, radioIndex) => {
                     return (
                       <RadioBox
@@ -86,7 +84,7 @@ export const FillPetition: FC<FillPetitionProps> = ({
                       />
                     );
                   })}
-                </>
+                </View>
               ) : null}
             </View>
           );
