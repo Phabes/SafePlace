@@ -73,9 +73,8 @@ export const Search = () => {
       <View style={styles.container}>
         {petitionAnimalIndex !== -1 ? (
           <FillPetition
-            animalID={animals[petitionAnimalIndex].id}
+            animalName={animals[petitionAnimalIndex].name}
             shelterID={animals[petitionAnimalIndex].shelterID}
-            userID={userID}
             onClose={cancelFillPetition}
           />
         ) : (
