@@ -8,7 +8,7 @@ export const getUserExpirienceTypesToSelect = (): Array<SelectData> =>{
   }))
 }
 
-export const getUserLifeestyleTypesToSelect = (): Array<SelectData> => {
+export const getUserLifestyleTypesToSelect = (): Array<SelectData> => {
   return USER_LIFESTYLE_TYPES.map((lifestyle) => ({
     label: lifestyle,
     value: lifestyle,

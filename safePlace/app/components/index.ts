@@ -18,3 +18,4 @@ export * from "./Select";
 export * from "./Tab";
 export * from "./Typography";
 export * from "./Typography";
+export * from "./AddImageModal";

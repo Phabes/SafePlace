@@ -9,6 +9,7 @@ export const theme: Theme = {
     "text-error": "#d62222",
     "text-success": "#ffaa78",
     "background-primary": "#fafafa",
+    "background-clickable": "#dee3e7",
     "background-subtle": "#dcdee0",
     "background-disabled": "#c8cacc",
     "action-selected": "#ffaa78",
@@ -56,6 +57,7 @@ export type ColorKeys =
   | "text-error"
   | "text-success"
   | "background-primary"
+  | "background-clickable"
   | "background-subtle"
   | "background-disabled"
   | "action-selected";
