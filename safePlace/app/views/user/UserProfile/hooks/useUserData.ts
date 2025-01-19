@@ -6,36 +6,28 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 
 const userProfileSchema = Yup.object().shape({
-  age: Yup.number(),
-  experience: Yup.mixed<UserExpierienceTypes>().oneOf(USER_EXPIERIENCE_TYPES),
-  lifestyle: Yup.mixed<UserLifestyleTypes>().oneOf(USER_LIFESTYLE_TYPES),
-  housing: Yup.mixed<HousingTypes>().oneOf(HOUSING_TYPES),
-  area: Yup.mixed<HousingAreaTypes>().oneOf(HOUSING_AREA_TYPES),
-  profilePhoto: Yup.string(),
-  backgroundPhoto:Yup.string(),
+  age: Yup.number().default(0),
+  experience: Yup.mixed<UserExpierienceTypes>().oneOf(USER_EXPIERIENCE_TYPES).default(""),
+  lifestyle: Yup.mixed<UserLifestyleTypes>().oneOf(USER_LIFESTYLE_TYPES).default(""),
+  housing: Yup.mixed<HousingTypes>().oneOf(HOUSING_TYPES).default(""),
+  area: Yup.mixed<HousingAreaTypes>().oneOf(HOUSING_AREA_TYPES).default(""),
+  profilePhoto: Yup.string().default(""),
+  backgroundPhoto: Yup.string().default(""),
 });
 
-export const useUserData = (userDB?: DatabaseUser) => {
-  const user:AdditionalUserData | undefined = userDB?{
-    age: userDB.details.age,
-    experience: userDB.details.experience,
-    housing: userDB.details.housing,
-    area: userDB.details.area,
-    lifestyle: userDB.details.lifestyle,
-    profilePhoto: userDB.details.profilePhoto,
-    backgroundPhoto: userDB.details.backgroundPhoto,
-  }
-  : undefined;
+export const useUserData = (userDetails: AdditionalUserData) => {
+  const user: AdditionalUserData = userDetails
 
   const {
     control: userProfileControl,
     handleSubmit: handleUserProfileSubmit,
     formState: { errors: userProfileErrors },
   } = useForm<AdditionalUserData>({
-    defaultValues: {
+    values: {
       ...user
     },
     resolver: yupResolver(userProfileSchema),
+
   });
 
   return {

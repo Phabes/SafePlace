@@ -13,11 +13,11 @@ export type DatabaseShelter = {
 };
 
 export type AdditionalUserData = {
-  age?: number;
-  experience?: UserExpierienceTypes;
-  housing?: HousingTypes;
-  area?: HousingAreaTypes;
-  lifestyle?: UserLifestyleTypes;
-  profilePhoto?: string;
-  backgroundPhoto?: string;
+  age: number;
+  experience: UserExpierienceTypes;
+  housing: HousingTypes;
+  area: HousingAreaTypes;
+  lifestyle: UserLifestyleTypes;
+  profilePhoto: string;
+  backgroundPhoto: string;
 };
