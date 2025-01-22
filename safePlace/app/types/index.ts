@@ -2,7 +2,7 @@ export type { AccountTabs } from "./AccountTabs";
 
 export type { AccountType, RadioAccountType } from "./AccountType";
 
-export type { DatabaseUser, DatabaseShelter } from "./DatabaseAccount";
+export type { DatabaseUser, DatabaseShelter, AdditionalUserData, AdditionalShelterData} from "./DatabaseAccount";
 
 export type { Animal, AnimalDB, AnimalTypes, EnvironmentTypes } from "./Animal";
 
@@ -33,3 +33,11 @@ export type {
   ShelterSignUpData,
   UserSignUpData,
 } from "./SignUpData";
+
+export type { PhotoRes } from "./PhotoType";
+
+export type {
+AddImageModalProps,
+AddImageModalRes
+} from "./ImageModalTypes"
+

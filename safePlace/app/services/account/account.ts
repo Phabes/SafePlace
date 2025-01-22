@@ -1,4 +1,4 @@
-import { doc, getDoc, setDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import {
   FIREBASE_AUTH,
   FIREBASE_DB,
@@ -7,7 +7,8 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
 } from "firebase/auth";
-import { DatabaseShelter, DatabaseUser } from "../../types";
+import { AdditionalUserData, DatabaseShelter, AdditionalShelterData, DatabaseUser } from "../../types";
+import { EMPTY_SHELTER_DETAILS, EMPTY_USER_DETAILS } from "../../constants/emptyUserDetails";
 
 export const createAccount = async (email: string, password: string) => {
   return await createUserWithEmailAndPassword(FIREBASE_AUTH, email, password);
@@ -26,6 +27,7 @@ export const saveUser = async (signUpData: any, userID: string) => {
     email: signUpData.email,
     name: signUpData.name,
     surname: signUpData.surname,
+    details: EMPTY_USER_DETAILS
   };
 
   await setDoc(doc(FIREBASE_DB, "Users", userID), {
@@ -39,6 +41,7 @@ export const saveShelter = async (signUpData: any, userID: string) => {
   const shelter: DatabaseShelter = {
     email: signUpData.email,
     shelterName: signUpData.shelterName,
+    details: EMPTY_SHELTER_DETAILS
   };
 
   await setDoc(doc(FIREBASE_DB, "Shelters", userID), {
@@ -53,4 +56,34 @@ export const getUserData = async (userID: string) => {
 
 export const getShelterData = async (userID: string) => {
   return await getDoc(doc(FIREBASE_DB, "Shelters", userID));
+};
+
+export const saveUserProfileImage = async(userID:string, imageUri: string, userDetails: AdditionalUserData) =>{
+  const userRef = doc(FIREBASE_DB, "Users", userID);
+  await updateDoc(userRef, { details: { ...userDetails, profilePhoto:imageUri }});
+}
+
+export const saveUserBackgroundImage = async (userID: string, imageUri: string, userDetails: AdditionalUserData) => {
+  const userRef = doc(FIREBASE_DB, "Users", userID);
+  await updateDoc(userRef, { details: { ...userDetails, backgroundPhoto: imageUri } });
+};
+
+export const updateUserDetails = async (userID: string, userDetails:AdditionalUserData) => {
+  const userRef = doc(FIREBASE_DB, "Users", userID);
+  await updateDoc(userRef, { details: { ...userDetails } });
+}
+
+export const saveShelterProfileImage = async (userID: string, imageUri: string, userDetails: AdditionalShelterData) => {
+  const userRef = doc(FIREBASE_DB, "Shelters", userID);
+  await updateDoc(userRef, { details: { ...userDetails, profilePhoto: imageUri } });
+};
+
+export const saveShelterBackgroundImage = async (userID: string, imageUri: string, userDetails: AdditionalShelterData) => {
+  const userRef = doc(FIREBASE_DB, "Shelters", userID);
+  await updateDoc(userRef, { details: { ...userDetails, backgroundPhoto: imageUri } });
+};
+
+export const updateShelterDetails = async (userID: string, userDetails: AdditionalShelterData) => {
+  const userRef = doc(FIREBASE_DB, "Shelters", userID);
+  await updateDoc(userRef, { details: { ...userDetails } });
 };
