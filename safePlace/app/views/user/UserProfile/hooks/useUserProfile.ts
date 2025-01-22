@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { AddImageModalRes, AdditionalUserData } from "../../../../types";
 import { getUserData } from "../../../../services";
-import { EMPTY_USER_DETAILS } from "../../../../constants/userProfilTypes";
+import { EMPTY_USER_DETAILS } from "../../../../constants/emptyUserDetails";
 import { saveUserBackgroundImage, saveUserProfileImage, updateUserDetails } from "../../../../services/account/account";
 
 export const useUserProfile = (userID: string) => {

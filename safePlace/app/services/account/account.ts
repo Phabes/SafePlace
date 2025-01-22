@@ -7,8 +7,8 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
 } from "firebase/auth";
-import { AdditionalUserData, DatabaseShelter, DatabaseUser } from "../../types";
-import { EMPTY_USER_DETAILS } from "../../constants/userProfilTypes";
+import { AdditionalUserData, DatabaseShelter, AdditionalShelterData, DatabaseUser } from "../../types";
+import { EMPTY_SHELTER_DETAILS, EMPTY_USER_DETAILS } from "../../constants/emptyUserDetails";
 
 export const createAccount = async (email: string, password: string) => {
   return await createUserWithEmailAndPassword(FIREBASE_AUTH, email, password);
@@ -41,6 +41,7 @@ export const saveShelter = async (signUpData: any, userID: string) => {
   const shelter: DatabaseShelter = {
     email: signUpData.email,
     shelterName: signUpData.shelterName,
+    details: EMPTY_SHELTER_DETAILS
   };
 
   await setDoc(doc(FIREBASE_DB, "Shelters", userID), {
@@ -71,3 +72,18 @@ export const updateUserDetails = async (userID: string, userDetails:AdditionalUs
   const userRef = doc(FIREBASE_DB, "Users", userID);
   await updateDoc(userRef, { details: { ...userDetails } });
 }
+
+export const saveShelterProfileImage = async (userID: string, imageUri: string, userDetails: AdditionalShelterData) => {
+  const userRef = doc(FIREBASE_DB, "Shelters", userID);
+  await updateDoc(userRef, { details: { ...userDetails, profilePhoto: imageUri } });
+};
+
+export const saveShelterBackgroundImage = async (userID: string, imageUri: string, userDetails: AdditionalShelterData) => {
+  const userRef = doc(FIREBASE_DB, "Shelters", userID);
+  await updateDoc(userRef, { details: { ...userDetails, backgroundPhoto: imageUri } });
+};
+
+export const updateShelterDetails = async (userID: string, userDetails: AdditionalShelterData) => {
+  const userRef = doc(FIREBASE_DB, "Shelters", userID);
+  await updateDoc(userRef, { details: { ...userDetails } });
+};

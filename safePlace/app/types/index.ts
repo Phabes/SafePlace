@@ -2,7 +2,7 @@ export type { AccountTabs } from "./AccountTabs";
 
 export type { AccountType, RadioAccountType } from "./AccountType";
 
-export type { DatabaseUser, DatabaseShelter, AdditionalUserData } from "./DatabaseAccount";
+export type { DatabaseUser, DatabaseShelter, AdditionalUserData, AdditionalShelterData} from "./DatabaseAccount";
 
 export type { Animal, AnimalDB, AnimalTypes, EnvironmentTypes } from "./Animal";
 

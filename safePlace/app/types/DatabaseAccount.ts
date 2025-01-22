@@ -10,6 +10,7 @@ export type DatabaseUser = {
 export type DatabaseShelter = {
   email: string;
   shelterName: string;
+  details: AdditionalShelterData;
 };
 
 export type AdditionalUserData = {
@@ -21,3 +22,10 @@ export type AdditionalUserData = {
   profilePhoto: string;
   backgroundPhoto: string;
 };
+
+export type AdditionalShelterData = {
+  profilePhoto: string;
+  backgroundPhoto: string;
+  contactEmail:string;
+  phoneNumber:string;
+}

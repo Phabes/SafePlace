@@ -1,4 +1,3 @@
-import { AdditionalUserData } from "../types";
 
 export const USER_EXPIERIENCE_TYPES = [
   "",
@@ -28,12 +27,3 @@ export const HOUSING_AREA_TYPES = [
   "Big town",
 ] as const;
 
-export const EMPTY_USER_DETAILS: AdditionalUserData = {
-  age: 0,
-  experience: "",
-  housing: "",
-  area: "",
-  lifestyle: "",
-  profilePhoto: "",
-  backgroundPhoto: ""
-}
