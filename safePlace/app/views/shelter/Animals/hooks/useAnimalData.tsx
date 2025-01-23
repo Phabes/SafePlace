@@ -11,6 +11,7 @@ import { ANIMAL_TYPES } from "../../../../constants/animalTypes";
 import { ANIMAL_ENVIRONMENT } from "../../../../constants/animalEnvironments";
 
 const animalSchema = Yup.object().shape({
+  photo: Yup.string().default(""),
   name: Yup.string().required("Name is required"),
   type: Yup.mixed<AnimalTypes>()
     .oneOf(ANIMAL_TYPES)
@@ -28,6 +29,7 @@ const animalSchema = Yup.object().shape({
 export const useAnimalData = (animalDB?: AnimalDB) => {
   const animal: Animal | undefined = animalDB
     ? {
+        photo: animalDB.photo,
         name: animalDB.name,
         type: animalDB.type,
         environment: animalDB.environment,

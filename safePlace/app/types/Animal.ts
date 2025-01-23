@@ -11,6 +11,7 @@ export interface Animal {
   friendly: boolean;
   age: number;
   details: string;
+  photo:string;
 }
 
 export interface AnimalDB extends Animal {

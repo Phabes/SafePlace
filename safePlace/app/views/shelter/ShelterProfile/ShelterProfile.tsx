@@ -1,7 +1,7 @@
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { AddImageModal, Button, ErrorPage, FormLabel, Input, LoadingWrapper, Typography } from "../../../components";
 import { MediaImagePlus as MediaImagePlusIcon } from "iconoir-react-native";
-import { Image } from 'expo-image'
+import { Image } from 'expo-image';
 import { theme } from "../../../constants/theme";
 import { selectUserID } from "../../../redux/accountSlice";
 import { useAppSelector } from "../../../redux/hooks";
@@ -71,7 +71,7 @@ export const ShelterProfile = () => {
               {shelterDetails.backgroundPhoto == "" ?
                 <MediaImagePlusIcon color={styles.iconColor.color} height={36} width={36} /> :
                 <Image
-                  contentFit="cover"
+                  contentFit="fill"
                   style={styles.backgroundImage}
                   transition={1000}
                   source={shelterDetails.backgroundPhoto}
@@ -87,7 +87,7 @@ export const ShelterProfile = () => {
               {shelterDetails.profilePhoto == "" ?
                 <MediaImagePlusIcon color={styles.iconColor.color} height={36} width={36} /> :
                 <Image
-                  contentFit="cover"
+                  contentFit="fill"
                   style={styles.profileImage}
                   transition={1000}
                   source={shelterDetails.profilePhoto}
