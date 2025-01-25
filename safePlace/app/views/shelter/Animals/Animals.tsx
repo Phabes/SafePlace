@@ -59,6 +59,7 @@ export const Animals = () => {
               return (
                 <ListItem
                   key={`ANIMAL-${animal.id}`}
+                  image={animal.photo}
                   text={`${animal.type} - ${animal.name}`}
                   buttons={[
                     {

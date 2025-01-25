@@ -87,6 +87,7 @@ export const Search = () => {
                 <ListItem
                   key={`ANIMAL-${animal.id}`}
                   text={`${animal.type} - ${animal.name}`}
+                  image={animal.photo}
                   buttons={[
                     {
                       onPress: () => handleFillPetitionClick(index),
