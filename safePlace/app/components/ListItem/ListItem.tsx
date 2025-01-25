@@ -16,7 +16,6 @@ type ListItemProps = {
 };
 
 export const ListItem: FC<ListItemProps> = ({ text, image, buttons }) => {
-  console.log(text, image)
   return (
     <View style={styles.container}>
       {image != undefined && image != "" ?  

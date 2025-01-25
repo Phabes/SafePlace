@@ -1,1 +1,1 @@
-export { AddImageModal, AddImageModalProps } from "./AddImageModal";
+export { AddImageModal, ModalProps } from "./AddImageModal";

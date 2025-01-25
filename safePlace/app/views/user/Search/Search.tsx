@@ -18,6 +18,7 @@ import { useState } from "react";
 import { FillPetition } from "./views/FillPetition";
 import { signPetition } from "../../../services";
 import { PetitionAnswer } from "../../../types";
+import { FilteringPopUp } from "../../../components/FilteringPopUp";
 
 export const Search = () => {
   const userID = useAppSelector(selectUserID);
@@ -38,6 +39,7 @@ export const Search = () => {
   );
   const sortedAnimals = getSortedAnimals(filteredAnimals, favouriteIDs);
   const [petitionAnimalIndex, setPetitionAnimalIndex] = useState<number>(-1);
+  const [filteringModalVisible, setFilteringModalVisible] = useState(false);
 
   const handleFillPetitionClick = (index: number) => {
     setPetitionAnimalIndex(index);
@@ -70,6 +72,11 @@ export const Search = () => {
 
   return (
     <LoadingWrapper isLoading={loading} text="Loading animals...">
+       <FilteringPopUp 
+          onPressFunction={() => {}} 
+          isVisible={filteringModalVisible} 
+          setVisible={setFilteringModalVisible} 
+          UserID={userID} />
       <View style={styles.container}>
         {petitionAnimalIndex !== -1 ? (
           <FillPetition
@@ -79,7 +86,15 @@ export const Search = () => {
           />
         ) : (
           <View style={styles.fields}>
-            <Typography text="Available animals:" />
+              <View style={styles.header}>
+                <Typography text="Available animals:" />
+                <View>
+                  <Button
+                    text="Filter"
+                    onPress={() => { setFilteringModalVisible(true) }}
+                  />
+                </View>
+              </View>
             {sortedAnimals.map((animal, index) => {
               const isAnimalInFavourite = favouriteIDs.includes(animal.id);
 
@@ -115,4 +130,10 @@ export const Search = () => {
 const styles = StyleSheet.create({
   container: { flex: 1, gap: theme.spacing(3) },
   fields: { gap: theme.spacing(1) },
+  header: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center"
+  }
 });

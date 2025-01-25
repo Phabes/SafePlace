@@ -4,7 +4,7 @@ export type AddImageModalRes = {
 };
 
 
-export type AddImageModalProps ={
+export type ModalProps ={
   onPressFunction:any;
   isVisible:boolean;
   setVisible:any;
