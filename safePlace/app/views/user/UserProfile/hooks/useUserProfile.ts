@@ -38,8 +38,7 @@ export const useUserProfile = (userID: string) => {
       setUserDetails({ ...userDetails, backgroundPhoto: res.uri})
       setBackgroundModalVisible(false);
       
-    } else
-      console.log("Bad B" + res.uri);
+    }
   };
 
   const getProfilePhoto = (res: AddImageModalRes) => {
@@ -48,8 +47,7 @@ export const useUserProfile = (userID: string) => {
       setUserDetails({ ...userDetails, profilePhoto: res.uri })
       setProfileModalVisible(false);
       
-    } else
-      console.log("Bad " + res.uri);
+    } 
   }
 
   const handleUserDetailsUpdate = (userDetails:AdditionalUserData) => {

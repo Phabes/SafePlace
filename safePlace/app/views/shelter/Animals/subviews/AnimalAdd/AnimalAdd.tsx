@@ -1,8 +1,9 @@
-import { FC } from "react";
-import { StyleSheet, View } from "react-native";
+import { FC, useState } from "react";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { Controller } from "react-hook-form";
-import { Animal } from "../../../../../types";
+import { AddImageModalRes, Animal } from "../../../../../types";
 import {
+  AddImageModal,
   Button,
   CheckBox,
   FormLabel,
@@ -16,6 +17,10 @@ import {
   getAnimalEnvironmentsToSelect,
   getAnimalTypesToSelect,
 } from "../../../../../utils";
+import { MediaImagePlus as MediaImagePlusIcon } from "iconoir-react-native";
+import { Image } from 'expo-image';
+
+
 
 type AnimalAddProps = {
   close: () => void;
@@ -26,6 +31,7 @@ export const AnimalAdd: FC<AnimalAddProps> = ({ close, addAnimal }) => {
   const { animalControl, handleAnimalSubmit, animalErrors } = useAnimalData();
   const animalTypesData = getAnimalTypesToSelect();
   const animalEnvironmentsData = getAnimalEnvironmentsToSelect();
+  const [photoModalVisible, setPhotoModalVisible] = useState(false);
 
   const createAnimalObject = () => {
     const createdAnimal = animalControl._formValues as Animal;
@@ -35,6 +41,36 @@ export const AnimalAdd: FC<AnimalAddProps> = ({ close, addAnimal }) => {
   return (
     <View style={styles.container}>
       <View style={styles.form}>
+        
+        <Controller
+          control={animalControl}
+          name="photo"
+          defaultValue=""
+          render={({ field: { onChange, value, name } }) => (
+            <View>
+            <AddImageModal onPressFunction={(res:AddImageModalRes)=>{
+                if (res.isTaken) {
+                  onChange(res.uri)
+                  setPhotoModalVisible(false);
+                }
+            }} isVisible={photoModalVisible} setVisible={setPhotoModalVisible} />
+              <TouchableOpacity style={styles.backgroundContainer}
+                onPress={() => { setPhotoModalVisible(true); }}>
+                {value == "" ?
+                  <MediaImagePlusIcon color={styles.iconColor.color} height={36} width={36} />:
+                  <Image
+                    contentFit="contain"
+                    style={styles.backgroundImage}
+                    transition={1000}
+                    source={value}
+                    placeholder={"Animal Photo"}
+                  />
+                }
+              </TouchableOpacity>
+            </View>
+          
+          )}
+        />
         <FormLabel text={"Name"} errors={animalErrors.name} />
         <Controller
           control={animalControl}
@@ -42,7 +78,9 @@ export const AnimalAdd: FC<AnimalAddProps> = ({ close, addAnimal }) => {
           render={({ field: { onChange, value, name } }) => (
             <Input
               text={value}
-              onChange={onChange}
+              onChange={(e)=>{
+                console.log(e)
+                onChange(e)}}
               placeholder={capitalizeFirstLetter(name)}
             />
           )}
@@ -98,6 +136,7 @@ export const AnimalAdd: FC<AnimalAddProps> = ({ close, addAnimal }) => {
         <Controller
           control={animalControl}
           name="details"
+          defaultValue=""
           render={({ field: { onChange, value, name } }) => (
             <Input
               text={value}
@@ -126,4 +165,19 @@ const styles = StyleSheet.create({
     gap: theme.spacing(1),
   },
   buttons: { gap: theme.spacing(2) },
+  backgroundContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: theme.colors["background-clickable"],
+    maxHeight: 300,
+    minHeight: 150,
+    width: "100%"
+  },
+  backgroundImage: {
+    maxHeight: 300,
+    minHeight: 150,
+    width: "100%"
+  },
+  iconColor: { color: theme.colors["action-selected"] },
 });

@@ -48,7 +48,6 @@ export const useCamera = async ():Promise<PhotoRes> => {
       quality: 1
     });
     if (!res.canceled) {
-      console.log(res);
       return {hasPhoto:true,photo:res.assets[0]}
     }
   }
