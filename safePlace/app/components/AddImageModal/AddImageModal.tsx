@@ -18,7 +18,6 @@ export enum PhotoOrigin {
 export const AddImageModal: FC<AddImageModalProps> = ({ onPressFunction, isVisible, setVisible })=>{
   const takePhoto = async (getFrom:PhotoOrigin): Promise<AddImageModalRes> => {
     const res = getFrom == PhotoOrigin.CAMERA ? await useCamera() : await useGallery();
-    console.log(res)
     if (res.hasPhoto) {
       const uploadUrl = await uploadImage(res.photo.uri);
       return { uri: uploadUrl, isTaken: uploadUrl.length>0 };

@@ -45,6 +45,7 @@ export const AnimalAdd: FC<AnimalAddProps> = ({ close, addAnimal }) => {
         <Controller
           control={animalControl}
           name="photo"
+          defaultValue=""
           render={({ field: { onChange, value, name } }) => (
             <View>
             <AddImageModal onPressFunction={(res:AddImageModalRes)=>{
@@ -58,7 +59,7 @@ export const AnimalAdd: FC<AnimalAddProps> = ({ close, addAnimal }) => {
                 {value == "" ?
                   <MediaImagePlusIcon color={styles.iconColor.color} height={36} width={36} />:
                   <Image
-                    contentFit="fill"
+                    contentFit="contain"
                     style={styles.backgroundImage}
                     transition={1000}
                     source={value}
@@ -77,7 +78,9 @@ export const AnimalAdd: FC<AnimalAddProps> = ({ close, addAnimal }) => {
           render={({ field: { onChange, value, name } }) => (
             <Input
               text={value}
-              onChange={onChange}
+              onChange={(e)=>{
+                console.log(e)
+                onChange(e)}}
               placeholder={capitalizeFirstLetter(name)}
             />
           )}
@@ -133,6 +136,7 @@ export const AnimalAdd: FC<AnimalAddProps> = ({ close, addAnimal }) => {
         <Controller
           control={animalControl}
           name="details"
+          defaultValue=""
           render={({ field: { onChange, value, name } }) => (
             <Input
               text={value}

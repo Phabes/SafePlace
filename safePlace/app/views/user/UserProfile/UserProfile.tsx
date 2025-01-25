@@ -77,7 +77,7 @@ export const UserProfile = () => {
             {userDetails.backgroundPhoto == "" ?
               <MediaImagePlusIcon color={styles.iconColor.color} height={36} width={36} /> :
               <Image
-                contentFit="fill"
+                contentFit="contain"
                 style={styles.backgroundImage}
                 transition={1000}
                 source={userDetails.backgroundPhoto}
@@ -93,7 +93,7 @@ export const UserProfile = () => {
             {userDetails.profilePhoto == "" ?
              <MediaImagePlusIcon color={styles.iconColor.color} height={36} width={36} />:
             <Image 
-              contentFit="fill"
+                contentFit="contain"
               style={styles.profileImage}
               transition={1000}
                 source={userDetails.profilePhoto}

@@ -71,7 +71,7 @@ export const ShelterProfile = () => {
               {shelterDetails.backgroundPhoto == "" ?
                 <MediaImagePlusIcon color={styles.iconColor.color} height={36} width={36} /> :
                 <Image
-                  contentFit="fill"
+                  contentFit="contain"
                   style={styles.backgroundImage}
                   transition={1000}
                   source={shelterDetails.backgroundPhoto}
@@ -87,7 +87,7 @@ export const ShelterProfile = () => {
               {shelterDetails.profilePhoto == "" ?
                 <MediaImagePlusIcon color={styles.iconColor.color} height={36} width={36} /> :
                 <Image
-                  contentFit="fill"
+                  contentFit="contain"
                   style={styles.profileImage}
                   transition={1000}
                   source={shelterDetails.profilePhoto}

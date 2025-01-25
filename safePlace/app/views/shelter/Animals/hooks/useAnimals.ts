@@ -69,7 +69,9 @@ export const useAnimals = () => {
   const addAnimal = async (animal: Animal) => {
     setLoading(true);
     try {
+      console.log("To save: ", animal)
       const createdAnimal = await saveAnimalDB(animal, userID);
+      console.log("To save: ", createdAnimal)
 
       setAnimals((prevAnimals) => {
         prevAnimals.unshift({
