@@ -1,7 +1,8 @@
-import { FC } from "react";
-import { StyleSheet, View } from "react-native";
+import { FC, useState } from "react";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { Controller } from "react-hook-form";
 import {
+  AddImageModal,
   Button,
   CheckBox,
   FormLabel,
@@ -10,13 +11,17 @@ import {
   Typography,
 } from "../../../../../components";
 import { theme } from "../../../../../constants/theme";
-import { Animal, AnimalDB } from "../../../../../types";
+import { AddImageModalRes, Animal, AnimalDB } from "../../../../../types";
 import {
   capitalizeFirstLetter,
   getAnimalEnvironmentsToSelect,
   getAnimalTypesToSelect,
 } from "../../../../../utils";
 import { useAnimalData } from "../../hooks";
+import { Image } from 'expo-image';
+import { MediaImagePlus as MediaImagePlusIcon } from "iconoir-react-native";
+
+
 
 type AnimalEditProps = {
   close: () => void;
@@ -33,6 +38,8 @@ export const AnimalEdit: FC<AnimalEditProps> = ({
     useAnimalData(animal);
   const animalTypesData = getAnimalTypesToSelect();
   const animalEnvironmentsData = getAnimalEnvironmentsToSelect();
+  const [photoModalVisible, setPhotoModalVisible] = useState(false);
+  
 
   const createAnimalObject = () => {
     const edittedAnimal = {
@@ -47,6 +54,35 @@ export const AnimalEdit: FC<AnimalEditProps> = ({
     <View style={styles.container}>
       <Typography text={`${animal.type} - ${animal.name}`} />
       <View style={styles.form}>
+        <Controller
+          control={animalControl}
+          name="photo"
+          render={({ field: { onChange, value, name } }) => (
+            <View>
+            <AddImageModal onPressFunction={(res:AddImageModalRes)=>{
+                if (res.isTaken) {
+                  onChange(res.uri)
+                  setPhotoModalVisible(false);
+                }
+            }} isVisible={photoModalVisible} setVisible={setPhotoModalVisible} />
+              <TouchableOpacity style={styles.backgroundContainer}
+                onPress={() => { setPhotoModalVisible(true); }}>
+                {value == "" ?
+                  <MediaImagePlusIcon color={styles.iconColor.color} height={36} width={36} />:
+                  <Image
+                    contentFit="contain"
+                    style={styles.backgroundImage}
+                    transition={1000}
+                    source={value}
+                    placeholder={"Animal Photo"}
+                  />
+                }
+              </TouchableOpacity>
+            </View>
+          
+          )}
+          />
+
         <FormLabel text={"Name"} errors={animalErrors.name} />
         <Controller
           control={animalControl}
@@ -136,4 +172,19 @@ const styles = StyleSheet.create({
     gap: theme.spacing(1),
   },
   buttons: { gap: theme.spacing(2) },
+  backgroundContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: theme.colors["background-clickable"],
+    maxHeight: 300,
+    minHeight: 150,
+    width: "100%"
+  },
+  backgroundImage: {
+    maxHeight: 300,
+    minHeight: 150,
+    width: "100%"
+  },
+  iconColor: { color: theme.colors["action-selected"] },
 });
