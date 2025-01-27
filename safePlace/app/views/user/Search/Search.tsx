@@ -19,6 +19,8 @@ import { FillPetition } from "./views/FillPetition";
 import { signPetition } from "../../../services";
 import { PetitionAnswer } from "../../../types";
 import { FilteringPopUp } from "../../../components/FilteringPopUp";
+import { Filter } from "../../../constants/filterType";
+import { filterAnimals } from "./utils/filterAnimals";
 
 export const Search = () => {
   const userID = useAppSelector(selectUserID);
@@ -28,6 +30,8 @@ export const Search = () => {
     animals,
     filled,
     favourite,
+    filterAnimalsDB,
+    clearFilter,
     loadAvailableAnimals,
     addToFilled,
     addFavourite,
@@ -60,6 +64,11 @@ export const Search = () => {
     setPetitionAnimalIndex(-1);
   };
 
+  const useFilter = (filter: Filter) => {
+    filterAnimalsDB(filter)
+    setFilteringModalVisible(false)
+  }
+
   if (error) {
     return (
       <ErrorPage
@@ -73,10 +82,9 @@ export const Search = () => {
   return (
     <LoadingWrapper isLoading={loading} text="Loading animals...">
        <FilteringPopUp 
-          onPressFunction={() => {}} 
+        onPressFunction={useFilter} 
           isVisible={filteringModalVisible} 
-          setVisible={setFilteringModalVisible} 
-          UserID={userID} />
+          setVisible={setFilteringModalVisible}  />
       <View style={styles.container}>
         {petitionAnimalIndex !== -1 ? (
           <FillPetition
@@ -88,10 +96,16 @@ export const Search = () => {
           <View style={styles.fields}>
               <View style={styles.header}>
                 <Typography text="Available animals:" />
-                <View>
+                <View style={styles.buttonsContainer}>
+                  <Button
+                    text="Clear Filter"
+                    variant="secondary"
+                    
+                    onPress={clearFilter}
+                  />
                   <Button
                     text="Filter"
-                    onPress={() => { setFilteringModalVisible(true) }}
+                    onPress={() => { setFilteringModalVisible(true); }}
                   />
                 </View>
               </View>
@@ -135,5 +149,10 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center"
+  },
+  buttonsContainer:{
+    display:"flex",
+    flexDirection:"row",
+    gap:theme.spacing(2),
   }
 });

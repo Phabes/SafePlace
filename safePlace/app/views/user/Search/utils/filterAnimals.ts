@@ -10,14 +10,37 @@ export const filterAnimals = (animals: Array<AnimalDB>, filters: Filter, userDet
 
 
   const userFilterdAnimals = filters.useUserDetails ? filteredAnimals
-    .filter((animal) => (userDetails?.age == undefined || userDetails?.age == 0 || filters.type == animal.type))
+    .filter((animal) => userAgeFilter(animal, userDetails))
+    .filter((animal) => userExpierienceFilter(animal, userDetails))
+    .filter((animal) => userHousingFilter(animal, userDetails))
+    .filter((animal) => userLifestyleFilter(animal, userDetails))
   :filteredAnimals
 
-  
+  return userFilterdAnimals
 }
 
-const userAgeFilter = (animal:AnimalDB, userDetails:AdditionalUserData): boolean => {
+const userAgeFilter = (animal:AnimalDB, userDetails?:AdditionalUserData): boolean => {
   if (userDetails?.age == undefined || userDetails?.age == 0)
     return true
   return (userDetails.age > 70 && animal.friendly && ["Cat", "Turtle", "Fish"].includes(animal.type))
 }
+
+const userExpierienceFilter = (animal: AnimalDB, userDetails?: AdditionalUserData): boolean => {
+  if (userDetails?.experience == undefined || userDetails?.experience == "")
+    return true;
+  return (["None", "Little Experience"].includes(userDetails.experience)  && animal.friendly);
+};
+
+const userHousingFilter = (animal: AnimalDB, userDetails?: AdditionalUserData): boolean => {
+  if (userDetails?.housing == undefined || userDetails?.housing == "")
+    return true;
+  return (userDetails.housing == "Apartment" && ["Land","Water"].includes(animal.environment));
+};
+
+const userLifestyleFilter = (animal: AnimalDB, userDetails?: AdditionalUserData): boolean => {
+  if (userDetails?.lifestyle == undefined || userDetails?.lifestyle == "")
+    return true;
+  return (userDetails.lifestyle == "Sedentary lifestyle" && ["Fish","Turtle"].includes(animal.type)) 
+    || (userDetails.lifestyle == "Moderately Active Lifestyle" && ["Fish", "Turtle","Cat", "Parrot"].includes(animal.type))
+    || (userDetails.lifestyle == "Active lifestyle" && ["Fish", "Turtle", "Cat", "Parrot", "Dog"].includes(animal.type));
+};

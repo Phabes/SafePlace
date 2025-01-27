@@ -16,10 +16,7 @@ import { useFilteringData } from "./hooks";
 import { Typography } from "../Typography";
 
 
-export interface FilteringPopUpProps extends ModalProps {
-  UserID: string;
-}
-export const FilteringPopUp: FC<FilteringPopUpProps> = ({ UserID, onPressFunction, isVisible, setVisible }) =>{
+export const FilteringPopUp: FC<ModalProps> = ({ onPressFunction, isVisible, setVisible }) =>{
   const {height, width} = Dimensions.get('window')
   const [winHeight, setWinHeight] = useState(height)
   const { filterControl, handleFilterSubmit, filterErrors } = useFilteringData();
@@ -29,7 +26,7 @@ export const FilteringPopUp: FC<FilteringPopUpProps> = ({ UserID, onPressFunctio
 
     const createFiltersObject = () => {
       const createdFilter = filterControl._formValues as Filter;
-      console.log(createdFilter)
+      onPressFunction(createdFilter)
     };
 
   const styles = StyleSheet.create({
