@@ -37,7 +37,7 @@ export type {
 export type { PhotoRes } from "./PhotoType";
 
 export type {
-AddImageModalProps,
+  ModalProps,
 AddImageModalRes
 } from "./ImageModalTypes"
 

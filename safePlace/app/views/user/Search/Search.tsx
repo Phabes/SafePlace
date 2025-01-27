@@ -18,6 +18,9 @@ import { useState } from "react";
 import { FillPetition } from "./views/FillPetition";
 import { signPetition } from "../../../services";
 import { PetitionAnswer } from "../../../types";
+import { FilteringPopUp } from "../../../components/FilteringPopUp";
+import { Filter } from "../../../constants/filterType";
+import { filterAnimals } from "./utils/filterAnimals";
 
 export const Search = () => {
   const userID = useAppSelector(selectUserID);
@@ -27,6 +30,8 @@ export const Search = () => {
     animals,
     filled,
     favourite,
+    filterAnimalsDB,
+    clearFilter,
     loadAvailableAnimals,
     addToFilled,
     addFavourite,
@@ -38,6 +43,7 @@ export const Search = () => {
   );
   const sortedAnimals = getSortedAnimals(filteredAnimals, favouriteIDs);
   const [petitionAnimalIndex, setPetitionAnimalIndex] = useState<number>(-1);
+  const [filteringModalVisible, setFilteringModalVisible] = useState(false);
 
   const handleFillPetitionClick = (index: number) => {
     setPetitionAnimalIndex(index);
@@ -58,6 +64,11 @@ export const Search = () => {
     setPetitionAnimalIndex(-1);
   };
 
+  const useFilter = (filter: Filter) => {
+    filterAnimalsDB(filter)
+    setFilteringModalVisible(false)
+  }
+
   if (error) {
     return (
       <ErrorPage
@@ -70,6 +81,10 @@ export const Search = () => {
 
   return (
     <LoadingWrapper isLoading={loading} text="Loading animals...">
+       <FilteringPopUp 
+        onPressFunction={useFilter} 
+          isVisible={filteringModalVisible} 
+          setVisible={setFilteringModalVisible}  />
       <View style={styles.container}>
         {petitionAnimalIndex !== -1 ? (
           <FillPetition
@@ -79,7 +94,21 @@ export const Search = () => {
           />
         ) : (
           <View style={styles.fields}>
-            <Typography text="Available animals:" />
+              <View style={styles.header}>
+                <Typography text="Available animals:" />
+                <View style={styles.buttonsContainer}>
+                  <Button
+                    text="Clear Filter"
+                    variant="secondary"
+                    
+                    onPress={clearFilter}
+                  />
+                  <Button
+                    text="Filter"
+                    onPress={() => { setFilteringModalVisible(true); }}
+                  />
+                </View>
+              </View>
             {sortedAnimals.map((animal, index) => {
               const isAnimalInFavourite = favouriteIDs.includes(animal.id);
 
@@ -115,4 +144,15 @@ export const Search = () => {
 const styles = StyleSheet.create({
   container: { flex: 1, gap: theme.spacing(3) },
   fields: { gap: theme.spacing(1) },
+  header: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center"
+  },
+  buttonsContainer:{
+    display:"flex",
+    flexDirection:"row",
+    gap:theme.spacing(2),
+  }
 });

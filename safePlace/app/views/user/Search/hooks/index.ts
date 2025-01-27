@@ -1,1 +1,1 @@
-export { useSearchAnimals } from "./useSearchAnimals";
+export { useSearchAnimals} from "./useSearchAnimals";
