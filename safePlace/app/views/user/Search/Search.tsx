@@ -65,9 +65,9 @@ export const Search = () => {
   };
 
   const useFilter = (filter: Filter) => {
-    filterAnimalsDB(filter)
-    setFilteringModalVisible(false)
-  }
+    filterAnimalsDB(filter);
+    setFilteringModalVisible(false);
+  };
 
   if (error) {
     return (
@@ -81,10 +81,11 @@ export const Search = () => {
 
   return (
     <LoadingWrapper isLoading={loading} text="Loading animals...">
-       <FilteringPopUp 
-        onPressFunction={useFilter} 
-          isVisible={filteringModalVisible} 
-          setVisible={setFilteringModalVisible}  />
+      <FilteringPopUp
+        onPressFunction={useFilter}
+        isVisible={filteringModalVisible}
+        setVisible={setFilteringModalVisible}
+      />
       <View style={styles.container}>
         {petitionAnimalIndex !== -1 ? (
           <FillPetition
@@ -94,21 +95,22 @@ export const Search = () => {
           />
         ) : (
           <View style={styles.fields}>
-              <View style={styles.header}>
-                <Typography text="Available animals:" />
-                <View style={styles.buttonsContainer}>
-                  <Button
-                    text="Clear Filter"
-                    variant="secondary"
-                    
-                    onPress={clearFilter}
-                  />
-                  <Button
-                    text="Filter"
-                    onPress={() => { setFilteringModalVisible(true); }}
-                  />
-                </View>
+            <View style={styles.header}>
+              <Typography text="Available animals:" />
+              <View style={styles.buttonsContainer}>
+                <Button
+                  text="Clear Filter"
+                  variant="secondary"
+                  onPress={clearFilter}
+                />
+                <Button
+                  text="Filter"
+                  onPress={() => {
+                    setFilteringModalVisible(true);
+                  }}
+                />
               </View>
+            </View>
             {sortedAnimals.map((animal, index) => {
               const isAnimalInFavourite = favouriteIDs.includes(animal.id);
 
@@ -146,13 +148,14 @@ const styles = StyleSheet.create({
   fields: { gap: theme.spacing(1) },
   header: {
     display: "flex",
-    flexDirection: "row",
+    flexDirection: "column",
     justifyContent: "space-between",
-    alignItems: "center"
+    alignItems: "center",
   },
-  buttonsContainer:{
-    display:"flex",
-    flexDirection:"row",
-    gap:theme.spacing(2),
-  }
+  buttonsContainer: {
+    display: "flex",
+    flexDirection: "row",
+
+    gap: theme.spacing(2),
+  },
 });
